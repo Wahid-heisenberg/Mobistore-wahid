@@ -64,7 +64,9 @@ router.post("/addsell", upload.single("image"), async (req, res) => {
     });
 
     const transactionDate = req.body.transactionDate;
-    const transactionType = req.body.transactionType;
+    const transactionType =req.body.transactionType ;
+
+    console.log(transactionType , transactionDate )
     const query2 = "INSERT INTO transactions (transactionDate, transactionType, clientId, productId) VALUES (?, ?, ?, ?)";
 
     const transactionID = await new Promise((resolve, reject) => {
@@ -87,7 +89,93 @@ router.post("/addsell", upload.single("image"), async (req, res) => {
   }
 });
 
+const upload1 = multer({ storage });
+router.post("/addexchange", upload1.single("image"), async (req, res) => {
+  try {
+    const { firstName, familyName, phoneNumber, cardNumber } = req.body;
+    const imagePath = `cardsPictures/${req.file.filename}`;
+    const query = "INSERT INTO clients (firstName, familyName, phoneNumber, cardNumber, cardPicturepath) VALUES (?, ?, ?, ?, ?)";
 
+    const currentClientID = await new Promise((resolve, reject) => {
+      db.run(query, [firstName, familyName, phoneNumber, cardNumber, imagePath], function (err) {
+        if (err) {
+          console.error("Database error:", err.message);
+          reject(err);
+        } else {
+          resolve(this.lastID);
+          console.log('Client ajouté avec succès');
+        }
+      });
+    });
+
+    const Name = req.body.Name;
+    const brand = req.body.brand;
+    const serieNumber1 = req.body.serieNumber1;
+    const serieNumber2 = req.body.serieNumber2;
+    const category = req.body.category;
+    const price = req.body.price;
+    console.log(Name, brand, price);
+    const productquiry = "INSERT INTO produitsEchanges (Name, brand, serieNumber1, serieNumber2, category, price) VALUES (?, ?, ?, ?, ?, ?)";
+
+    const currentProductID = await new Promise((resolve, reject) => {
+      db.run(productquiry, [Name, brand, serieNumber1, serieNumber2, category, price], function (err) {
+        if (err) {
+          console.error("Database error:", err.message);
+          reject(err);
+        } else {
+          resolve(this.lastID);
+          console.log('produit ajouté avec succès ' + this.lastID);
+        }
+      });
+    });
+
+    const productName = req.body.productName;
+    const cserieNumber1 = req.body.cserieNumber1;
+    const cserieNumber2 = req.body.cserieNumber2;
+    const cbrand = req.body.cbrand;
+    const ccategory = req.body.ccategory;
+    const buyPrice = req.body.buyPrice;
+    const sellPrice = req.body.sellPrice;
+  
+    const query3 = "INSERT INTO stock (productName, serieNumber1, serieNumber2, brand, category ,buyPrice,sellPrice ) VALUES (?, ?, ?, ?, ? , ? , ?)";
+const stockId =  await new Promise((resolve, reject) => {
+    db.run(query3, [productName, cserieNumber1,cserieNumber2, cbrand, ccategory ,buyPrice,sellPrice], function (err) {
+      if (err) {
+        console.error("Database error:", err.message);
+        reject(err);
+      } else {
+        resolve(this.lastID);
+        console.log('produit ajouté avec succès dand le stock ' + this.lastID);
+      }
+    })
+
+  });
+
+    const transactionDate = req.body.transactionDate;
+    const transactionType =req.body.transactionType ;
+
+    console.log(transactionType , transactionDate )
+    const query2 = "INSERT INTO transactions (transactionDate, transactionType, clientId, productId ,stockId) VALUES (?, ?, ?, ? , ?)";
+
+    const transactionID = await new Promise((resolve, reject) => {
+      db.run(query2, [transactionDate, transactionType, currentClientID, currentProductID , stockId], function (err) {
+        if (err) {
+          console.error("Database error:", err.message);
+          reject(err);
+        } else {
+          resolve(this.lastID);
+          console.log('transaction ajoutée avec succès');
+          console.log('client :' + currentClientID, 'product :' + currentProductID);
+        }
+      });
+    });
+
+    res.json({ id: transactionID });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ error: "Database error" });
+  }
+});
 // var currentClientID = 0
 // var currentProductID = 0
 // // Handle POST request to "/addsell" route

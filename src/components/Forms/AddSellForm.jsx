@@ -30,7 +30,7 @@ export const Title = styled.h3`
 
 function AddSellForm() {
   const [itemsNumber, SetItemsNumber] = useState(1);
-  const [selectedValue, setSelectedValue] = useState("");
+  const [selectedValue, setSelectedValue] = useState("Vente");
 
   const [ClientFirstName, setClientFirstName] = useState("");
   const [ClientFamilyName, setClientFamilyName] = useState("");
@@ -175,10 +175,21 @@ function AddSellForm() {
       return `${firstSevenChars}...${lastElevenChars}`;
     }
   }
+
+  function getCurrentDate() {
+    const currentDate = new Date();
+    const day = String(currentDate.getDate()).padStart(2, '0');
+    const month = String(currentDate.getMonth() + 1).padStart(2, '0'); // Note: Months are zero-based.
+    const year = currentDate.getFullYear();
+  
+    return `${day}/${month}/${year}`;
+  }
+  const currentDate = getCurrentDate();  
   console.log(
     ClientFamilyName,
     ClientFirstName,
     categories[0],
+    categories2[0]
     
   );
   console.log(selectedValue);
@@ -193,8 +204,8 @@ function AddSellForm() {
     selldata.append("phoneNumber", ClientPhoneNumber)
     selldata.append("cardNumber", ClientCardIdNumber)
     selldata.append("image", selectedFile)
-    selldata.append("TransactionDate",new Date().toISOString)
-    selldata.append("transactionType",selectedValue)
+    selldata.append("transactionDate",currentDate )
+    selldata.append("transactionType", selectedValue)
     selldata.append("Name",productName[0])
     selldata.append("brand", productBrand[0])
     selldata.append("serieNumber1",productSerieNumber1[0])
@@ -202,64 +213,61 @@ function AddSellForm() {
     selldata.append("category",categories[0])
     selldata.append("price",prices[0])
 
-    /*const c = {
-      firstName: ClientFamilyName,
-      familyName: ClientFirstName,
-      phoneNumber: ClientPhoneNumber,
-      cardNumber: ClientCardIdNumber,
-      cardPicturePath: selectedFile,
-    };*/
-    console.log("here");
+
+    const  exchangedata = new FormData();
+    exchangedata.append("firstName", ClientFirstName)
+    exchangedata.append("familyName",  ClientFamilyName)
+    exchangedata.append("phoneNumber", ClientPhoneNumber)
+    exchangedata.append("cardNumber", ClientCardIdNumber)
+    exchangedata.append("image", selectedFile)
+    exchangedata.append("transactionDate",currentDate )
+    exchangedata.append("transactionType", selectedValue)
+    exchangedata.append("Name",productName[0])
+    exchangedata.append("brand", productBrand[0])
+    exchangedata.append("serieNumber1",productSerieNumber1[0])
+    exchangedata.append("serieNumber2",productSerieNumber2[0])
+    exchangedata.append("category",categories[0])
+    exchangedata.append("price",prices[0])
+    
+    exchangedata.append("productName",prodaEchName[0])
+    exchangedata.append("cserieNumber1",prodaEchSerie1[0])
+    exchangedata.append("cserieNumber2",prodaEchSerie2[0])
+    exchangedata.append("cbrand", prodaEchBrand[0])
+    exchangedata.append("ccategory", categories2[0])
+    exchangedata.append("buyPrice",prices2[0])
+    exchangedata.append("sellPrice",prices2[0]*1.35)
+
+
+    if (selectedValue === "Echange") {
+      axios
+        .post("http://localhost:5000/api/transaction/addexchange", exchangedata)
+        .then((response) => {
+          console.log(response.data);
+          alert("Echange crée !");
+        })
+        .catch((error) => {
+          console.error(error);
+          alert("An error occurred while creating the transaction.");
+        });
+
+      console.log("here");
+    } else {
+      axios
+        .post("http://localhost:5000/api/transaction/addsell", selldata)
+        .then((response) => {
+          console.log(response.data);
+          alert("Vente crée !");
+        })
+        .catch((error) => {
+          console.error(error);
+          alert("An error occurred while creating the transaction.");
+        });
+    }
+
 
     // Make HTTP request to backend API to insert form data into database
-    axios
-      .post("http://localhost:5000/api/transaction/addsell", selldata)
-      .then((response) => {
-        console.log(response.data);
-        alert("transaction crée !");
-      })
-      .catch((error) => {
-        console.error(error);
-        alert("An error occurred while creating the transaction.");
-      });
-    // if (selectedValue === "Vente") {
-    //   // Create an object to represent the form data
-    //   const purchaseData = {
-    //     nomAchat: productName[0],
-    //     nmrSerie1: productSerieNumber1[0],
-    //     nmrSerie2: productSerieNumber2[0],
-    //     prixAchat: prices[0],
-    //   };
-    //   console.log("here");
 
-    //   // Make HTTP request to backend API to insert form data into database
-    //   try {
-    //     axios.post("http://localhost:8002/ajouterAchat", purchaseData);
-    //     alert("purchase successfully!");
-    //   } catch (error) {
-    //     console.log(error);
-    //   }
-    // } else {
-    //   ///////// echange ///////
-    //   const exchangeData = {
-    //     nomRev: productName[0],
-    //     nmrSerie1Rev: productSerieNumber1[0],
-    //     nmrSerie2Rev: productSerieNumber2[0],
-    //     prixRev: prices[0],
-    //     nomProd: prodaEchName[0],
-    //     numSerie1: prodaEchSerie1[0],
-    //     numSerie2: prodaEchSerie2[0],
-    //     prixAchat: prices2[0],
-    //   };
-    //   console.log("here");
-
-    //   try {
-    //     axios.post("http://localhost:8003/ajouterRevente", exchangeData);
-    //     alert("Exchange successfully!");
-    //   } catch (error) {
-    //     console.log(error);
-    //   }
-    // }
+   
   };
 
   return (
@@ -413,7 +421,7 @@ function AddSellForm() {
               ? Array.from({ length: itemsNumber }, (_, index) => (
                   <>
                     <Title key={index} style={{ marginTop: "16px" }}>
-                      Information d'article échangé {index + 1}
+                      Information d'article de magazin {index + 1}
                     </Title>
                     <span></span>
                     <Label>
@@ -525,7 +533,7 @@ function AddSellForm() {
                       </PriceContainer>
                     </Label>
                     <Title style={{ marginTop: "16px" }}>
-                      Information d'article a échangé {index + 1}
+                      Information d'article de client {index + 1}
                     </Title>
                     <span></span>
                     <Label>
@@ -585,7 +593,7 @@ function AddSellForm() {
                       Catégorie
                       <SelectContainer>
                         <Select name="Categories" id="Categories" required
-                        onChange={(e)=>handleSelectCategories2(index,e.target.value)}
+                        onChange={(e)=>handleSelectCategories2(index , e.target.value)}
                         value={categories2[index]}
                         >
                           <option value="Telephone">Télephone</option>
