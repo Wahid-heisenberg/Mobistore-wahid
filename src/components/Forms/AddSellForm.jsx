@@ -57,6 +57,21 @@ function AddSellForm() {
   };
   const [prices, setPrices] = useState([0, 0, 0, 0, 0, 0, 0, 0]); // initial price values
   const [prices2, setPrices2] = useState([0, 0, 0, 0, 0, 0, 0, 0, 0]);
+  const [categories, setCategories] = useState(["Telephone", "Telephone", "Telephone", "Telephone", "Telephone"]);
+  const [categories2, setCategories2] = useState(["Telephone", "Telephone", "Telephone", "Telephone", "Telephone"]);
+
+  const handleSelectCategories = (index , newCategory) => {
+    const updatedCategories = [...categories];
+    updatedCategories[index] =newCategory;
+    setCategories(updatedCategories)
+  };
+
+  const handleSelectCategories2 = (index , newCategory2) => {
+    const updatedCategories2 = [...categories2];
+    updatedCategories2[index] =newCategory2;
+    setCategories2(updatedCategories2)
+  };
+
 
   const handleIncrement = (index) => {
     const updatedPrices = [...prices];
@@ -163,9 +178,8 @@ function AddSellForm() {
   console.log(
     ClientFamilyName,
     ClientFirstName,
-    ClientPhoneNumber,
-    selectedFile,
-    productName
+    categories[0],
+    
   );
   console.log(selectedValue);
 
@@ -173,12 +187,21 @@ function AddSellForm() {
     event.preventDefault();
 
     // Create an object to represent the form data
-    const  clientData = new FormData();
-    clientData.append("firstName", ClientFirstName)
-    clientData.append("familyName",  ClientFamilyName)
-    clientData.append("phoneNumber", ClientPhoneNumber)
-    clientData.append("cardNumber", ClientCardIdNumber)
-    clientData.append("image", selectedFile)
+    const  selldata = new FormData();
+    selldata.append("firstName", ClientFirstName)
+    selldata.append("familyName",  ClientFamilyName)
+    selldata.append("phoneNumber", ClientPhoneNumber)
+    selldata.append("cardNumber", ClientCardIdNumber)
+    selldata.append("image", selectedFile)
+    selldata.append("TransactionDate",new Date().toISOString)
+    selldata.append("transactionType",selectedValue)
+    selldata.append("Name",productName[0])
+    selldata.append("brand", productBrand[0])
+    selldata.append("serieNumber1",productSerieNumber1[0])
+    selldata.append("serieNumber2",productSerieNumber2[0])
+    selldata.append("category",categories[0])
+    selldata.append("price",prices[0])
+
     /*const c = {
       firstName: ClientFamilyName,
       familyName: ClientFirstName,
@@ -190,14 +213,14 @@ function AddSellForm() {
 
     // Make HTTP request to backend API to insert form data into database
     axios
-      .post("http://localhost:5000/api/transaction/addsell", clientData)
+      .post("http://localhost:5000/api/transaction/addsell", selldata)
       .then((response) => {
         console.log(response.data);
-        alert("User created successfully!");
+        alert("transaction crée !");
       })
       .catch((error) => {
         console.error(error);
-        alert("An error occurred while creating the user.");
+        alert("An error occurred while creating the transaction.");
       });
     // if (selectedValue === "Vente") {
     //   // Create an object to represent the form data
@@ -452,7 +475,12 @@ function AddSellForm() {
                     <Label htmlFor="Categories">
                       Catégorie
                       <SelectContainer>
-                        <Select name="Categories" id="Categories" required>
+                        <Select name="Categories" id="Categories"
+                        value={categories[index]}
+                        required
+                         onChange={(e)=>handleSelectCategories(index , e.target.value)}
+                         
+                         >
                           <option value="Telephone">Télephone</option>
                           <option value="PC">PC</option>
                           <option value="Earpud">Earpud</option>
@@ -531,6 +559,7 @@ function AddSellForm() {
                         placeholder="1147487845"
                         onChange={(e) =>
                           handleprodaEchSerie1(index, +e.target.value)
+                        
                         }
                         value={
                           prodaEchSerie1[index] > 0 ? prodaEchSerie1[index] : ""
@@ -555,7 +584,10 @@ function AddSellForm() {
                     <Label htmlFor="Categories">
                       Catégorie
                       <SelectContainer>
-                        <Select name="Categories" id="Categories" required>
+                        <Select name="Categories" id="Categories" required
+                        onChange={(e)=>handleSelectCategories2(index,e.target.value)}
+                        value={categories2[index]}
+                        >
                           <option value="Telephone">Télephone</option>
                           <option value="PC">PC</option>
                           <option value="Earpud">Earpud</option>
@@ -677,7 +709,10 @@ function AddSellForm() {
                     <Label htmlFor="Categories">
                       Catégorie
                       <SelectContainer>
-                        <Select name="Categories" id="Categories" required>
+                        <Select name="Categories" id="Categories" required 
+                        value={categories[index] }
+                         onChange={(e)=>handleSelectCategories(index , e.target.value)}
+                        >
                           <option value="Telephone">Télephone</option>
                           <option value="PC">PC</option>
                           <option value="Earpud">Earpud</option>
