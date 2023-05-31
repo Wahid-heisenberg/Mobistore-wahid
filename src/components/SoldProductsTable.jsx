@@ -146,7 +146,7 @@ function SoldProductsTable() {
   const [AllTransactions, setAllTransactions] = useState([]);
   const [showImage, setShowImage] = useState(false);
   const [imageUrl, setImageUrl] = useState("");
-  const [currentTransaction, setcurrentTransaction] = useState(null);
+  const [currentTransaction, setcurrentTransaction] = useState(-1);
 
   //const [showConfirmation, setShowConfirmation] = useState(false);
   console.log(imageUrl);
