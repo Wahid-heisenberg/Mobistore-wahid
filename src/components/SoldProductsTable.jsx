@@ -9,6 +9,8 @@ import {
   Nserie,
   Pachat,
 } from "./ProductsTable";
+
+//import img from "../../public/cardsPictures/d6de3eea-f87c-4602-b625-cfe0b633d1ab.png"
 import styled from "styled-components";
 import IdCardIcon from "../IdCard.png";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
@@ -17,6 +19,8 @@ import { Link } from "react-router-dom";
 import { useState } from "react";
 import { useEffect } from "react";
 import axios from "axios";
+import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
+
 const Header = [
   "Nom",
   "Date",
@@ -25,8 +29,6 @@ const Header = [
   "Prix d'achat",
 ];
 const DetailsHeader = ["Nom", "Prénom", "Num de tel", "N° Carte", "Etat"];
-const currentDate = new Date();
-const formattedDate = currentDate.toLocaleDateString("en-GB");
 const DetailsColumn = styled.td`
   width: 100%;
   display: flex;
@@ -105,92 +107,49 @@ const ControlersContainer = styled.div`
   gap: 32px;
   border: none;
 `;
+const ImageBlock = styled.div`
+  position: absolute;
+  top: 20%;
+  left: 30%;
+  width: 55%;
+  aspect-ratio: 5/3;
+  border: 2px solid #555555;
+  z-index: 8;
+  display: flex;
+  flex-direction: column;
+  object-fit: contain;
+  background-color: white;
+`;
+const HideButton = styled.button`
+  display: flex;
+  border: none;
+  align-items: center;
+  justify-content: center;
+  align-self: baseline;
+  color: #555555;
+  padding: 8px;
+  font-size: 48px;
 
-// const Products = [
-//     {
-//         id:1,
-//         Nom: "Hp",
-//         date : formattedDate,
-//         Nserie1 : 1444,
-//         Nserie2 : 45477,
-//         Pachat : 18000 ,
-//         details: {
-//         CostumerFirstName : "wahid",
-//         CostumerFamilyName : "Slimani",
-//         CostumerPhoneNumber : "0541129179",
-//         CostumerCardId : "678946878",
-//         CostumerIssue : "Achat",
-//         }
-
-//         },
-// {
-//     id:2,
-//     Nom: "Hp",
-//     date : formattedDate,
-//     Nserie1 : 1444,
-//     Nserie2 : 45477,
-//     Pachat : 180000 ,
-//     details: {
-//     CostumerFirstName : "wahid",
-//     CostumerFamilyName : "Slimani",
-//     CostumerPhoneNumber : "0541129179",
-//     CostumerCardId : "678946878",
-//     CostumerIssue : "Achat",
-//     }
-//         },
-// {
-//  id:3,
-
-//          Nom: "Hp",
-//          date : formattedDate,
-//          Nserie1 : 1444,
-//          Nserie2 : 45477,
-//          Pachat : 1548 ,
-//          details: {
-//          CostumerFirstName : "wahid",
-//          CostumerFamilyName : "Slimani",
-//          CostumerPhoneNumber : "0541129179",
-//          CostumerCardId : "445566",
-//          CostumerIssue : "Achat",
-//          }
-// },
-//  {
-// id:4,
-// Nom: "Hp",
-// date : formattedDate,
-// Nserie1 : 1444,
-// Nserie2 : 45477,
-// Pachat : 1548 ,
-// details: {
-// CostumerFirstName : "wahid",
-// CostumerFamilyName : "Slimani",
-// CostumerPhoneNumber : "0541129179",
-// CostumerCardId : "445566",
-// CostumerIssue : "Achat",
-// }
-//   },
-// {
-// id:5,
-// Nom: "Hp",
-// date : formattedDate,
-// Nserie1 : 1444,
-// Nserie2 : 45477,
-// Pachat : 1548 ,
-// details: {
-// CostumerFirstName : "wahid",
-// CostumerFamilyName : "Slimani",
-// CostumerPhoneNumber : "0541129179",
-// CostumerCardId : "445566",
-// CostumerIssue : "Achat",
-// }
-//  },
-
-// ]
+  &:hover {
+    color: #ff7f11;
+    transition: 0.2s all linear;
+  }
+`;
+const Cardpicture = styled.img`
+  width: 100%;
+  height: 100%;
+  z-index: 19;
+`;
 
 function SoldProductsTable() {
   const [expandedRows, setExpandedRows] = useState([]);
   const [AllTransactions, setAllTransactions] = useState([]);
+  const [showImage, setShowImage] = useState(false);
+  const [imageUrl, setImageUrl] = useState("");
+  const [currentTransaction, setcurrentTransaction] = useState(null);
 
+  //const [showConfirmation, setShowConfirmation] = useState(false);
+  console.log(imageUrl);
   function toggleRow(index) {
     setExpandedRows(
       expandedRows.includes(index)
@@ -201,7 +160,9 @@ function SoldProductsTable() {
   useEffect(() => {
     const getAllTransactions = async () => {
       try {
-        const res = await axios.get("http://localhost:8002/afficherAchat");
+        const res = await axios.get(
+          "http://localhost:5000/api/transaction/getAlltransactions"
+        );
         console.log(res);
         setAllTransactions(res.data);
       } catch (err) {
@@ -212,6 +173,21 @@ function SoldProductsTable() {
     getAllTransactions();
   }, [expandedRows]);
 
+  useEffect(() => {
+    const deleteTransaction = async () => {
+      try {
+        const res = await axios.delete(
+          `http://localhost:5000/api/transaction/deleteTransactions/${currentTransaction}`
+        );
+        console.log(res);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+
+    deleteTransaction();
+  }, [currentTransaction]);
+
   return (
     <>
       <Table>
@@ -219,7 +195,7 @@ function SoldProductsTable() {
           <HRow>
             {Header.map((item, Hindex) => (
               <HColumn
-                key={-2 * Hindex - 1}
+                key={Hindex + 1}
                 className="HeaderColumn"
                 style={{
                   fontWeight: "600",
@@ -239,12 +215,17 @@ function SoldProductsTable() {
             <>
               <Row
                 className="Row"
-                key={Product.idClien}
+                key={Product.transactionId}
                 onClick={() => toggleRow(index)}
               >
                 <Column>
                   {" "}
-                  <Nom> {Product.nomAchat} </Nom>{" "}
+                  <Nom>
+                    {" "}
+                    {Product.soldProductName
+                      ? Product.soldProductName
+                      : Product.exchangedProductName}{" "}
+                  </Nom>{" "}
                 </Column>
                 <Column>
                   {" "}
@@ -256,27 +237,33 @@ function SoldProductsTable() {
                     }}
                   >
                     {" "}
-                    {formattedDate}{" "}
+                    {Product.transactionDate}{" "}
                   </p>{" "}
                 </Column>
                 <Column>
                   {" "}
                   <Nserie style={{ color: "#0C2E5A" }}>
-                    {Product.nmrSerie1}
+                    {Product.exchangedProductSerieNumber1
+                      ? Product.exchangedProductSerieNumber1
+                      : Product.soldProductSerieNumber1}
                   </Nserie>{" "}
                 </Column>
                 <Column>
                   {" "}
                   <Nserie style={{ color: "#0C2E5A" }}>
                     {" "}
-                    {Product.nmrSerie2}
+                    {Product.exchangedProductSerieNumber2
+                      ? Product.exchangedProductSerieNumber2
+                      : Product.soldProductSerieNumber2}
                   </Nserie>{" "}
                 </Column>
                 <Column>
                   {" "}
                   <Pachat style={{ color: "#0C2E5A" }}>
                     {" "}
-                    {Product.prixAchat}{" "}
+                    {Product.soldProductPrice
+                      ? Product.soldProductPrice
+                      : Product.exchangedProductPrice}{" "}
                   </Pachat>{" "}
                 </Column>
                 <Column style={{ maxWidth: "40px" }}>
@@ -295,13 +282,14 @@ function SoldProductsTable() {
               {expandedRows.includes(index) && (
                 <>
                   <Table
+                    key={Product.transactionDate}
                     style={{ border: "none", padding: "0px", margin: "0px" }}
                   >
                     <thead>
                       <HRow style={{ padding: "0px", margin: "-2px -6px" }}>
                         {DetailsHeader.map((item, Colindex) => (
                           <HColumn
-                            key={Colindex * 2.718 + 3.14}
+                            key={Colindex}
                             className="HeaderColumn"
                             style={{
                               fontWeight: "600",
@@ -321,26 +309,38 @@ function SoldProductsTable() {
                       <Row
                         className="Row"
                         style={{ padding: "0px", margin: "-2px -6px" }}
-                        key={index * 1.12}
+                        key={Product.transactionId}
                       >
-                        <DetailsColumn> said </DetailsColumn>
-                        <DetailsColumn> islam</DetailsColumn>
-                        <DetailsColumn> 05412928287 </DetailsColumn>
-                        <DetailsColumn> 1173773773 </DetailsColumn>
-                        <DetailsColumn
-                          style={{
-                            color: " #27A033",
-                            textShadow: "1px 1px 1px skyblue",
-                          }}
-                        >
-                          {" "}
-                          Achats{" "}
-                        </DetailsColumn>
+                        <DetailsColumn> {Product.firstName} </DetailsColumn>
+                        <DetailsColumn> {Product.familyName} </DetailsColumn>
+                        <DetailsColumn> {Product.phoneNumber}</DetailsColumn>
+                        <DetailsColumn> {Product.cardNumber} </DetailsColumn>
+                        {Product.transactionType !== "Echange" ? (
+                          <DetailsColumn
+                            style={{
+                              color: "#27A033",
+                              textShadow: "1px 1px 1px skyblue",
+                            }}
+                          >
+                            {" "}
+                            {Product.transactionType}{" "}
+                          </DetailsColumn>
+                        ) : (
+                          <DetailsColumn
+                            style={{
+                              color: "#007FC9",
+                              textShadow: "1px 1px 1px skyblue",
+                            }}
+                          >
+                            {" "}
+                            {Product.transactionType}{" "}
+                          </DetailsColumn>
+                        )}
                       </Row>
                       <Row
                         className="Row"
                         style={{ padding: "0px ", margin: "-2px -6px" }}
-                        key={index}
+                        key={-1 - Product.transactionId}
                       >
                         <DetailsColumn
                           style={{
@@ -353,14 +353,32 @@ function SoldProductsTable() {
                           colSpan={6}
                         >
                           {" "}
-                          <CostumerCard type="button">
+                          <CostumerCard
+                            type="button"
+                            onClick={() => {
+                              setImageUrl(`${Product.cardPicturePath}`);
+                              setShowImage(true);
+                            }}
+                          >
                             <img height="44px" src={IdCardIcon} alt="CardId" />
                             <p style={{ fontSize: "24px", color: "#208FD0" }}>
                               Carte d'identité{" "}
                             </p>
                           </CostumerCard>
                           <ControlersContainer>
-                            <DeleteButton type="button" value="Supprimer" />
+                            <DeleteButton
+                              type="button"
+                              value="Supprimer"
+                              onClick={() => {
+                                if (
+                                  window.confirm(
+                                    "Êtes-vous sûr(e) de vouloir supprimer ce produit ?"
+                                  )
+                                ) {
+                                  setcurrentTransaction(Product.transactionId);
+                                }
+                              }}
+                            />
 
                             <Link
                               style={{
@@ -381,6 +399,14 @@ function SoldProductsTable() {
           ))}
         </tbody>
       </Table>
+      {showImage && (
+        <ImageBlock>
+          <HideButton onClick={() => setShowImage(false)}>
+            <CloseOutlinedIcon />
+          </HideButton>
+          <Cardpicture src={imageUrl} alt="Product Image" />
+        </ImageBlock>
+      )}
     </>
   );
 }

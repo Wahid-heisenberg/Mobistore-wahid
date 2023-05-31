@@ -14,6 +14,7 @@ export const Table = styled.table`
   width: 100%;
   margin: 4px 0px 20px 0px;
   background-color: #f9f6f6;
+  position: relative;
 `;
 
 export const HRow = styled.tr`

@@ -176,15 +176,18 @@ function AddSellForm() {
     }
   }
 
-  function getCurrentDate() {
-    const currentDate = new Date();
-    const day = String(currentDate.getDate()).padStart(2, '0');
-    const month = String(currentDate.getMonth() + 1).padStart(2, '0'); // Note: Months are zero-based.
-    const year = currentDate.getFullYear();
+  function getCurrentDateTime() {
+    const currentDateTime = new Date();
+    const day = String(currentDateTime.getDate()).padStart(2, '0');
+    const month = String(currentDateTime.getMonth() + 1).padStart(2, '0'); // Note: Months are zero-based.
+    const year = currentDateTime.getFullYear();
+    const hours = String(currentDateTime.getHours()).padStart(2, '0');
+    const minutes = String(currentDateTime.getMinutes()).padStart(2, '0');
   
-    return `${day}/${month}/${year}`;
+    return `${day}/${month}/${year} ${hours}:${minutes}`;
   }
-  const currentDate = getCurrentDate();  
+  
+  const currentDate = getCurrentDateTime();  
   console.log(
     ClientFamilyName,
     ClientFirstName,
@@ -235,7 +238,7 @@ function AddSellForm() {
     exchangedata.append("cbrand", prodaEchBrand[0])
     exchangedata.append("ccategory", categories2[0])
     exchangedata.append("buyPrice",prices2[0])
-    exchangedata.append("sellPrice",prices2[0]*1.35)
+    exchangedata.append("sellPrice",prices2[0]*1.30)
 
 
     if (selectedValue === "Echange") {
