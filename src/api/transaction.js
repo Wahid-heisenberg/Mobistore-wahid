@@ -261,90 +261,217 @@ LEFT JOIN produitsvendu AS pv ON t.productId = pv.sellId;
     console.log(err);
   }
 });
-router.get("/affichertransactions", (req, res) => {
-  try {
-    const query = "SELECT * FROM transactions";
 
-    db.all(query, (err, rows) => {
-      if (err) {
-        console.error("Database error:", err.message);
-        res.status(500).json({ error: "Database error" });
-      } else {
-        res.json(rows);
-      }
-    });
-  } catch (err) {
-    console.log(err);
-  }
-});
+
+// router.delete("/deleteTransactions/:transactionId", (req, res) => {
+//   const transactionId = req.params.transactionId;
+//   console.log(transactionId);
+//   if (transactionId === -1) {
+//     res.status(400).json({ error: "Invalid transactionId" });
+//     return;
+//   }
+
+//   try {
+//     db.serialize(() => {
+//       db.run(
+//         "DELETE FROM produitsEchanges WHERE exchangeId = (SELECT productId FROM transactions WHERE transactionId = ?)",
+//         [transactionId],
+//         function (err) {
+//           if (err) {
+//             console.error("Database error:", err.message);
+//             res.status(500).json({ error: "Database error" });
+//             return;
+//           } else console.log("produitsEchanges supprimer");
+
+//           db.run(
+//             "DELETE FROM produitsvendu WHERE sellId = (SELECT productId FROM transactions WHERE transactionId = ?)",
+//             [transactionId],
+//             function (err) {
+//               if (err) {
+//                 console.error("Database error:", err.message);
+//                 res.status(500).json({ error: "Database error" });
+//                 return;
+//               } else console.log("produit supprimer");
+
+//               db.run(
+//                 "DELETE FROM clients WHERE clientId = (SELECT clientId FROM transactions WHERE transactionId = ?)",
+//                 [transactionId],
+//                 function (err) {
+//                   if (err) {
+//                     console.error("Database error:", err.message);
+//                     res.status(500).json({ error: "Database error" });
+//                     return;
+//                   } else console.log("client supprimer");
+
+//                   db.run(
+//                     "DELETE FROM transactions WHERE transactionId = ?",
+//                     [transactionId],
+//                     function (err) {
+//                       if (err) {
+//                         console.error("Database error:", err.message);
+//                         res.status(500).json({ error: "Database error" });
+//                         return;
+//                       } else console.log("transaction supprimer");
+
+//                       if (this.changes === 0) {
+//                         res
+//                           .status(404)
+//                           .json({ error: "Transaction not found" });
+//                         return;
+//                       }
+
+//                       res
+//                         .status(200)
+//                         .json({
+//                           message:
+//                             "Transaction and associated records deleted successfully",
+//                         });
+//                     }
+//                   );
+//                 }
+//               );
+//             }
+//           );
+//         }
+//       );
+//     });
+//   } catch (err) {
+//     console.log(err);
+//     res
+//       .status(500)
+//       .json({ error: "An error occurred while processing the request" });
+//   }
+// });
 
 router.delete("/deleteTransactions/:transactionId", (req, res) => {
   const transactionId = req.params.transactionId;
   console.log(transactionId);
+  if (transactionId === -1) {
+    res.status(400).json({ error: "Invalid transactionId" });
+    return;
+  }
 
   try {
     db.serialize(() => {
-      db.run(
-        "DELETE FROM produitsEchanges WHERE exchangeId = (SELECT productId FROM transactions WHERE transactionId = ?)",
+      db.get(
+        "SELECT transactionType FROM transactions WHERE transactionId = ?",
         [transactionId],
-        function (err) {
+        function (err, row) {
           if (err) {
             console.error("Database error:", err.message);
             res.status(500).json({ error: "Database error" });
             return;
-          } else console.log("produitsEchanges supprimer");
+          }
 
-          db.run(
-            "DELETE FROM produitsvendu WHERE sellId = (SELECT productId FROM transactions WHERE transactionId = ?)",
-            [transactionId],
-            function (err) {
-              if (err) {
-                console.error("Database error:", err.message);
-                res.status(500).json({ error: "Database error" });
-                return;
-              } else console.log("produit supprimer");
+          if (!row) {
+            res.status(404).json({ error: "Transaction not found" });
+            return;
+          }
 
-              db.run(
-                "DELETE FROM clients WHERE clientId = (SELECT clientId FROM transactions WHERE transactionId = ?)",
-                [transactionId],
-                function (err) {
-                  if (err) {
-                    console.error("Database error:", err.message);
-                    res.status(500).json({ error: "Database error" });
-                    return;
-                  } else console.log("client supprimer");
-
-                  db.run(
-                    "DELETE FROM transactions WHERE transactionId = ?",
-                    [transactionId],
-                    function (err) {
-                      if (err) {
-                        console.error("Database error:", err.message);
-                        res.status(500).json({ error: "Database error" });
-                        return;
-                      } else console.log("transaction supprimer");
-
-                      if (this.changes === 0) {
-                        res
-                          .status(404)
-                          .json({ error: "Transaction not found" });
-                        return;
-                      }
-
-                      res
-                        .status(200)
-                        .json({
-                          message:
-                            "Transaction and associated records deleted successfully",
-                        });
-                    }
-                  );
-                }
-              );
-            }
-          );
+          if (row.transactionType === "Echange") {
+            deleteProduitsEchanges();
+            deleteProduitsStock();
+          } else if (row.transactionType === "Vente") {
+            deleteProduitsVendu();
+          } else {
+            deleteClient();
+          }
         }
       );
+
+      function deleteProduitsEchanges() {
+        db.run(
+          "DELETE FROM produitsEchanges WHERE exchangeId = (SELECT productId FROM transactions WHERE transactionId = ?)",
+          [transactionId],
+          function (err) {
+            if (err) {
+              console.error("Database error:", err.message);
+              res.status(500).json({ error: "Database error" });
+              return;
+            } else {
+              console.log("ProduitsEchanges deleted");
+              deleteClient();
+            }
+          }
+        );
+      }
+      
+      function deleteProduitsStock() {
+        db.run(
+          "DELETE FROM stock WHERE productId = (SELECT stockId FROM transactions WHERE transactionId = ?)",
+          [transactionId],
+          function (err) {
+            if (err) {
+              console.error("Database error:", err.message);
+              res.status(500).json({ error: "Database error" });
+              return;
+            } else {
+              console.log("Produits  supprimer dans le stock");
+              
+            }
+          }
+        );
+      }
+
+
+      function deleteProduitsVendu() {
+        db.run(
+          "DELETE FROM produitsvendu WHERE sellId = (SELECT productId FROM transactions WHERE transactionId = ?)",
+          [transactionId],
+          function (err) {
+            if (err) {
+              console.error("Database error:", err.message);
+              res.status(500).json({ error: "Database error" });
+              return;
+            } else {
+              console.log("ProduitsVendu deleted");
+              deleteClient();
+            }
+          }
+        );
+      }
+
+      function deleteClient() {
+        db.run(
+          "DELETE FROM clients WHERE clientId = (SELECT clientId FROM transactions WHERE transactionId = ?)",
+          [transactionId],
+          function (err) {
+            if (err) {
+              console.error("Database error:", err.message);
+              res.status(500).json({ error: "Database error" });
+              return;
+            } else {
+              console.log("Client deleted");
+              deleteTransaction();
+            }
+          }
+        );
+      }
+
+      function deleteTransaction() {
+        db.run(
+          "DELETE FROM transactions WHERE transactionId = ?",
+          [transactionId],
+          function (err) {
+            if (err) {
+              console.error("Database error:", err.message);
+              res.status(500).json({ error: "Database error" });
+              return;
+            } else {
+              console.log("Transaction deleted");
+
+              if (this.changes === 0) {
+                res.status(404).json({ error: "Transaction not found" });
+                return;
+              }
+
+              res.status(200).json({
+                message: "Transaction and associated records deleted successfully",
+              });
+            }
+          }
+        );
+      }
     });
   } catch (err) {
     console.log(err);
@@ -353,6 +480,8 @@ router.delete("/deleteTransactions/:transactionId", (req, res) => {
       .json({ error: "An error occurred while processing the request" });
   }
 });
+
+
 router.patch("/updateTransaction/:transactionId", (req, res) => {
   const transactionId = req.params.transactionId;
   const transactionType = req.body.transactionType;

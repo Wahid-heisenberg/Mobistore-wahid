@@ -173,8 +173,10 @@ function SoldProductsTable() {
     getAllTransactions();
   }, [expandedRows]);
 
+
   useEffect(() => {
     const deleteTransaction = async () => {
+      
       try {
         const res = await axios.delete(
           `http://localhost:5000/api/transaction/deleteTransactions/${currentTransaction}`
@@ -185,7 +187,7 @@ function SoldProductsTable() {
       }
     };
 
-    deleteTransaction();
+   deleteTransaction() 
   }, [currentTransaction]);
 
   return (
@@ -376,6 +378,7 @@ function SoldProductsTable() {
                                   )
                                 ) {
                                   setcurrentTransaction(Product.transactionId);
+                                  
                                 }
                               }}
                             />
