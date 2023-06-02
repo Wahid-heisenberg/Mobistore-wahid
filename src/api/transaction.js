@@ -404,6 +404,149 @@ router.delete("/deleteTransactions/:transactionId", (req, res) => {
 });
    
 
+// const upload2 = multer({ storage });
+// router.patch("/updateTransaction/:transactionId",upload2.single("image"), (req, res) => {
+//   const transactionId = req.params.transactionId;
+//   const transactionType = req.body.transactionType;
+//   const transactionDate = req.body.transactionDate;
+//   const imagePath = `cardsPictures/${req.file.filename}`;
+
+//   console.log(transactionId);
+//   if (transactionId === -1) {
+//     res.status(400).json({ error: "Invalid transactionId" });
+//     return;
+//   }
+
+//   try {
+//     db.serialize(() => {
+//       // Update the transaction table
+//       db.run(
+//         "UPDATE transactions SET transactionDate = ? WHERE transactionId = ?",
+//         [transactionDate, transactionId],
+//         function (err) {
+//           if (err) {
+//             console.error("Database error:", err.message);
+//             res.status(500).json({ error: "Database error" });
+//             return;
+//           }
+
+//           if (this.changes === 0) {
+//             res.status(404).json({ error: "Transaction not found" });
+//             return;
+//           }
+
+//           // Update the clients table
+//           db.run(
+//             "UPDATE clients SET firstName = ?, familyName = ?, phoneNumber = ?, cardNumber = ?, cardPicturePath = ? WHERE clientId = (SELECT clientId FROM transactions WHERE transactionId = ?)",
+//             [
+//               req.body.firstName,
+//               req.body.familyName,
+//               req.body.phoneNumber,
+//               req.body.cardNumber,
+//               imagePath,
+//               transactionId,
+//             ],
+//             function (err) {
+//               if (err) {
+//                 console.error("Database error:", err.message);
+//                 res.status(500).json({ error: "Database error" });
+//                 return;
+//               }
+
+//               if (transactionType === "Echange") {
+//                 // Update the produitsEchanges table
+//                 db.run(
+//                   "UPDATE produitsEchanges SET Name = ?, brand = ?, serieNumber1 = ?, serieNumber2 = ?, category = ?, price = ? WHERE exchangeId = (SELECT productId FROM transactions WHERE transactionId = ?)",
+//                   [
+//                     req.body.Name,
+//                     req.body.brand,
+//                     req.body.serieNumber1,
+//                     req.body.serieNumber2,
+//                     req.body.category,
+//                     req.body.price,
+//                     transactionId,
+//                   ],
+//                   function (err) {
+//                     if (err) {
+//                       console.error("Database error:", err.message);
+//                       res.status(500).json({ error: "Database error" });
+//                       return;
+//                     }
+
+//                     res.status(200).json({
+//                       message:
+//                         "Transaction and associated records updated successfully",
+//                     });
+//                   }
+//                 );
+
+//                 db.run(
+//                   "UPDATE stock SET productName = ?, serieNumber1 = ?, serieNumber2 = ?, brand = ?, category = ?, buyPrice = ?, sellPrice = ? WHERE productId = (SELECT stockId FROM transactions WHERE transactionId = ?)",
+//                   [
+//                     req.body.productName,
+//                     req.body.cbrand,
+//                     req.body.cserieNumber1,
+//                     req.body.cserieNumber2,
+//                     req.body.ccategory,
+//                     req.body.buyPrice,
+//                     req.body.sellPrice,
+//                     transactionId,
+//                   ],
+//                   function (err) {
+//                     if (err) {
+//                       console.error("Database error:", err.message);
+//                       res.status(500).json({ error: "Database error" });
+//                       return;
+//                     }
+
+//                     res.status(200).json({
+//                       message:
+//                         "Transaction and associated records updated successfully",
+//                     });
+//                   }
+//                 );
+
+
+//               } else {
+//                 // Update the produitsvendu table
+//                 db.run(
+//                   "UPDATE produitsvendu SET Name = ?, brand = ?, serieNumber1 = ?, serieNumber2 = ?, category = ?, price = ? WHERE sellId = (SELECT sellId FROM transactions WHERE transactionId = ?)",
+//                   [
+//                     req.body.Name,
+//                     req.body.brand,
+//                     req.body.serieNumber1,
+//                     req.body.serieNumber2,
+//                     req.body.category,
+//                     req.body.price,
+//                     transactionId,
+//                   ],
+//                   function (err) {
+//                     if (err) {
+//                       console.error("Database error:", err.message);
+//                       res.status(500).json({ error: "Database error" });
+//                       return;
+//                     }
+
+//                     res.status(200).json({
+//                       message:
+//                         "Transaction and associated records updated successfully",
+//                     });
+//                   }
+//                 );
+//               }
+//             }
+//           );
+//         }
+//       );
+//     });
+//   } catch (err) {
+//     console.log(err);
+//     res
+//       .status(500)
+//       .json({ error: "An error occurred while processing the request" });
+//   }
+// });
+
 const upload2 = multer({ storage });
 router.patch("/updateTransaction/:transactionId",upload2.single("image"), (req, res) => {
   const transactionId = req.params.transactionId;
@@ -419,7 +562,7 @@ router.patch("/updateTransaction/:transactionId",upload2.single("image"), (req, 
 
   try {
     db.serialize(() => {
-      // Update the transaction table
+
       db.run(
         "UPDATE transactions SET transactionDate = ? WHERE transactionId = ?",
         [transactionDate, transactionId],
@@ -428,15 +571,100 @@ router.patch("/updateTransaction/:transactionId",upload2.single("image"), (req, 
             console.error("Database error:", err.message);
             res.status(500).json({ error: "Database error" });
             return;
+          } else {
+            console.log("Transaction ");
+            updateClient();
+            if (transactionType === "Echange") {
+              updateProduitsEchanges();
+              updateStock();
+            } else {
+              updateProduitsVendu();
+            }
+            res.status(200).json({
+              message:
+                "Transaction and associated records updated successfully",
+            });
           }
+        }
+      );
+      
 
-          if (this.changes === 0) {
-            res.status(404).json({ error: "Transaction not found" });
-            return;
+      function updateProduitsEchanges() {
+        db.run(
+          "UPDATE produitsEchanges SET Name = ?, brand = ?, serieNumber1 = ?, serieNumber2 = ?, category = ?, price = ? WHERE exchangeId = (SELECT productId FROM transactions WHERE transactionId = ?)",
+          [
+            req.body.Name,
+            req.body.brand,
+            req.body.serieNumber1,
+            req.body.serieNumber2,
+            req.body.category,
+            req.body.price,
+            transactionId,
+          ],
+          function (err) {
+            if (err) {
+              console.error("Database error:", err.message);
+              res.status(500).json({ error: "Database error" });
+              return;
+            } else {
+              console.log("ProduitsEchanges modifier");
+            }
           }
+        );
+      }
+      function updateStock() {
+        db.run(
+          "UPDATE stock SET productName = ?, serieNumber1 = ?, serieNumber2 = ?, brand = ?, category = ?, buyPrice = ?, sellPrice = ? WHERE productId = (SELECT stockId FROM transactions WHERE transactionId = ?)",
+          [
+            req.body.productName,
+            req.body.cbrand,
+            req.body.cserieNumber1,
+            req.body.cserieNumber2,
+            req.body.ccategory,
+            req.body.buyPrice,
+            req.body.sellPrice,
+            transactionId,
+          ],
+          function (err) {
+            if (err) {
+              console.error("Database error:", err.message);
+              res.status(500).json({ error: "Database error" });
+              return;
+            } else {
+              console.log("Produits  modifier dans le stock");
+              
+            }
+          }
+        );
+      }
 
-          // Update the clients table
-          db.run(
+      function updateProduitsVendu() {
+        db.run(
+          "UPDATE produitsvendu SET Name = ?, brand = ?, serieNumber1 = ?, serieNumber2 = ?, category = ?, price = ? WHERE sellId = (SELECT sellId FROM transactions WHERE transactionId = ?)",
+          [
+            req.body.Name,
+            req.body.brand,
+            req.body.serieNumber1,
+            req.body.serieNumber2,
+            req.body.category,
+            req.body.price,
+            transactionId,
+          ],
+          function (err) {
+            if (err) {
+              console.error("Database error:", err.message);
+              res.status(500).json({ error: "Database error" });
+              return;
+            } else {
+              console.log("produitsvendu updated");
+              
+            }
+          }
+        );
+      }
+
+      function updateClient() {
+        db.run(
             "UPDATE clients SET firstName = ?, familyName = ?, phoneNumber = ?, cardNumber = ?, cardPicturePath = ? WHERE clientId = (SELECT clientId FROM transactions WHERE transactionId = ?)",
             [
               req.body.firstName,
@@ -446,98 +674,19 @@ router.patch("/updateTransaction/:transactionId",upload2.single("image"), (req, 
               imagePath,
               transactionId,
             ],
-            function (err) {
-              if (err) {
-                console.error("Database error:", err.message);
-                res.status(500).json({ error: "Database error" });
-                return;
-              }
-
-              if (transactionType === "Echange") {
-                // Update the produitsEchanges table
-                db.run(
-                  "UPDATE produitsEchanges SET Name = ?, brand = ?, serieNumber1 = ?, serieNumber2 = ?, category = ?, price = ? WHERE exchangeId = (SELECT productId FROM transactions WHERE transactionId = ?)",
-                  [
-                    req.body.Name,
-                    req.body.brand,
-                    req.body.serieNumber1,
-                    req.body.serieNumber2,
-                    req.body.category,
-                    req.body.price,
-                    transactionId,
-                  ],
-                  function (err) {
-                    if (err) {
-                      console.error("Database error:", err.message);
-                      res.status(500).json({ error: "Database error" });
-                      return;
-                    }
-
-                    res.status(200).json({
-                      message:
-                        "Transaction and associated records updated successfully",
-                    });
-                  }
-                );
-
-                db.run(
-                  "UPDATE stock SET productName = ?, serieNumber1 = ?, serieNumber2 = ?, brand = ?, category = ?,buyPrice = ?, sellPrice WHERE productId = (SELECT stockId FROM transactions WHERE transactionId = ?)",
-                  [
-                    req.body.productName,
-                    req.body.cbrand,
-                    req.body.cserieNumber1,
-                    req.body.cserieNumber2,
-                    req.body.ccategory,
-                    req.body.buyPrice,
-                    req.body.sellPrice,
-                    transactionId,
-                  ],
-                  function (err) {
-                    if (err) {
-                      console.error("Database error:", err.message);
-                      res.status(500).json({ error: "Database error" });
-                      return;
-                    }
-
-                    res.status(200).json({
-                      message:
-                        "Transaction and associated records updated successfully",
-                    });
-                  }
-                );
-
-
-              } else {
-                // Update the produitsvendu table
-                db.run(
-                  "UPDATE produitsvendu SET Name = ?, brand = ?, serieNumber1 = ?, serieNumber2 = ?, category = ?, price = ? WHERE sellId = (SELECT sellId FROM transactions WHERE transactionId = ?)",
-                  [
-                    req.body.Name,
-                    req.body.brand,
-                    req.body.serieNumber1,
-                    req.body.serieNumber2,
-                    req.body.category,
-                    req.body.price,
-                    transactionId,
-                  ],
-                  function (err) {
-                    if (err) {
-                      console.error("Database error:", err.message);
-                      res.status(500).json({ error: "Database error" });
-                      return;
-                    }
-
-                    res.status(200).json({
-                      message:
-                        "Transaction and associated records updated successfully",
-                    });
-                  }
-                );
-              }
+          function (err) {
+            if (err) {
+              console.error("Database error:", err.message);
+              res.status(500).json({ error: "Database error" });
+              return;
+            } else {
+              console.log("Client updated");
             }
-          );
-        }
-      );
+          }
+        );
+      }
+
+
     });
   } catch (err) {
     console.log(err);
