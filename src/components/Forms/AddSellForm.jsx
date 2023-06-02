@@ -28,6 +28,17 @@ export const Title = styled.h3`
   align-self: baseline;
 `;
 
+export const getCurrentDateTime = ()=> {
+  const currentDateTime = new Date();
+  const day = String(currentDateTime.getDate()).padStart(2, '0');
+  const month = String(currentDateTime.getMonth() + 1).padStart(2, '0'); // Note: Months are zero-based.
+  const year = currentDateTime.getFullYear();
+  const hours = String(currentDateTime.getHours()).padStart(2, '0');
+  const minutes = String(currentDateTime.getMinutes()).padStart(2, '0');
+
+  return `${day}/${month}/${year} ${hours}:${minutes}`;
+}
+
 function AddSellForm() {
   const [itemsNumber, SetItemsNumber] = useState(1);
   const [selectedValue, setSelectedValue] = useState("Vente");
@@ -176,16 +187,7 @@ function AddSellForm() {
     }
   }
 
-  function getCurrentDateTime() {
-    const currentDateTime = new Date();
-    const day = String(currentDateTime.getDate()).padStart(2, '0');
-    const month = String(currentDateTime.getMonth() + 1).padStart(2, '0'); // Note: Months are zero-based.
-    const year = currentDateTime.getFullYear();
-    const hours = String(currentDateTime.getHours()).padStart(2, '0');
-    const minutes = String(currentDateTime.getMinutes()).padStart(2, '0');
-  
-    return `${day}/${month}/${year} ${hours}:${minutes}`;
-  }
+
   
   const currentDate = getCurrentDateTime();  
   console.log(
@@ -314,7 +316,7 @@ function AddSellForm() {
                 placeholder="0541129179"
                 required
                 onChange={(e) => setClientPhoneNumber(+e.target.value)}
-                name={ClientPhoneNumber}
+                value={ClientPhoneNumber}
               />
             </Label>
             <Label>
@@ -324,7 +326,7 @@ function AddSellForm() {
                 placeholder="54889478"
                 required
                 onChange={(e) => setClientCardIdNumber(+e.target.value)}
-                name={ClientPhoneNumber}
+                value={ClientCardIdNumber}
               />
             </Label>
             <Label>
@@ -543,7 +545,7 @@ function AddSellForm() {
                       Nom d'article
                       <Field
                         type="text"
-                        placeholder="Iphone 14"
+                        placeholder="iphone 14"
                         onChange={(e) =>
                           handleProdaEchName(index, e.target.value)
                         }
@@ -555,7 +557,7 @@ function AddSellForm() {
                       Marque
                       <Field
                         type="text"
-                        placeholder="Iphone"
+                        placeholder="apple"
                         onChange={(e) =>
                           handleprodaEchBrand(index, e.target.value)
                         }
@@ -665,7 +667,7 @@ function AddSellForm() {
                       Nom d'article
                       <Field
                         type="text"
-                        placeholder="Iphone 14"
+                        placeholder="iphone 14"
                         onChange={(e) =>
                           handleProductName(index, e.target.value)
                         }
@@ -677,7 +679,7 @@ function AddSellForm() {
                       Marque
                       <Field
                         type="text"
-                        placeholder="Iphone"
+                        placeholder="apple"
                         onChange={(e) =>
                           handleProductBrand(index, e.target.value)
                         }
@@ -799,3 +801,4 @@ function AddSellForm() {
 }
 
 export default AddSellForm;
+

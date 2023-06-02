@@ -9,13 +9,12 @@ import {
   Nserie,
   Pachat,
 } from "./ProductsTable";
-
+import ModifySellForm from "./Forms/ModifySellForm";
 //import img from "../../public/cardsPictures/d6de3eea-f87c-4602-b625-cfe0b633d1ab.png"
 import styled from "styled-components";
 import IdCardIcon from "../IdCard.png";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
-import { Link } from "react-router-dom";
 import { useState } from "react";
 import { useEffect } from "react";
 import axios from "axios";
@@ -26,7 +25,7 @@ const Header = [
   "Date",
   "N° de série 1",
   "N° de série 2",
-  "Prix d'achat",
+  "Prix de vente",
 ];
 const DetailsHeader = ["Nom", "Prénom", "Num de tel", "N° Carte", "Etat"];
 const DetailsColumn = styled.td`
@@ -61,6 +60,7 @@ const CostumerCard = styled.button`
 
 const DeleteButton = styled.input`
   display: flex;
+  font-weight:600;
   align-items: center;
   justify-content: center;
   padding: 12px 16px;
@@ -79,7 +79,8 @@ const DeleteButton = styled.input`
     font-weight: 700;
   }
 `;
-const UpdateButton = styled.div`
+const UpdateButton = styled.button`
+ font-weight:600;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -109,9 +110,9 @@ const ControlersContainer = styled.div`
 `;
 const ImageBlock = styled.div`
   position: absolute;
-  top: 20%;
+  top: 13%;
   left: 30%;
-  width: 55%;
+  width: 65%;
   aspect-ratio: 5/3;
   border: 2px solid #555555;
   z-index: 8;
@@ -120,7 +121,30 @@ const ImageBlock = styled.div`
   object-fit: contain;
   background-color: white;
 `;
+
+const ModifyBlock = styled.div`
+  position: absolute;
+  width: 78%;
+  left: 22%;
+  top: 96px;
+  max-height: 85%;
+  overflow-y:scroll;
+  border: 2px solid #555555;
+  z-index: 8;
+  display: flex;
+  flex-direction: column;
+  object-fit: contain;
+  background-color: white;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* Internet Explorer 11 */
+  &::-webkit-scrollbar {
+    display: none; /* Safari and Chrome */
+  }
+`;
 const HideButton = styled.button`
+position: sticky;
+top: 2px;
+right: 16px;
   display: flex;
   border: none;
   align-items: center;
@@ -128,7 +152,11 @@ const HideButton = styled.button`
   align-self: baseline;
   color: #555555;
   padding: 8px;
-  font-size: 48px;
+   height: 56px;
+   aspect-ratio: 1/1;
+   margin-bottom: 4px;
+   border: 0.5px solid #f46036;
+align-self: last baseline;
 
   &:hover {
     color: #ff7f11;
@@ -145,9 +173,11 @@ function SoldProductsTable() {
   const [expandedRows, setExpandedRows] = useState([]);
   const [AllTransactions, setAllTransactions] = useState([]);
   const [showImage, setShowImage] = useState(false);
+  const [showBlock, setShowBlock] = useState(false);
   const [imageUrl, setImageUrl] = useState("");
   const [currentTransaction, setcurrentTransaction] = useState(-1);
-
+  const [currentUpdatedTransaction, setcurrentUpdatedTransaction] = useState(-1);
+  const [transactionType, settransactionType] = useState('Vente');
   //const [showConfirmation, setShowConfirmation] = useState(false);
   console.log(imageUrl);
   function toggleRow(index) {
@@ -378,19 +408,20 @@ function SoldProductsTable() {
                                   )
                                 ) {
                                   setcurrentTransaction(Product.transactionId);
-                                  
                                 }
                               }}
                             />
 
-                            <Link
-                              style={{
-                                textDecoration: "none",
-                                fontSize: "24px",
+                            <UpdateButton
+                              className="Modifybtn"
+                              onClick={() => {
+                                setShowBlock(true);
+                                settransactionType(Product.transactionType);
+                                setcurrentUpdatedTransaction(Product.transactionId);
                               }}
                             >
-                              <UpdateButton>Modifier</UpdateButton>
-                            </Link>
+                              Modifier
+                            </UpdateButton>
                           </ControlersContainer>
                         </DetailsColumn>
                       </Row>
@@ -405,10 +436,30 @@ function SoldProductsTable() {
       {showImage && (
         <ImageBlock>
           <HideButton onClick={() => setShowImage(false)}>
-            <CloseOutlinedIcon />
+            <CloseOutlinedIcon
+              style={{
+                fontSize: "36px",
+              }}
+            />
           </HideButton>
           <Cardpicture src={imageUrl} alt="Product Image" />
         </ImageBlock>
+      )}
+
+      {showBlock && (
+        <ModifyBlock>
+          <HideButton onClick={() => setShowBlock(false)}>
+            <CloseOutlinedIcon
+              style={{
+                fontSize: "36px",
+              }}
+            />
+          </HideButton>
+          <ModifySellForm
+            transactionType={transactionType}
+            transactionId={currentUpdatedTransaction}
+          />
+        </ModifyBlock>
       )}
     </>
   );

@@ -263,85 +263,7 @@ LEFT JOIN produitsvendu AS pv ON t.productId = pv.sellId;
 });
 
 
-// router.delete("/deleteTransactions/:transactionId", (req, res) => {
-//   const transactionId = req.params.transactionId;
-//   console.log(transactionId);
-//   if (transactionId === -1) {
-//     res.status(400).json({ error: "Invalid transactionId" });
-//     return;
-//   }
 
-//   try {
-//     db.serialize(() => {
-//       db.run(
-//         "DELETE FROM produitsEchanges WHERE exchangeId = (SELECT productId FROM transactions WHERE transactionId = ?)",
-//         [transactionId],
-//         function (err) {
-//           if (err) {
-//             console.error("Database error:", err.message);
-//             res.status(500).json({ error: "Database error" });
-//             return;
-//           } else console.log("produitsEchanges supprimer");
-
-//           db.run(
-//             "DELETE FROM produitsvendu WHERE sellId = (SELECT productId FROM transactions WHERE transactionId = ?)",
-//             [transactionId],
-//             function (err) {
-//               if (err) {
-//                 console.error("Database error:", err.message);
-//                 res.status(500).json({ error: "Database error" });
-//                 return;
-//               } else console.log("produit supprimer");
-
-//               db.run(
-//                 "DELETE FROM clients WHERE clientId = (SELECT clientId FROM transactions WHERE transactionId = ?)",
-//                 [transactionId],
-//                 function (err) {
-//                   if (err) {
-//                     console.error("Database error:", err.message);
-//                     res.status(500).json({ error: "Database error" });
-//                     return;
-//                   } else console.log("client supprimer");
-
-//                   db.run(
-//                     "DELETE FROM transactions WHERE transactionId = ?",
-//                     [transactionId],
-//                     function (err) {
-//                       if (err) {
-//                         console.error("Database error:", err.message);
-//                         res.status(500).json({ error: "Database error" });
-//                         return;
-//                       } else console.log("transaction supprimer");
-
-//                       if (this.changes === 0) {
-//                         res
-//                           .status(404)
-//                           .json({ error: "Transaction not found" });
-//                         return;
-//                       }
-
-//                       res
-//                         .status(200)
-//                         .json({
-//                           message:
-//                             "Transaction and associated records deleted successfully",
-//                         });
-//                     }
-//                   );
-//                 }
-//               );
-//             }
-//           );
-//         }
-//       );
-//     });
-//   } catch (err) {
-//     console.log(err);
-//     res
-//       .status(500)
-//       .json({ error: "An error occurred while processing the request" });
-//   }
-// });
 
 router.delete("/deleteTransactions/:transactionId", (req, res) => {
   const transactionId = req.params.transactionId;
@@ -480,12 +402,20 @@ router.delete("/deleteTransactions/:transactionId", (req, res) => {
       .json({ error: "An error occurred while processing the request" });
   }
 });
+   
 
-
-router.patch("/updateTransaction/:transactionId", (req, res) => {
+const upload2 = multer({ storage });
+router.patch("/updateTransaction/:transactionId",upload2.single("image"), (req, res) => {
   const transactionId = req.params.transactionId;
   const transactionType = req.body.transactionType;
   const transactionDate = req.body.transactionDate;
+  const imagePath = `cardsPictures/${req.file.filename}`;
+
+  console.log(transactionId);
+  if (transactionId === -1) {
+    res.status(400).json({ error: "Invalid transactionId" });
+    return;
+  }
 
   try {
     db.serialize(() => {
@@ -513,7 +443,7 @@ router.patch("/updateTransaction/:transactionId", (req, res) => {
               req.body.familyName,
               req.body.phoneNumber,
               req.body.cardNumber,
-              req.body.cardPicturePath,
+              imagePath,
               transactionId,
             ],
             function (err) {
@@ -526,7 +456,7 @@ router.patch("/updateTransaction/:transactionId", (req, res) => {
               if (transactionType === "Echange") {
                 // Update the produitsEchanges table
                 db.run(
-                  "UPDATE produitsEchanges SET Name = ?, brand = ?, serieNumber1 = ?, serieNumber2 = ?, category = ?, price = ? WHERE exchangeId = (SELECT exchangeId FROM transactions WHERE transactionId = ?)",
+                  "UPDATE produitsEchanges SET Name = ?, brand = ?, serieNumber1 = ?, serieNumber2 = ?, category = ?, price = ? WHERE exchangeId = (SELECT productId FROM transactions WHERE transactionId = ?)",
                   [
                     req.body.Name,
                     req.body.brand,
@@ -549,6 +479,34 @@ router.patch("/updateTransaction/:transactionId", (req, res) => {
                     });
                   }
                 );
+
+                db.run(
+                  "UPDATE stock SET productName = ?, serieNumber1 = ?, serieNumber2 = ?, brand = ?, category = ?,buyPrice = ?, sellPrice WHERE productId = (SELECT stockId FROM transactions WHERE transactionId = ?)",
+                  [
+                    req.body.productName,
+                    req.body.cbrand,
+                    req.body.cserieNumber1,
+                    req.body.cserieNumber2,
+                    req.body.ccategory,
+                    req.body.buyPrice,
+                    req.body.sellPrice,
+                    transactionId,
+                  ],
+                  function (err) {
+                    if (err) {
+                      console.error("Database error:", err.message);
+                      res.status(500).json({ error: "Database error" });
+                      return;
+                    }
+
+                    res.status(200).json({
+                      message:
+                        "Transaction and associated records updated successfully",
+                    });
+                  }
+                );
+
+
               } else {
                 // Update the produitsvendu table
                 db.run(
@@ -588,5 +546,5 @@ router.patch("/updateTransaction/:transactionId", (req, res) => {
       .json({ error: "An error occurred while processing the request" });
   }
 });
-
+ 
 module.exports = router;
