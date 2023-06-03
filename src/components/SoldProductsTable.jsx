@@ -19,6 +19,8 @@ import { useState } from "react";
 import { useEffect } from "react";
 import axios from "axios";
 import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
+import { useContext } from "react";
+import { SearchContext } from "../SearchContext";
 
 const Header = [
   "Nom",
@@ -178,6 +180,11 @@ function SoldProductsTable() {
   const [currentTransaction, setcurrentTransaction] = useState(-1);
   const [currentUpdatedTransaction, setcurrentUpdatedTransaction] = useState(-1);
   const [transactionType, settransactionType] = useState('Vente');
+
+  const { searchValue,searchCategory } = useContext(SearchContext);
+  
+  console.log(searchValue)
+  console.log(searchCategory)
   //const [showConfirmation, setShowConfirmation] = useState(false);
   console.log(imageUrl);
   function toggleRow(index) {
@@ -219,6 +226,53 @@ function SoldProductsTable() {
 
    deleteTransaction() 
   }, [currentTransaction]);
+  function serieNumber(transaction) {
+    if (transaction.exchangedProductSerieNumber1 !== null && transaction.exchangedProductSerieNumber1 !== undefined) {
+      return String(transaction.exchangedProductSerieNumber1); // Convert to string
+    } else if (transaction.soldProductSerieNumber1 !== null && transaction.soldProductSerieNumber1 !== undefined) {
+      return String(transaction.soldProductSerieNumber1); // Convert to string
+    }
+    return ""; // Return an empty string if the series number is null or undefined
+  }
+
+  function ProductCategory(transaction) {
+    if (transaction.exchangedProductCategory!== null && transaction.exchangedProductCategory !== undefined) {
+      return String(transaction.exchangedProductCategory); // Convert to string
+    } else if (transaction.soldProductCategory !== null && transaction.soldProductCategory !== undefined) {
+      return String(transaction.soldProductCategory); // Convert to string
+    }
+    return ""; // Return an empty string if the series number is null or undefined
+  }
+  
+  let filteredTransactions;
+AllTransactions.forEach((t) => console.log(ProductCategory(t)));
+
+
+  if (searchValue) {
+    filteredTransactions = AllTransactions.filter((transaction) =>
+      serieNumber(transaction).startsWith(String(searchValue))
+    );
+  
+    if (searchCategory && searchCategory !== 'Tous') {
+      filteredTransactions = filteredTransactions.filter((transaction) =>
+        ProductCategory(transaction) === String(searchCategory)
+      );
+    }
+  } else {
+    if (searchCategory && searchCategory !== 'Tous') {
+      filteredTransactions = AllTransactions.filter((transaction) =>
+        ProductCategory(transaction) === String(searchCategory)
+      );
+    } else {
+      filteredTransactions = AllTransactions;
+    }
+  }
+  
+  
+  
+  
+
+
 
   return (
     <>
@@ -243,7 +297,7 @@ function SoldProductsTable() {
           </HRow>
         </thead>
         <tbody>
-          {AllTransactions.map((Product, index) => (
+          {filteredTransactions.map((Product, index) => (
             <>
               <Row
                 className="Row"

@@ -640,7 +640,7 @@ router.patch("/updateTransaction/:transactionId",upload2.single("image"), (req, 
 
       function updateProduitsVendu() {
         db.run(
-          "UPDATE produitsvendu SET Name = ?, brand = ?, serieNumber1 = ?, serieNumber2 = ?, category = ?, price = ? WHERE sellId = (SELECT sellId FROM transactions WHERE transactionId = ?)",
+          "UPDATE produitsvendu SET Name = ?, brand = ?, serieNumber1 = ?, serieNumber2 = ?, category = ?, price = ? WHERE sellId = (SELECT productId FROM transactions WHERE transactionId = ?)",
           [
             req.body.Name,
             req.body.brand,

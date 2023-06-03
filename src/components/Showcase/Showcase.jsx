@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import { useState } from 'react';
 import { Search } from '@mui/icons-material';
 import { Link } from "react-router-dom";
+import {useSearchContext } from '../../SearchContext';
 const Container =  styled.div `
 width: 100%;
 flex-direction: column;
@@ -35,12 +36,12 @@ width: 100%;
 }
 &::placeholder{
   font-weight: 200;
-font-size:  22px;
+font-size:  28px;
 color: #323434;
 opacity: 0.6;  
 }
 padding: 0px  12px  0px 0px;
-font-size:  22px;
+font-size:  28px;
 `;
 
 
@@ -136,22 +137,22 @@ export const Buttons = [
 },
 {
   id : 2,
-  title: "Pc",
+  title: "PC",
 },
   {
       id : 3,
-      title: "Earpuds",
+      title: "Earpud",
 
   },
 
   {
       id : 4,
-      title: "Tablettes",
+      title: "Tablette",
 
   },
   {
       id : 5,
-      title: "Telephones",
+      title: "Telephone",
 
   },
 ]
@@ -160,50 +161,64 @@ export const Buttons = [
 const Showcase = (props) => {
 
   const [activeButton, setActiveButton] = useState('Tous');
-   
+  const { searchValue, updateSearchValue ,  searchCategory, updateSearchCategory } = useSearchContext();
   const handleClickButton = (item) => {
       setActiveButton(item);
     };
-console.log(activeButton)
 const showbuttons = props.showbuttons ? props.showbuttons  : '';
-
   return (
     <>
-   <Container >
+      <Container>
+        <TopContainer>
+          <SearchContainer>
+            <Search style={{ fontSize: "32px" }} />
+            <SearchInput
+              type="search"
+              placeholder="Entrez le numéro de série"
+              value={searchValue}
+              onChange={(e) => {
+                updateSearchValue(e.target.value)
+              }}
+            />
+          </SearchContainer>
 
-    <TopContainer>
-    <SearchContainer  >
-<Search style={{fontSize:'28px'}} />
-<SearchInput type='search' placeholder='Entrez le numéro de série'/>
-
-</SearchContainer>
-
-<Link  style={{ textDecoration: 'none'}}  to={props.form} title={props.buttonTitle}>
-     <AddButton   className='PlusButton' > 
-     <ButtonText> <span className='PlusIcon'>+ </span> {props.buttonTitle} </ButtonText>
-     </AddButton>
-     </Link>
-     
-    </TopContainer>
-    {!showbuttons &&
-    <TopButtonsContainer >
-    { Buttons.map(item => (
-<Button key={item.id}
- onClick={() => handleClickButton(item.title)}
- className={activeButton?.trim().toLowerCase() === item.title?.trim().toLowerCase() ? 'activebtn' : ''}>
-
- <BtnTitle>{item.title}</BtnTitle> 
-</Button>
-
-))
-}
-    </TopButtonsContainer>
-    }
-
-    </Container>
-
+          <Link
+            style={{ textDecoration: "none" }}
+            to={props.form}
+            title={props.buttonTitle}
+          >
+            <AddButton className="PlusButton">
+              <ButtonText>
+                {" "}
+                <span className="PlusIcon">+ </span> {props.buttonTitle}{" "}
+              </ButtonText>
+            </AddButton>
+          </Link>
+        </TopContainer>
+        {!showbuttons && (
+          <TopButtonsContainer>
+            {Buttons.map((item) => (
+              <Button
+                key={item.id}
+                value={searchCategory}
+                onClick={() => {handleClickButton(item.title)
+                  updateSearchCategory(item.title)
+                }}
+                className={
+                  activeButton?.trim().toLowerCase() ===
+                  item.title?.trim().toLowerCase()
+                    ? "activebtn"
+                    : ""
+                }
+              >
+                <BtnTitle>{item.title}</BtnTitle>
+              </Button>
+            ))}
+          </TopButtonsContainer>
+        )}
+      </Container>
     </>
-  )
+  );
 }
 
 export default Showcase

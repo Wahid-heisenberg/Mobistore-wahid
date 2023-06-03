@@ -11,7 +11,9 @@ const ShowCaseContainer = styled.div`
 const ProductsTableContainer = styled.div`
   width: 100%;
 `;
+
 function Achats() {
+
   return (
     <>
       <Container>

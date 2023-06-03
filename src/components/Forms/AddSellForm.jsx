@@ -497,6 +497,7 @@ function AddSellForm() {
                           <option value="Telephone">Télephone</option>
                           <option value="PC">PC</option>
                           <option value="Earpud">Earpud</option>
+                          <option value="Tablette">Tablette</option>
                         </Select>
                       </SelectContainer>
                     </Label>
@@ -604,6 +605,7 @@ function AddSellForm() {
                           <option value="Telephone">Télephone</option>
                           <option value="PC">PC</option>
                           <option value="Earpud">Earpud</option>
+                          <option value="Tablette">Tablette</option>
                         </Select>
                       </SelectContainer>
                     </Label>
@@ -729,6 +731,7 @@ function AddSellForm() {
                           <option value="Telephone">Télephone</option>
                           <option value="PC">PC</option>
                           <option value="Earpud">Earpud</option>
+                          <option value="Tablette">Tablette</option>
                         </Select>
                       </SelectContainer>
                     </Label>

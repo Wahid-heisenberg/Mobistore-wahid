@@ -293,6 +293,7 @@ const ModifySellForm = (props) => {
                   <option value="Telephone">Télephone</option>
                   <option value="PC">PC</option>
                   <option value="Earpud">Earpud</option>
+                  <option value="Tablette">Tablette</option>
                 </Select>
               </SelectContainer>
             </Label>
@@ -388,6 +389,7 @@ const ModifySellForm = (props) => {
                   <option value="Telephone">Télephone</option>
                   <option value="PC">PC</option>
                   <option value="Earpud">Earpud</option>
+                  <option value="Tablette">Tablette</option>
                 </Select>
               </SelectContainer>
             </Label>
@@ -487,6 +489,7 @@ const ModifySellForm = (props) => {
                   <option value="Telephone">Télephone</option>
                   <option value="PC">PC</option>
                   <option value="Earpud">Earpud</option>
+                  <option value="Tablette">Tablette</option>
                 </Select>
               </SelectContainer>
             </Label>
