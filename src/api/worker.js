@@ -38,6 +38,45 @@ router.post("/addworker", (req, res) => {
       console.log(err);
     }
   });
+
+  router.delete("/deleteworker/:workerId", (req, res) => {
+    const workerId = req.params.workerId
+    try {
+      const query = "DELETE FROM workers WHERE workerId = ?";
+  
+      db.run(query,[workerId], (err, rows) => {
+        if (err) {
+          console.error("Database error:", err.message);
+          res.status(500).json({ error: "Database error" });
+        } else {
+          console.log('travailleur supprimer avec success')
+          res.json(rows);
+        }
+      });
+    } catch (err) {
+      console.log(err);
+    }
+  });
+
+  router.patch("/update/:workerId", (req, res) => {
+    const workerId = req.params.workerId
+    const { firstName, familyName, email, phoneNumber, workHoures } = req.body;
+    try {
+      const query = "SET workers WHERE workerId = (SELECT FROM workers WHERE workerId = ?) ";
+  
+      db.run(query,[firstName, familyName, email, phoneNumber, workHoures], (err, rows) => {
+        if (err) {
+          console.error("Database error:", err.message);
+          res.status(500).json({ error: "Database error" });
+        } else {
+          console.log('travailleur supprimer avec success')
+          res.json(rows);
+        }
+      });
+    } catch (err) {
+      console.log(err);
+    }
+  });
   
 
 module.exports = router;

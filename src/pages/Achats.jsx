@@ -5,6 +5,7 @@ import Topbar from "../components/Topbar/Topbar";
 import Showcase from "../components/Showcase/Showcase";
 import styled from "styled-components";
 import SoldProductsTable from "../components/SoldProductsTable";
+
 const ShowCaseContainer = styled.div`
   width: 100%;
 `;
@@ -13,6 +14,8 @@ const ProductsTableContainer = styled.div`
 `;
 
 function Achats() {
+
+
 
   return (
     <>
@@ -28,7 +31,7 @@ function Achats() {
               />
             </ShowCaseContainer>
           </Header>
-          <ProductsTableContainer>
+          <ProductsTableContainer >
             <SoldProductsTable />
           </ProductsTableContainer>
         </Right>

@@ -11,6 +11,7 @@ export function useSearchContext() {
 const SearchProvider = ({ children }) => {
   const [searchValue, setSearchValue] = useState('');
   const [searchCategory, setSearchCategory] = useState('Tous');
+  const [sellsNumber, setSellsNumber] = useState(null);
 
   const updateSearchValue = (value) => {
     setSearchValue(value);
@@ -19,12 +20,16 @@ const SearchProvider = ({ children }) => {
   const updateSearchCategory = (value) => {
     setSearchCategory(value);
   };
-
+  const updateSellsNumber = (value) => {
+    setSellsNumber(value);
+  };
   const searchContextValues = { // Renamed from SearchContext
     searchValue,
     searchCategory,
+    sellsNumber,
     updateSearchValue,
     updateSearchCategory,
+    updateSellsNumber
   };
 
   return (

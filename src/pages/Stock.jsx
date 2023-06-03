@@ -1,11 +1,10 @@
-import React from "react";
+import React, { useEffect, useState, useContext } from "react";
 import styled from "styled-components";
 import Sidebar from "../components/sidebar/Sidebar";
 import Topbar from "../components/Topbar/Topbar";
 import Showcase from "../components/Showcase/Showcase";
 import Card from "../components/Card";
 import axios from "axios";
-import { useState } from "react";
 import ProductsTable from "../components/ProductsTable";
 import hplogo from "../assets/HP.png";
 import huawwei from "../assets/huawwei-logo.png";
@@ -16,7 +15,9 @@ import sony from "../assets/Sony-Logo.png";
 import Redmi from "../assets/Redmi-logo.png";
 import Condor from "../assets/condor-logo.png";
 import Tous from "../assets/Tous.png";
-import { useEffect } from "react";
+import oppo from "../assets/oppo.png";
+import { SearchContext } from "../SearchContext";
+
 export const Container = styled.section`
   display: flex;
   flex-direction: row;
@@ -28,6 +29,7 @@ export const Container = styled.section`
     display: none; /* Safari and Chrome */
   }
 `;
+
 export const Right = styled.div`
   display: flex;
   flex-direction: column;
@@ -45,6 +47,7 @@ export const Right = styled.div`
   overflow-x: hidden;
   z-index: 1;
 `;
+
 export const Header = styled.header`
   position: sticky;
   top: 0px;
@@ -94,117 +97,72 @@ const ReturnButton = styled.button`
     transition: 0.3s all ease-in-out;
   }
 `;
-/*const Products = [
-  {
-      id:1,
-      Nom: "asus",
-      Nserie1 : 1444,
-      Nserie2 : 45477,
-      Pachat : 1548 ,
-      Pvente : 84878,
-      },
-{
-  id:2,
-  Nom: "Hp",
-  Nserie1 : 1444,
-  Nserie2 : 45477,
-  Pachat : 1548 ,
-  Pvente : 84878,
-      },
-{
-id:3,    Nom: "Hp", Nserie1 : 1444,
-Nserie2 : 45477,
-Pachat : 1548 ,
-Pvente : 84878,
-},
-{
-id:4,
-Nom: "Hp",
-Nserie1 : 1444,
-Nserie2 : 45477,
-Pachat : 1548 ,
-Pvente : 84878,
-}
 
-]
-*/
 const CardsArray = [
   {
     id: "0",
-    number: "120",
     image: Tous,
     marque: "Tous",
-    category: ["Pc", "Telephone", "Earpud"],
   },
   {
     id: "2",
-    number: "25",
     image: apple,
-    marque: "Apple",
-    category: ["Pc", "Telephone", "Earpud"],
+    marque: "apple",
   },
   {
     id: "8",
-    number: "15",
     image: Redmi,
-    marque: "Redmi",
-    category: ["Pc", "Telephone", "Earpud"],
+    marque: "redmi",
   },
   {
     id: "5",
-    number: "10",
     image: huawwei,
     marque: "huawwei",
-    category: ["Pc", "Telephone", "Earpud"],
   },
   {
     id: "1",
-    number: "20",
     image: hplogo,
-    marque: "Hp",
+    marque: "hp",
     category: ["Pc"],
   },
-
   {
     id: "3",
-    number: "15",
     image: samsung,
-    marque: "Samsung",
-    category: ["Pc", "Telephone", "Earpud"],
+    marque: "samsung",
   },
-
   {
     id: "4",
-    number: "5",
     image: Condor,
-    marque: "Condor",
+    marque: "condor",
     category: ["Telephone"],
   },
-
   {
     id: "6",
-    number: "3",
     image: lenovo,
-    marque: "Lenovo",
-    category: ["Pc", "Telephone", "Earpud"],
+    marque: "lenovo",
   },
   {
     id: "33",
-    number: "69",
     image: sony,
-    marque: "Sony",
-    category: ["Pc", "Telephone", "Earpud"],
+    marque: "sony",
+  },
+  {
+    id: "378",
+    image: oppo,
+    marque: "oppo",
   },
 ];
 
 function Stock() {
   const [activeCard, setActiveCard] = useState("");
   const [AllProducts, setAllProducts] = useState([]);
-
+  const { searchValue, searchCategory } = useContext(SearchContext);
   useEffect(() => {
     const getAllProducts = async () => {
       try {
-        const res = await axios.get("http://localhost:5000/api/stock/afficherStock");
+        const res = await axios.get(
+          "http://localhost:5000/api/stock/afficherStock"
+        );
         console.log(res);
         setAllProducts(res.data);
       } catch (err) {
@@ -213,7 +171,7 @@ function Stock() {
     };
 
     getAllProducts();
-  }, [activeCard]);
+  }, []);
 
   console.log(AllProducts);
 
@@ -225,6 +183,39 @@ function Stock() {
 
   const show = activeCard ? "" : "false";
   console.log(activeCard);
+
+  let filteredProducts;
+
+  if (searchValue) {
+    filteredProducts = AllProducts.filter((product) =>
+      String(product.serieNumber1).startsWith(String(searchValue))
+    );
+
+    if (searchCategory && searchCategory !== "Tous") {
+      filteredProducts = filteredProducts.filter(
+        (product) => String(product.category) === String(searchCategory)
+      );
+    }
+  } else {
+    if (searchCategory && searchCategory !== "Tous") {
+      filteredProducts = AllProducts.filter(
+        (product) => String(product.category) === String(searchCategory)
+      );
+    } else {
+      filteredProducts = AllProducts;
+    }
+  }
+
+  let filteredproductsAccordingtoCards;
+  if (activeCard === "Tous") {
+    filteredproductsAccordingtoCards = filteredProducts;
+  } else {
+    filteredproductsAccordingtoCards = filteredProducts.filter((product) =>
+      String(product.brand) === String(activeCard)
+    );
+    
+  }
+
 
   return (
     <>
@@ -248,7 +239,7 @@ function Stock() {
                 <Card
                   key={card.id * 3.14}
                   image={card.image}
-                  number={AllProducts.length}
+                  number={ card.marque ==='Tous'?AllProducts.length : AllProducts.filter((item) => item.brand === card.marque).length}
                   marque={card.marque}
                   category={card.category}
                   onClick={() => handleClick(card)}
@@ -259,9 +250,8 @@ function Stock() {
 
           {activeCard !== "" && (
             <>
-              <ProductsTable products={AllProducts} />
+              <ProductsTable products={filteredproductsAccordingtoCards} />
               <ReturnButton onClick={() => setActiveCard("")}>
-                {" "}
                 Retour
               </ReturnButton>
             </>

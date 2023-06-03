@@ -1,4 +1,5 @@
-import React from "react";
+import React,{ useState ,useContext ,useEffect} from "react";
+import axios from "axios";
 import styled from "styled-components";
 import { Container, Header, Right } from "./Stock";
 import Sidebar from "../components/sidebar/Sidebar";
@@ -6,34 +7,10 @@ import Topbar from "../components/Topbar/Topbar";
 import { Title } from "../components/Topbar/Topbar";
 import CircularProgressBar from "../components/CircularProgressBar";
 import LinearProgressBar from "../components/LinearProgressBar";
-import { useState } from "react";
 import { Link } from "react-router-dom";
-import {
-  TopButtonsContainer,
-  Buttons,
-  Button,
-  BtnTitle,
-} from "../components/Showcase/Showcase";
-const ProgressCircles = [
-  {
-    id: 1,
-    textcolor: "70EE9C",
-    value: 55,
-    text: "Achat",
-  },
-  {
-    id: 2,
-    textcolor: "FF7F11",
-    value: 70,
-    text: "Echange",
-  },
-  {
-    id: 3,
-    textcolor: "007FC9",
-    value: 60,
-    text: "Profit",
-  },
-];
+import { SearchContext } from "../SearchContext";
+import { useSearchContext } from "../SearchContext";
+
 
 const ProgressBarsContainer = styled.div`
   width: 100%;
@@ -134,13 +111,59 @@ const Lines = [
 
 function Statistiques() {
   const [showMore, setShowMore] = useState(false);
-  const renderedItems = showMore ? Lines : Lines.slice(0, 2);
-  const [activeButton, setActiveButton] = useState("Tous");
+  const renderedItems = showMore ? Lines : Lines.slice(0, 3);
+  const { sellsNumber } = useContext(SearchContext);
+  const [AllTransactions, setAllTransactions] = useState([]);
+  const {  updateSellsNumber } = useSearchContext();
 
-  const handleClickButton = (item) => {
-    setActiveButton(item);
-  };
-  console.log(activeButton);
+  useEffect(() => {
+    const getAllTransactions = async () => {
+      try {
+        const res = await axios.get(
+          "http://localhost:5000/api/transaction/getAlltransactions"
+        );
+        console.log(res);
+        setAllTransactions(res.data);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+
+    getAllTransactions();
+  }, [AllTransactions]);
+
+  const ProgressCircles = [
+    {
+      id: 1,
+      textcolor: "70EE9C",
+      value: sellsNumber,
+      text: "Ventes",
+    },
+    {
+      id: 2,
+      textcolor: "FF7F11",
+      value: 100-sellsNumber,
+      text: "Echanges",
+    },
+    {
+      id: 3,
+      textcolor: "007FC9",
+      value: 30,
+      text: "Profit",
+    },
+  ];
+
+  useEffect(() => {
+    const totalTransactions = AllTransactions.length;
+    const venteTransactions = AllTransactions.filter(
+      (transaction) => transaction.transactionType === 'Vente'
+    ).length;
+    const sellPercentage = (venteTransactions / totalTransactions) * 100;
+
+    updateSellsNumber(sellPercentage);
+    
+  }, [AllTransactions ,updateSellsNumber ]);
+
 
   return (
     <>
@@ -150,22 +173,7 @@ function Statistiques() {
           <Header>
             <Topbar title="Statistiques" />
           </Header>
-          <TopButtonsContainer>
-            {Buttons.map((item) => (
-              <Button
-                key={item.id}
-                onClick={() => handleClickButton(item.title)}
-                className={
-                  activeButton?.trim().toLowerCase() ===
-                  item.title?.trim().toLowerCase()
-                    ? "activebtn"
-                    : ""
-                }
-              >
-                <BtnTitle>{item.title}</BtnTitle>
-              </Button>
-            ))}
-          </TopButtonsContainer>
+
 
           <ProgressBarsContainer>
             {ProgressCircles.map((item) => (

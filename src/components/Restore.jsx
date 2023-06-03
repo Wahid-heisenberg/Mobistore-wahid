@@ -15,7 +15,7 @@ function Restore() {
         <h2>Signaler le problème</h2>
         <h1 className="Email">
           <EmailIcon style={{ fontSize: "48px" }} />
-          projet2023@gmail.com
+          wahidslimani20002@gmail.com
         </h1>
         <Hr />
         <Qst style={{ marginTop: "36px" }}>

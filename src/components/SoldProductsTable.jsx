@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState , useContext }  from "react";
 import {
   Table,
   HRow,
@@ -10,17 +10,14 @@ import {
   Pachat,
 } from "./ProductsTable";
 import ModifySellForm from "./Forms/ModifySellForm";
-//import img from "../../public/cardsPictures/d6de3eea-f87c-4602-b625-cfe0b633d1ab.png"
 import styled from "styled-components";
 import IdCardIcon from "../IdCard.png";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
-import { useState } from "react";
-import { useEffect } from "react";
 import axios from "axios";
 import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
-import { useContext } from "react";
 import { SearchContext } from "../SearchContext";
+
 
 const Header = [
   "Nom",
@@ -171,6 +168,7 @@ const Cardpicture = styled.img`
   z-index: 19;
 `;
 
+
 function SoldProductsTable() {
   const [expandedRows, setExpandedRows] = useState([]);
   const [AllTransactions, setAllTransactions] = useState([]);
@@ -180,9 +178,9 @@ function SoldProductsTable() {
   const [currentTransaction, setcurrentTransaction] = useState(-1);
   const [currentUpdatedTransaction, setcurrentUpdatedTransaction] = useState(-1);
   const [transactionType, settransactionType] = useState('Vente');
+  const { searchValue ,  searchCategory} = useContext(SearchContext);
 
-  const { searchValue,searchCategory } = useContext(SearchContext);
-  
+
   console.log(searchValue)
   console.log(searchCategory)
   //const [showConfirmation, setShowConfirmation] = useState(false);
@@ -245,7 +243,7 @@ function SoldProductsTable() {
   }
   
   let filteredTransactions;
-AllTransactions.forEach((t) => console.log(ProductCategory(t)));
+// AllTransactions.forEach((t) => console.log(ProductCategory(t)));
 
 
   if (searchValue) {
@@ -267,16 +265,22 @@ AllTransactions.forEach((t) => console.log(ProductCategory(t)));
       filteredTransactions = AllTransactions;
     }
   }
-  
-  
-  
-  
+  // useEffect(() => {
+  //   const totalTransactions = AllTransactions.length;
+  //   const venteTransactions = AllTransactions.filter(
+  //     (transaction) => transaction.transactionType === 'Vente'
+  //   ).length;
+  //   const sellPercentage = (venteTransactions / totalTransactions) * 100;
 
+  //   updateSellsNumber(sellPercentage);
+    
+  // }, [AllTransactions ,updateSellsNumber ]);
 
 
   return (
     <>
       <Table>
+        
         <thead>
           <HRow>
             {Header.map((item, Hindex) => (
