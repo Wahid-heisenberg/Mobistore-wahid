@@ -226,7 +226,7 @@ function SoldProductsTable() {
         <thead>
           <HRow>
             {Header.map((item, Hindex) => (
-              <HColumn
+              <HColumn 
                 key={Hindex + 1}
                 className="HeaderColumn"
                 style={{
