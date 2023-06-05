@@ -11,7 +11,6 @@ const Container = styled.div`
   overflow: hidden;
 `;
 const Logo = styled.img`
-  transform: rotate(31.57deg);
   width: 478.49px;
   height: 646.65px;
   margin-bottom: 15px;

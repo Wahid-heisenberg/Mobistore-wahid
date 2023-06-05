@@ -24,7 +24,7 @@ const Header = [
   "Date",
   "N° de série 1",
   "N° de série 2",
-  "Prix de vente",
+  "Prix ",
 ];
 const DetailsHeader = ["Nom", "Prénom", "Num de tel", "N° Carte", "Etat"];
 const DetailsColumn = styled.td`

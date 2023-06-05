@@ -135,21 +135,21 @@ export const Buttons = [
     title: "Tous",
 
 },
-{
-  id : 2,
-  title: "PC",
-},
-  {
-      id : 3,
-      title: "Earpud",
+// {
+//   id : 2,
+//   title: "PC",
+// },
+  // {
+  //     id : 3,
+  //     title: "Earpud",
 
-  },
+  // },
 
-  {
-      id : 4,
-      title: "Tablette",
+  // {
+  //     id : 4,
+  //     title: "Tablette",
 
-  },
+  // },
   {
       id : 5,
       title: "Telephone",

@@ -135,9 +135,9 @@ function Statistiques() {
   const ProgressCircles = [
     {
       id: 1,
-      textcolor: "70EE9C",
+      textcolor: "007FC9",
       value: sellsNumber,
-      text: "Ventes",
+      text: "Achats",
     },
     {
       id: 2,
@@ -147,7 +147,7 @@ function Statistiques() {
     },
     {
       id: 3,
-      textcolor: "007FC9",
+      textcolor: "70EE9C",
       value: 30,
       text: "Profit",
     },

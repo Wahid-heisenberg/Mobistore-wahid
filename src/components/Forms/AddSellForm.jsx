@@ -41,7 +41,7 @@ export const getCurrentDateTime = ()=> {
 
 function AddSellForm() {
   const [itemsNumber, SetItemsNumber] = useState(1);
-  const [selectedValue, setSelectedValue] = useState("Vente");
+  const [selectedValue, setSelectedValue] = useState("Achat");
 
   const [ClientFirstName, setClientFirstName] = useState("");
   const [ClientFamilyName, setClientFamilyName] = useState("");
@@ -261,7 +261,7 @@ function AddSellForm() {
         .post("http://localhost:5000/api/transaction/addsell", selldata)
         .then((response) => {
           console.log(response.data);
-          alert("Vente crée !");
+          alert("Achat crée !");
         })
         .catch((error) => {
           console.error(error);
@@ -368,7 +368,7 @@ function AddSellForm() {
                   onChange={handleChange}
                   required
                 >
-                  <option value="Vente">Vente</option>
+                  <option value="Achat">Achat</option>
                   <option value="Echange">Echange</option>
                 </Select>
               </SelectContainer>
@@ -495,9 +495,6 @@ function AddSellForm() {
                          
                          >
                           <option value="Telephone">Télephone</option>
-                          <option value="PC">PC</option>
-                          <option value="Earpud">Earpud</option>
-                          <option value="Tablette">Tablette</option>
                         </Select>
                       </SelectContainer>
                     </Label>
@@ -603,9 +600,6 @@ function AddSellForm() {
                         value={categories2[index]}
                         >
                           <option value="Telephone">Télephone</option>
-                          <option value="PC">PC</option>
-                          <option value="Earpud">Earpud</option>
-                          <option value="Tablette">Tablette</option>
                         </Select>
                       </SelectContainer>
                     </Label>
@@ -729,9 +723,6 @@ function AddSellForm() {
                          onChange={(e)=>handleSelectCategories(index , e.target.value)}
                         >
                           <option value="Telephone">Télephone</option>
-                          <option value="PC">PC</option>
-                          <option value="Earpud">Earpud</option>
-                          <option value="Tablette">Tablette</option>
                         </Select>
                       </SelectContainer>
                     </Label>

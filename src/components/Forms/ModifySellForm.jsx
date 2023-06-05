@@ -149,7 +149,7 @@ const ModifySellForm = (props) => {
         )
         .then((response) => {
           console.log(response.data);
-          alert("Vente modifier !");
+          alert("Achat modifier !");
         })
         .catch((error) => {
           console.error(error);
@@ -236,7 +236,7 @@ const ModifySellForm = (props) => {
           }}
         />
         <span></span>
-        {props.transactionType === "Vente" ? (
+        {props.transactionType === "Achat" ? (
           <>
             <Title style={{ marginTop: "16px" }}>Information d'article</Title>
             <span></span>
@@ -291,9 +291,6 @@ const ModifySellForm = (props) => {
                   value={category}
                 >
                   <option value="Telephone">Télephone</option>
-                  <option value="PC">PC</option>
-                  <option value="Earpud">Earpud</option>
-                  <option value="Tablette">Tablette</option>
                 </Select>
               </SelectContainer>
             </Label>
@@ -387,9 +384,6 @@ const ModifySellForm = (props) => {
                   value={category}
                 >
                   <option value="Telephone">Télephone</option>
-                  <option value="PC">PC</option>
-                  <option value="Earpud">Earpud</option>
-                  <option value="Tablette">Tablette</option>
                 </Select>
               </SelectContainer>
             </Label>
@@ -487,9 +481,6 @@ const ModifySellForm = (props) => {
                   value={category2}
                 >
                   <option value="Telephone">Télephone</option>
-                  <option value="PC">PC</option>
-                  <option value="Earpud">Earpud</option>
-                  <option value="Tablette">Tablette</option>
                 </Select>
               </SelectContainer>
             </Label>
