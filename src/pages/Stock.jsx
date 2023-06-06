@@ -142,7 +142,6 @@ const CardsArray = [
     id: "4",
     image: Condor,
     marque: "condor",
-    category: ["Telephone"],
   },
   {
     id: "6",

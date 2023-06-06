@@ -1,61 +1,10 @@
 const router = require("express").Router();
-const db = require('../database/db')
+const db = require('../database/db');
 const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 
-
-
-// router.post("/signup", (req, res) => {
-//   const { username, password, confirmPassword } = req.body;
-
-//   if (password !== confirmPassword ) 
-//   {
-//     console.log("passwords do not match");
-  
-//   }
-//   else {
-//     try {
-//       const query = "INSERT INTO users (username, password) VALUES (?, ?)";
-
-//       db.run(query, [username, password], function (err) {
-//         if (err) {
-//           console.error("Database error:", err.message);
-//           res.status(500).json({ error: "Database error" });
-//         } else {
-//           res.json({ id: this.lastID });
-//           console.log('welcome' + username)
-//         }
-//       });
-//     } catch (err) {
-//       console.log(err)
-//     }
-//   }
-// });
-
-// router.post("/signin", (req, res) => {
-//   const { username, password } = req.body;
-
-//   try {
-//     // Implement code to validate the user's credentials
-//     db.get("SELECT * FROM users WHERE username = ?", [username], (err, row) => {
-//       if (err) {
-//         console.error("Database error:", err.message);
-//         res.status(500).json({ error: "Database error" });
-//       } else if (!row) {
-//         // No user found with the provided username
-//         res.status(401).json({ error: "Invalid credentials" });
-//       } else if (row.password !== password) {
-//         // Password mismatch
-//         res.status(401).json({ error: "Invalid credentials" });
-//       } else {
-//         // User is successfully signed in
-//         res.json({ message: "Sign-in successful" });
-//         console.log("Welcome, " + username);
-//       }
-//     });
-//   } catch (err) {
-//     console.log(err);
-//   }
-// });
+// JWT secret key
+const JWT_SECRET = '9Y#j2@pK7*uQ5&gW1$z3';
 
 router.post('/signup', async (req, res) => {
   const { username, password, confirmPassword } = req.body;
@@ -72,10 +21,13 @@ router.post('/signup', async (req, res) => {
     const query = 'INSERT INTO users (username, password) VALUES (?, ?)';
 
     await db.run(query, [username, hashedPassword]);
-    //jwt
-    res.json({ message: 'Sign-up successful'});
 
-    console.log('Welcome ' + username);
+    // Generate a JWT token
+    const token = jwt.sign({ username }, JWT_SECRET, { expiresIn: '1h' });
+
+    res.json({ message: 'Sign-up successful', token });
+
+    console.log('Welcome ' + username + ' '+ token);
   } catch (err) {
     console.error('Error signing up:', err);
     res.status(500).json({ error: 'Error signing up' });
@@ -107,9 +59,13 @@ router.post("/signin", async (req, res) => {
           // Password mismatch
           res.status(401).json({ error: "Invalid credentials" });
         } else {
+          // Generate a JWT token
+          const token = jwt.sign({ username }, JWT_SECRET, { expiresIn: '1h' });
+          console.log(token)
+
           // User is successfully signed in
-          res.json({ message: "Sign-in successful" });
-          console.log("Welcome, " + username);
+          res.json({ message: "Sign-in successful", token });
+          console.log("Welcome, " + username +'  '+ token);
         }
       }
     });
@@ -118,7 +74,5 @@ router.post("/signin", async (req, res) => {
     res.status(500).json({ error: "Database error" });
   }
 });
-
-
 
 module.exports = router;

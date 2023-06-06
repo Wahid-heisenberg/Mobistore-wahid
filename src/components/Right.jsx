@@ -33,30 +33,37 @@ function Right() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-
+  
     // Create an object to represent the form data
     const formData = {
       username: username,
       password: password,
     };
-
-    // Make HTTP request to backend API to insert form data into database
+  
+    // Make HTTP request to backend API to authenticate user
     axios
       .post("http://localhost:5000/api/user/signin", formData)
       .then((response) => {
         // Handle successful response from backend
-        console.log("Successfully loged in:", response.data);
-        alert('Bienvenu')
-        // Update UI with success message
+        console.log("Successfully logged in:", response.data);
+        alert("Bienvenu");
+  
+        // Store the JWT token received in the response
+        const token = response.data.token;
+  
+        // Save the token in local storage for future use
+        localStorage.setItem("token", token);
+  
+        // Redirect to the desired page or update the UI accordingly
         navigate("/Acceuil");
       })
       .catch((error) => {
         // Handle error response from backend
-        console.log("Error login:" + error);
-        // Update UI with error message
-        alert("Error login. Please try again.");
+        console.log("Error logging in:", error);
+        alert("Error logging in. Please try again.");
       });
   };
+  
 
   return (
     <>

@@ -137,7 +137,7 @@ function RightUp() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
-  const navigate1 = useNavigate();
+  const navigate = useNavigate();
 
   const handlePasswordChange = (event) => {
     setPassword(event.target.value);
@@ -157,33 +157,41 @@ function RightUp() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-
+  
     // Create an object to represent the form data
     const formData = {
       username: username,
       password: password,
       confirmPassword: confirmPassword,
     };
-
+  
     // Make HTTP request to backend API to insert form data into database
     axios
       .post("http://localhost:5000/api/user/signup", formData)
       .then((response) => {
         // Handle successful response from backend
         console.log("Successfully registered:", response.data);
+  
+        // Store the JWT token received in the response
+        const token = response.data.token;
+  
+        // Save the token in local storage for future use
+        localStorage.setItem("token", token);
+  
         // Update UI with success message
-        alert("vous avez cree un nouveau compte");
-        
-        navigate1("/Acceuil");
+        alert("Vous avez cree un compte avec success");
+  
+        // Redirect to the desired page or update the UI accordingly
+        navigate("/Acceuil");
       })
       .catch((error) => {
         // Handle error response from backend
-        console.error("Error registering:" + error);
+        console.error("Error registering:", error);
+  
         // Update UI with error message
-        alert("Error registering. Please try again.");
+        alert("reessayer après.");
       });
   };
-
   return (
     <>
       <Container onSubmit={handleSubmit}>

@@ -3,6 +3,14 @@ const db = require("../database/db");
 const multer = require("multer");
 const fs = require("fs");
 const { v4: uuidv4 } = require("uuid");
+const cloudinary = require('cloudinary').v2;
+
+
+cloudinary.config({ 
+  cloud_name: 'dl6cgkspe', 
+  api_key: '441269869575591', 
+  api_secret: 'TvMDOLcRxfHmBNtqv7H-eEtjqmM' 
+});
 
 // Create the "cardsPictures" directory if it doesn't exist
 const uploadDirectory = "../public/cardsPictures/";
@@ -26,15 +34,18 @@ const storage = multer.diskStorage({
 const upload = multer({ storage });
 router.post("/addsell", upload.single("image"), async (req, res) => {
   try {
+    const cloudinaryUpload = await cloudinary.uploader.upload(req.file.path);
+    const CloudinaryimagePath = cloudinaryUpload.secure_url;
+    console.log(CloudinaryimagePath)
     const { firstName, familyName, phoneNumber, cardNumber } = req.body;
     const imagePath = `cardsPictures/${req.file.filename}`;
     const query =
-      "INSERT INTO clients (firstName, familyName, phoneNumber, cardNumber, cardPicturepath) VALUES (?, ?, ?, ?, ?)";
+      "INSERT INTO clients (firstName, familyName, phoneNumber, cardNumber, cardPicturepath ,cardPathCloud) VALUES (?, ?, ?, ?, ? , ?)";
 
     const currentClientID = await new Promise((resolve, reject) => {
       db.run(
         query,
-        [firstName, familyName, phoneNumber, cardNumber, imagePath],
+        [firstName, familyName, phoneNumber, cardNumber, imagePath ,CloudinaryimagePath],
         function (err) {
           if (err) {
             console.error("Database error:", err.message);
@@ -140,15 +151,18 @@ router.post("/addsell", upload.single("image"), async (req, res) => {
 const upload1 = multer({ storage });
 router.post("/addexchange", upload1.single("image"), async (req, res) => {
   try {
+    const cloudinaryUpload = await cloudinary.uploader.upload(req.file.path);
+    const CloudinaryimagePath = cloudinaryUpload.secure_url;
+    console.log(CloudinaryimagePath)
     const { firstName, familyName, phoneNumber, cardNumber } = req.body;
     const imagePath = `cardsPictures/${req.file.filename}`;
     const query =
-      "INSERT INTO clients (firstName, familyName, phoneNumber, cardNumber, cardPicturepath) VALUES (?, ?, ?, ?, ?)";
+      "INSERT INTO clients (firstName, familyName, phoneNumber, cardNumber, cardPicturepath ,cardPathCloud) VALUES (?, ?, ?, ?, ? , ?)";
 
     const currentClientID = await new Promise((resolve, reject) => {
       db.run(
         query,
-        [firstName, familyName, phoneNumber, cardNumber, imagePath],
+        [firstName, familyName, phoneNumber, cardNumber, imagePath ,CloudinaryimagePath],
         function (err) {
           if (err) {
             console.error("Database error:", err.message);
@@ -269,7 +283,7 @@ router.post("/addexchange", upload1.single("image"), async (req, res) => {
 router.get("/getAlltransactions", (req, res) => {
   const query = `
   SELECT t.transactionId, t.transactionDate, t.transactionType,
-  c.firstName, c.familyName, c.phoneNumber, c.cardNumber, c.cardPicturePath,
+  c.firstName, c.familyName, c.phoneNumber, c.cardNumber, c.cardPicturePath,c.cardPathCloud,
   pe.ExchangeId, pe.Name AS exchangedProductName, pe.brand AS exchangedProductBrand,
   pe.serieNumber1 AS exchangedProductSerieNumber1, pe.serieNumber2 AS exchangedProductSerieNumber2,
   pe.category AS exchangedProductCategory, pe.price AS exchangedProductPrice,
@@ -449,6 +463,7 @@ router.patch("/updateTransaction/:transactionId",upload2.single("image"),async (
   const imagePath = `cardsPictures/${req.file.filename}`;
 
 
+
   console.log(transactionId);
   if (transactionId === -1) {
     res.status(400).json({ error: "Invalid transactionId" });
@@ -456,6 +471,10 @@ router.patch("/updateTransaction/:transactionId",upload2.single("image"),async (
   }
 
   try {
+    const cloudinaryUpload = await cloudinary.uploader.upload(req.file.path);
+    const CloudinaryimagePath = cloudinaryUpload.secure_url;
+    console.log(CloudinaryimagePath)
+  
     db.serialize(() => {
 
       db.run(
@@ -485,7 +504,7 @@ router.patch("/updateTransaction/:transactionId",upload2.single("image"),async (
       );
       
     
-console.log(transactionType)
+console.log(CloudinaryimagePath)
       
 
       function updateStock() {
@@ -520,9 +539,9 @@ console.log(transactionType)
           "UPDATE stock SET productName = ?, serieNumber1 = ?, serieNumber2 = ?, brand = ?, category = ?, buyPrice = ?, sellPrice = ? ,productState = ? WHERE productId = (SELECT stockId FROM transactions WHERE transactionId = ?)",
           [
             req.body.Name,
-            req.body.brand,
             req.body.serieNumber1,
             req.body.serieNumber2,
+            req.body.brand,
             req.body.category,
             req.body.price,
             req.body.price*1.3,
@@ -605,13 +624,14 @@ console.log(transactionType)
 
       function updateClient() {
         db.run(
-            "UPDATE clients SET firstName = ?, familyName = ?, phoneNumber = ?, cardNumber = ?, cardPicturePath = ? WHERE clientId = (SELECT clientId FROM transactions WHERE transactionId = ?)",
+            "UPDATE clients SET firstName = ?, familyName = ?, phoneNumber = ?, cardNumber = ?, cardPicturePath = ? , cardPathCloud =?  WHERE clientId = (SELECT clientId FROM transactions WHERE transactionId = ?)",
             [
               req.body.firstName,
               req.body.familyName,
               req.body.phoneNumber,
               req.body.cardNumber,
               imagePath,
+              CloudinaryimagePath,
               transactionId,
             ],
           function (err) {

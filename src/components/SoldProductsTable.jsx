@@ -17,6 +17,7 @@ import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
 import axios from "axios";
 import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
 import { SearchContext } from "../SearchContext";
+import { CloudinaryContext } from "cloudinary-react";
 
 
 const Header = [
@@ -285,6 +286,7 @@ function SoldProductsTable() {
 
   return (
     <>
+    <CloudinaryContext cloudName="dl6cgkspe">
       <Table>
         
         <thead>
@@ -452,8 +454,9 @@ function SoldProductsTable() {
                           <CostumerCard
                             type="button"
                             onClick={() => {
-                              setImageUrl(`${Product.cardPicturePath}`);
+                              setImageUrl(`${Product.cardPathCloud}`);
                               setShowImage(true);
+                              console.log(imageUrl)
                             }}
                           >
                             <img height="44px" src={IdCardIcon} alt="CardId" />
@@ -497,6 +500,7 @@ function SoldProductsTable() {
           ))}
         </tbody>
       </Table>
+      
       {showImage && (
         <ImageBlock>
           <HideButton onClick={() => setShowImage(false)}>
@@ -506,7 +510,7 @@ function SoldProductsTable() {
               }}
             />
           </HideButton>
-          <Cardpicture src={imageUrl} alt="Product Image" />
+          <Cardpicture publicId="sample" src={imageUrl} alt="Product Image" />
         </ImageBlock>
       )}
 
@@ -525,6 +529,7 @@ function SoldProductsTable() {
           />
         </ModifyBlock>
       )}
+      </CloudinaryContext>
     </>
   );
 }
