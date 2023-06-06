@@ -168,6 +168,7 @@ export const Exit = styled.div`
 
 function AddProductForm() {
   const [selectedValue, setSelectedValue] = useState("Telephone");
+  const [selectedStateValue, setSelecteStatedValue] = useState("Nouveau");
   const [SellPrice, SetSellPrice] = useState(0);
   const [BuyPrice, SetBuyPrice] = useState(0);
   const [productName, setproductName] = useState("");
@@ -176,6 +177,10 @@ function AddProductForm() {
   const [productSerieNumber2, setProductSerieNumber2] = useState(0);
   function handleChange(event) {
     setSelectedValue(event.target.value);
+  }
+
+  function handleChangeState(event) {
+    setSelecteStatedValue(event.target.value);
   }
   console.log(
     SellPrice,
@@ -197,6 +202,7 @@ function AddProductForm() {
       category :selectedValue,
       buyPrice: SellPrice,
       sellPrice: BuyPrice,
+      productState : selectedStateValue
     };
     console.log("here");
 
@@ -267,6 +273,35 @@ function AddProductForm() {
                   required
                 />
               </Label>
+              <Label htmlFor="Categories">
+                Catégorie
+                <SelectContainer>
+                  <Select
+                    name="Categories"
+                    id="Categories"
+                    value={selectedValue}
+                    onChange={handleChange}
+                    required
+                  >
+                    <option value="Telephone">Télephone</option>
+                  </Select>
+                </SelectContainer>
+              </Label>
+              <Label htmlFor="States">
+              État d'article
+                <SelectContainer>
+                  <Select
+                    name="States"
+                    id="States"
+                    value={selectedStateValue}
+                    onChange={handleChangeState}
+                    required
+                  >
+                    <option value="Nouveau">Nouveau</option>
+                    <option value="Occasion">Occasion</option>
+                  </Select>
+                </SelectContainer>
+              </Label>
 
               <Label>
                 Prix d'achat
@@ -335,20 +370,8 @@ function AddProductForm() {
                   </PriceControler>
                 </PriceContainer>
               </Label>
-              <Label htmlFor="Categories">
-                Catégorie
-                <SelectContainer>
-                  <Select
-                    name="Categories"
-                    id="Categories"
-                    value={selectedValue}
-                    onChange={handleChange}
-                    required
-                  >
-                    <option value="Telephone">Télephone</option>
-                  </Select>
-                </SelectContainer>
-              </Label>
+
+              <span></span>
 
               <FormControlers>
                 <Link

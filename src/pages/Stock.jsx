@@ -17,6 +17,11 @@ import Condor from "../assets/condor-logo.png";
 import Tous from "../assets/Tous.png";
 import oppo from "../assets/oppo.png";
 import { SearchContext } from "../SearchContext";
+import {
+  TopButtonsContainer,
+  Button,
+  BtnTitle,
+} from "../components/Showcase/Showcase";
 
 export const Container = styled.section`
   display: flex;
@@ -62,6 +67,9 @@ export const Header = styled.header`
 
 const ShowCaseContainer = styled.div`
   width: 100%;
+  /* display: flex;
+  flex-direction: column;
+  gap: 16px; */
 `;
 const CardsContainer = styled.div`
   display: grid;
@@ -152,6 +160,16 @@ const CardsArray = [
     marque: "oppo",
   },
 ];
+const Buttons = [
+  {
+    id: 1,
+    title: "Nouveau",
+  },
+  {
+    id: 2,
+    title: "Occasion",
+  },
+];
 
 function Stock() {
   const [activeCard, setActiveCard] = useState("");
@@ -184,10 +202,20 @@ function Stock() {
   const show = activeCard ? "" : "false";
   console.log(activeCard);
 
+  const [activeButton, setActiveButton] = useState("Nouveau");
+  const handleClickButton = (item) => {
+    setActiveButton(item);
+  };
+
+  let initialazedfilteredProducts = AllProducts.filter((item) =>
+  String(item.productState) ===String(activeButton)
+  );
+  console.log(initialazedfilteredProducts)
+
   let filteredProducts;
 
   if (searchValue) {
-    filteredProducts = AllProducts.filter((product) =>
+    filteredProducts = initialazedfilteredProducts.filter((product) =>
       String(product.serieNumber1).startsWith(String(searchValue))
     );
 
@@ -198,11 +226,11 @@ function Stock() {
     }
   } else {
     if (searchCategory && searchCategory !== "Tous") {
-      filteredProducts = AllProducts.filter(
+      filteredProducts = initialazedfilteredProducts.filter(
         (product) => String(product.category) === String(searchCategory)
       );
     } else {
-      filteredProducts = AllProducts;
+      filteredProducts = initialazedfilteredProducts;
     }
   }
 
@@ -210,12 +238,10 @@ function Stock() {
   if (activeCard === "Tous") {
     filteredproductsAccordingtoCards = filteredProducts;
   } else {
-    filteredproductsAccordingtoCards = filteredProducts.filter((product) =>
-      String(product.brand) === String(activeCard)
+    filteredproductsAccordingtoCards = filteredProducts.filter(
+      (product) => String(product.brand) === String(activeCard)
     );
-    
   }
-
 
   return (
     <>
@@ -234,18 +260,44 @@ function Stock() {
           </Header>
 
           {activeCard === "" && (
-            <CardsContainer>
-              {CardsArray.map((card) => (
-                <Card
-                  key={card.id * 3.14}
-                  image={card.image}
-                  number={ card.marque ==='Tous'?AllProducts.length : AllProducts.filter((item) => item.brand === card.marque).length}
-                  marque={card.marque}
-                  category={card.category}
-                  onClick={() => handleClick(card)}
-                />
-              ))}
-            </CardsContainer>
+            <>
+              <TopButtonsContainer>
+                {Buttons.map((item) => (
+                  <Button
+                    key={item.id}
+                    onClick={() => {
+                      handleClickButton(item.title);
+                    }}
+                    className={
+                      activeButton?.trim().toLowerCase() ===
+                      item.title?.trim().toLowerCase()
+                        ? "activebtn"
+                        : ""
+                    }
+                  >
+                    <BtnTitle>{item.title}</BtnTitle>
+                  </Button>
+                ))}
+              </TopButtonsContainer>
+              <CardsContainer>
+                {CardsArray.map((card) => (
+                  <Card
+                    key={card.id * 3.14}
+                    image={card.image}
+                    number={
+                      card.marque === "Tous"
+                        ? initialazedfilteredProducts.length
+                        : initialazedfilteredProducts.filter(
+                            (item) => item.brand === card.marque
+                          ).length
+                    }
+                    marque={card.marque}
+                    category={card.category}
+                    onClick={() => handleClick(card)}
+                  />
+                ))}
+              </CardsContainer>
+            </>
           )}
 
           {activeCard !== "" && (

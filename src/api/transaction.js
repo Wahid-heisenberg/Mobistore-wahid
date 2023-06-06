@@ -53,14 +53,15 @@ router.post("/addsell", upload.single("image"), async (req, res) => {
     const serieNumber2 = req.body.serieNumber2;
     const category = req.body.category;
     const price = req.body.price;
+    const productState = req.body.productState
     console.log(Name, brand, price);
     const productquiry =
-      "INSERT INTO produitsachetes (Name, brand, serieNumber1, serieNumber2, category, price) VALUES (?, ?, ?, ?, ?, ?)";
+      "INSERT INTO produitsachetes (Name, brand, serieNumber1, serieNumber2, category, price ,productState) VALUES (?, ?, ?, ?, ?, ? , ?)";
 
     const currentProductID = await new Promise((resolve, reject) => {
       db.run(
         productquiry,
-        [Name, brand, serieNumber1, serieNumber2, category, price],
+        [Name, brand, serieNumber1, serieNumber2, category, price ,productState ],
         function (err) {
           if (err) {
             console.error("Database error:", err.message);
@@ -74,7 +75,7 @@ router.post("/addsell", upload.single("image"), async (req, res) => {
     });
 
     const query3__stock =
-    "INSERT INTO stock (productName, serieNumber1, serieNumber2, brand, category ,buyPrice,sellPrice ) VALUES (?, ?, ?, ?, ? , ? , ?)";
+    "INSERT INTO stock (productName, serieNumber1, serieNumber2, brand, category ,buyPrice,sellPrice ,productState ) VALUES (?, ?, ?, ?, ? , ? , ?, ?)";
   const stockId = await new Promise((resolve, reject) => {
     db.run(
       query3__stock,
@@ -86,6 +87,7 @@ router.post("/addsell", upload.single("image"), async (req, res) => {
         req.body.category,
         req.body.price,
         req.body.price*1.3,
+        req.body.productState
       ],
       function (err) {
         if (err) {
@@ -166,14 +168,15 @@ router.post("/addexchange", upload1.single("image"), async (req, res) => {
     const serieNumber2 = req.body.serieNumber2;
     const category = req.body.category;
     const price = req.body.price;
+    const productState = req.body.productState 
     console.log(Name, brand, price);
     const productquiry =
-      "INSERT INTO produitsEchanges (Name, brand, serieNumber1, serieNumber2, category, price) VALUES (?, ?, ?, ?, ?, ?)";
+      "INSERT INTO produitsEchanges (Name, brand, serieNumber1, serieNumber2, category, price ,productState ) VALUES (?, ?, ?, ?, ?, ? , ?)";
 
     const currentProductID = await new Promise((resolve, reject) => {
       db.run(
         productquiry,
-        [Name, brand, serieNumber1, serieNumber2, category, price],
+        [Name, brand, serieNumber1, serieNumber2, category, price ,productState],
         function (err) {
           if (err) {
             console.error("Database error:", err.message);
@@ -195,7 +198,7 @@ router.post("/addexchange", upload1.single("image"), async (req, res) => {
     const sellPrice = req.body.sellPrice;
 
     const query3 =
-      "INSERT INTO stock (productName, serieNumber1, serieNumber2, brand, category ,buyPrice,sellPrice ) VALUES (?, ?, ?, ?, ? , ? , ?)";
+      "INSERT INTO stock (productName, serieNumber1, serieNumber2, brand, category ,buyPrice,sellPrice ,productState ) VALUES (?, ?, ?, ?, ? , ? , ? , ?)";
     const stockId = await new Promise((resolve, reject) => {
       db.run(
         query3,
@@ -207,6 +210,7 @@ router.post("/addexchange", upload1.single("image"), async (req, res) => {
           ccategory,
           buyPrice,
           sellPrice,
+          productState
         ],
         function (err) {
           if (err) {
@@ -437,11 +441,13 @@ router.delete("/deleteTransactions/:transactionId", (req, res) => {
 
 
 const upload2 = multer({ storage });
-router.patch("/updateTransaction/:transactionId",upload2.single("image"), (req, res) => {
+router.patch("/updateTransaction/:transactionId",upload2.single("image"),async (req, res) => {
   const transactionId = req.params.transactionId;
   const transactionType = req.body.transactionType;
   const transactionDate = req.body.transactionDate;
+  const productState =req.body.productState
   const imagePath = `cardsPictures/${req.file.filename}`;
+
 
   console.log(transactionId);
   if (transactionId === -1) {
@@ -461,7 +467,7 @@ router.patch("/updateTransaction/:transactionId",upload2.single("image"), (req, 
             res.status(500).json({ error: "Database error" });
             return;
           } else {
-            console.log("Transaction ");
+            console.log("Transaction");
             updateClient();
             if (transactionType === "Echange") {
               updateProduitsEchanges();
@@ -478,41 +484,22 @@ router.patch("/updateTransaction/:transactionId",upload2.single("image"), (req, 
         }
       );
       
+    
+console.log(transactionType)
+      
 
-      function updateProduitsEchanges() {
-        db.run(
-          "UPDATE produitsEchanges SET Name = ?, brand = ?, serieNumber1 = ?, serieNumber2 = ?, category = ?, price = ? WHERE exchangeId = (SELECT productId FROM transactions WHERE transactionId = ?)",
-          [
-            req.body.Name,
-            req.body.brand,
-            req.body.serieNumber1,
-            req.body.serieNumber2,
-            req.body.category,
-            req.body.price,
-            transactionId,
-          ],
-          function (err) {
-            if (err) {
-              console.error("Database error:", err.message);
-              res.status(500).json({ error: "Database error" });
-              return;
-            } else {
-              console.log("ProduitsEchanges modifier");
-            }
-          }
-        );
-      }
       function updateStock() {
         db.run(
-          "UPDATE stock SET productName = ?, serieNumber1 = ?, serieNumber2 = ?, brand = ?, category = ?, buyPrice = ?, sellPrice = ? WHERE productId = (SELECT stockId FROM transactions WHERE transactionId = ?)",
+          "UPDATE stock SET productName = ?, serieNumber1 = ?, serieNumber2 = ?, brand = ?, category = ?, buyPrice = ?, sellPrice = ? ,productState = ? WHERE productId = (SELECT stockId FROM transactions WHERE transactionId = ?)",
           [
             req.body.productName,
-            req.body.cbrand,
             req.body.cserieNumber1,
             req.body.cserieNumber2,
+            req.body.cbrand,
             req.body.ccategory,
             req.body.buyPrice,
             req.body.sellPrice,
+            productState,
             transactionId,
           ],
           function (err) {
@@ -530,7 +517,7 @@ router.patch("/updateTransaction/:transactionId",upload2.single("image"), (req, 
 
       function updateStock2() {
         db.run(
-          "UPDATE stock SET productName = ?, serieNumber1 = ?, serieNumber2 = ?, brand = ?, category = ?, buyPrice = ?, sellPrice = ? WHERE productId = (SELECT stockId FROM transactions WHERE transactionId = ?)",
+          "UPDATE stock SET productName = ?, serieNumber1 = ?, serieNumber2 = ?, brand = ?, category = ?, buyPrice = ?, sellPrice = ? ,productState = ? WHERE productId = (SELECT stockId FROM transactions WHERE transactionId = ?)",
           [
             req.body.Name,
             req.body.brand,
@@ -539,6 +526,7 @@ router.patch("/updateTransaction/:transactionId",upload2.single("image"), (req, 
             req.body.category,
             req.body.price,
             req.body.price*1.3,
+            productState,
             transactionId,
           ],
           function (err) {
@@ -556,7 +544,7 @@ router.patch("/updateTransaction/:transactionId",upload2.single("image"), (req, 
 
       function updateproduitsachetes() {
         db.run(
-          "UPDATE produitsachetes SET Name = ?, brand = ?, serieNumber1 = ?, serieNumber2 = ?, category = ?, price = ? WHERE sellId = (SELECT productId FROM transactions WHERE transactionId = ?)",
+          "UPDATE produitsachetes SET Name = ?, brand = ?, serieNumber1 = ?, serieNumber2 = ?, category = ?, price = ? ,productState = ?  WHERE sellId = (SELECT productId FROM transactions WHERE transactionId = ?)",
           [
             req.body.Name,
             req.body.brand,
@@ -564,6 +552,7 @@ router.patch("/updateTransaction/:transactionId",upload2.single("image"), (req, 
             req.body.serieNumber2,
             req.body.category,
             req.body.price,
+            productState,
             transactionId,
           ],
           function (err) {
@@ -572,12 +561,47 @@ router.patch("/updateTransaction/:transactionId",upload2.single("image"), (req, 
               res.status(500).json({ error: "Database error" });
               return;
             } else {
-              console.log("produitsachetes updated");
+              console.log("produits achetes updated");
               
             }
           }
         );
       }
+      
+      function updateProduitsEchanges() {
+        db.run(
+          "UPDATE produitsEchanges SET Name = ?, brand = ?, serieNumber1 = ?, serieNumber2 = ?, category = ?, price = ?, productState = ? WHERE exchangeId = (SELECT productId FROM transactions WHERE transactionId = ?)",
+          [
+            req.body.Name,
+            req.body.brand,
+            req.body.serieNumber1,
+            req.body.serieNumber2,
+            req.body.category,
+            req.body.price,
+            productState,
+            transactionId,
+          ],
+          function (err) {
+            if (err) {
+              console.error("Database error:", err.message);
+              res.status(500).json({ error: "Database error" });
+              return;
+            } else {
+              console.log("Produits Echanges modified");
+              console.log( 
+                req.body.Name,+"  "+ 
+                req.body.brand +"  "+ 
+                req.body.serieNumber1+"  "+ 
+                req.body.serieNumber2+"  "+ 
+                req.body.category+"  "+ 
+                req.body.price+"  "+ 
+                productState+"  "+ 
+                transactionId+"  ")
+            }
+          }
+        );
+      }
+
 
       function updateClient() {
         db.run(

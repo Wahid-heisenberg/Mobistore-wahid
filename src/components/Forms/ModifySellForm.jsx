@@ -38,6 +38,7 @@ const Exit = styled.input`
   }
 `;
 const ModifySellForm = (props) => {
+  const [selectedStateValue, setSelecteStatedValue] = useState("Nouveau");
   const [selectedFile, setSelectedFile] = useState("");
   const [ClientFirstName, setClientFirstName] = useState("");
   const [ClientFamilyName, setClientFamilyName] = useState("");
@@ -61,6 +62,10 @@ const ModifySellForm = (props) => {
     setSelectedFile(event.target.files[0]);
   };
 
+  function handleChangeState(event) {
+    setSelecteStatedValue(event.target.value);
+  }
+
   function shortenString(str) {
     if (str.length <= 19) {
       return str;
@@ -81,13 +86,15 @@ const ModifySellForm = (props) => {
   selldata.append("image", selectedFile);
   selldata.append("transactionDate", currentDate);
   selldata.append("transactionType", props.transactionType);
-
   selldata.append("Name", productName);
   selldata.append("brand", productBrand);
   selldata.append("serieNumber1", productSerieNumber1);
   selldata.append("serieNumber2", productSerieNumber2);
   selldata.append("category", category);
   selldata.append("price", price);
+
+  
+  selldata.append("productState", selectedStateValue);
   //console.log(ClientFirstName,ClientFamilyName,ClientPhoneNumber,selectedFile,currentDate,props.transactionType)
   console.log(
     productName,
@@ -104,13 +111,16 @@ const ModifySellForm = (props) => {
   exchangedata.append("cardNumber", ClientCardIdNumber);
   exchangedata.append("image", selectedFile);
   exchangedata.append("transactionDate", currentDate);
-  exchangedata.append("transactionType", props.transactionType);
+
+  exchangedata.append("productState", selectedStateValue);
+
   exchangedata.append("Name", productName);
   exchangedata.append("brand", productBrand);
   exchangedata.append("serieNumber1", productSerieNumber1);
   exchangedata.append("serieNumber2", productSerieNumber2);
   exchangedata.append("category", category);
   exchangedata.append("price", price);
+  exchangedata.append("transactionType", props.transactionType);
 
   exchangedata.append("productName", productName2);
   exchangedata.append("cserieNumber1", product__2__SerieNumber1);
@@ -294,6 +304,21 @@ const ModifySellForm = (props) => {
                 </Select>
               </SelectContainer>
             </Label>
+            <Label htmlFor="States">
+              État d'article 
+                <SelectContainer>
+                  <Select
+                    name="States"
+                    id="States"
+                    value={selectedStateValue}
+                    onChange={handleChangeState}
+                    required
+                  >
+                    <option value="Nouveau">Nouveau</option>
+                    <option value="Occasion">Occasion</option>
+                  </Select>
+                </SelectContainer>
+              </Label>
             <Label>
               Prix
               <PriceContainer>
@@ -349,7 +374,7 @@ const ModifySellForm = (props) => {
               <Field
                 required
                 type="text"
-                placeholder="Iphone"
+                placeholder="apple"
                 onChange={(e) => setProductBrand(e.target.value)}
                 value={productBrand}
               />
@@ -387,6 +412,7 @@ const ModifySellForm = (props) => {
                 </Select>
               </SelectContainer>
             </Label>
+            
 
             <Label>
               Prix
@@ -431,8 +457,7 @@ const ModifySellForm = (props) => {
               <Field
                 required
                 type="text"
-                placeholder="   
-                iphone 14"
+                placeholder="iphone 14"
                 onChange={(e) => setproductName2(e.target.value)}
                 value={productName2}
               />
@@ -471,6 +496,21 @@ const ModifySellForm = (props) => {
                 }
               />
             </Label>
+            <Label htmlFor="States">
+              État d'article 
+                <SelectContainer>
+                  <Select
+                    name="States"
+                    id="States"
+                    value={selectedStateValue}
+                    onChange={handleChangeState}
+                    required
+                  >
+                    <option value="Nouveau">Nouveau</option>
+                    <option value="Occasion">Occasion</option>
+                  </Select>
+                </SelectContainer>
+              </Label>
             <Label htmlFor="Categories">
               Catégorie
               <SelectContainer>

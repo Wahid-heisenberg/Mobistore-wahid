@@ -156,7 +156,7 @@ function Statistiques() {
   useEffect(() => {
     const totalTransactions = AllTransactions.length;
     const venteTransactions = AllTransactions.filter(
-      (transaction) => transaction.transactionType === 'Vente'
+      (transaction) => transaction.transactionType === 'Achat'
     ).length;
     const sellPercentage = (venteTransactions / totalTransactions) * 100;
 

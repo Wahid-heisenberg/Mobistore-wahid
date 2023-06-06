@@ -21,6 +21,8 @@ import {
   BreakLine,
 } from "./AddProductForm";
 import axios from "axios";
+
+import '../../App.css'
 export const Title = styled.h3`
   font-weight: 500;
   font-size: 34px;
@@ -40,6 +42,7 @@ export const getCurrentDateTime = ()=> {
 }
 
 function AddSellForm() {
+  const [selectedStateValue, setSelecteStatedValue] = useState("Nouveau");
   const [itemsNumber, SetItemsNumber] = useState(1);
   const [selectedValue, setSelectedValue] = useState("Achat");
 
@@ -187,6 +190,10 @@ function AddSellForm() {
     }
   }
 
+  function handleChangeState(event) {
+    setSelecteStatedValue(event.target.value);
+  }
+
 
   
   const currentDate = getCurrentDateTime();  
@@ -217,6 +224,7 @@ function AddSellForm() {
     selldata.append("serieNumber2",productSerieNumber2[0])
     selldata.append("category",categories[0])
     selldata.append("price",prices[0])
+    selldata.append("productState",selectedStateValue)
 
 
     const  exchangedata = new FormData();
@@ -241,6 +249,7 @@ function AddSellForm() {
     exchangedata.append("ccategory", categories2[0])
     exchangedata.append("buyPrice",prices2[0])
     exchangedata.append("sellPrice",prices2[0]*1.30)
+    exchangedata.append("productState",selectedStateValue)
 
 
     if (selectedValue === "Echange") {
@@ -373,7 +382,8 @@ function AddSellForm() {
                 </Select>
               </SelectContainer>
             </Label>
-            <Label>
+             {/* articles Number is fixed to one */}
+            <Label className="ArticlesNumber">
               Nombre d'articles
               <PriceContainer>
                 <PriceControler
@@ -387,6 +397,7 @@ function AddSellForm() {
                   {" "}
                   -
                 </PriceControler>
+               
                 <Field
                   
                   value={itemsNumber >= 2 ? itemsNumber : 1}
@@ -413,6 +424,21 @@ function AddSellForm() {
                 </PriceControler>
               </PriceContainer>
             </Label>
+            <Label htmlFor="States">
+              État d'article 
+                <SelectContainer>
+                  <Select
+                    name="States"
+                    id="States"
+                    value={selectedStateValue}
+                    onChange={handleChangeState}
+                    required
+                  >
+                    <option value="Nouveau">Nouveau</option>
+                    <option value="Occasion">Occasion</option>
+                  </Select>
+                </SelectContainer>
+              </Label>
             <BreakLine
               style={{
                 maxHeight: "8px",

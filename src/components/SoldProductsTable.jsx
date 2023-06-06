@@ -175,13 +175,19 @@ function SoldProductsTable() {
   const [showImage, setShowImage] = useState(false);
   const [showBlock, setShowBlock] = useState(false);
   const [imageUrl, setImageUrl] = useState("");
+
+  
   const [currentTransaction, setcurrentTransaction] = useState(-1);
+
   const [currentUpdatedTransaction, setcurrentUpdatedTransaction] = useState(-1);
-  const [transactionType, settransactionType] = useState('Vente');
+
+  const [currentUpdatedtransactionType, setcurrentUpdatedtransactionType] = useState('Achat');
+
   const { searchValue ,  searchCategory} = useContext(SearchContext);
 
 
-  console.log(searchValue)
+  console.log(currentUpdatedtransactionType)
+ // console.log(currentUpdatedTransaction)
   console.log(searchCategory)
   //const [showConfirmation, setShowConfirmation] = useState(false);
   console.log(imageUrl);
@@ -267,10 +273,10 @@ function SoldProductsTable() {
   }
   // useEffect(() => {
   //   const totalTransactions = AllTransactions.length;
-  //   const venteTransactions = AllTransactions.filter(
-  //     (transaction) => transaction.transactionType === 'Vente'
+  //   const AchatTransactions = AllTransactions.filter(
+  //     (transaction) => transaction.transactionType === 'Achat'
   //   ).length;
-  //   const sellPercentage = (venteTransactions / totalTransactions) * 100;
+  //   const sellPercentage = (AchatTransactions / totalTransactions) * 100;
 
   //   updateSellsNumber(sellPercentage);
     
@@ -474,7 +480,7 @@ function SoldProductsTable() {
                               className="Modifybtn"
                               onClick={() => {
                                 setShowBlock(true);
-                                settransactionType(Product.transactionType);
+                                setcurrentUpdatedtransactionType(Product.transactionType);
                                 setcurrentUpdatedTransaction(Product.transactionId);
                               }}
                             >
@@ -514,7 +520,7 @@ function SoldProductsTable() {
             />
           </HideButton>
           <ModifySellForm
-            transactionType={transactionType}
+            transactionType={currentUpdatedtransactionType}
             transactionId={currentUpdatedTransaction}
           />
         </ModifyBlock>
