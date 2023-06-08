@@ -25,7 +25,7 @@ function Graph() {
   return (
     <>
       <LineChart
-        width={930}
+        width={1000}
         height={400}
         data={data}
         margin={{ top: 5, right: 20, bottom: 5, left: 20 }}

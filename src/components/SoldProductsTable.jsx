@@ -18,7 +18,7 @@ import axios from "axios";
 import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
 import { SearchContext } from "../SearchContext";
 import { CloudinaryContext } from "cloudinary-react";
-
+import {mobile} from '../responsive'
 
 const Header = [
   "Nom",
@@ -39,6 +39,7 @@ const DetailsColumn = styled.td`
   text-align: center;
   background-color: rgba(162, 204, 246, 0.91);
   height: 100%;
+  ${mobile({ fontSize:'18px'})}
 `;
 const CostumerCard = styled.button`
   display: flex;
@@ -50,12 +51,14 @@ const CostumerCard = styled.button`
   border-radius: 6px;
   gap: 24px;
   letter-spacing: 1px;
+  color: #208FD0;
   cursor: pointer;
   font-weight: 700;
   &:hover {
     transform: scaleX(1.05);
     transition: 0.2s ease-out;
   }
+  ${mobile({ fontSize:'18px'})}
 `;
 
 const DeleteButton = styled.input`
@@ -78,6 +81,7 @@ const DeleteButton = styled.input`
     color: white;
     font-weight: 700;
   }
+  ${mobile({ fontSize:'16px',minWidth:'42px',marginLeft:'24px'})}
 `;
 const UpdateButton = styled.button`
  font-weight:600;
@@ -99,6 +103,7 @@ const UpdateButton = styled.button`
     color: white;
     font-weight: bold;
   }
+  ${mobile({ fontSize:'16px',minWidth:'42px'})}
 `;
 const ControlersContainer = styled.div`
   display: flex;
@@ -107,10 +112,11 @@ const ControlersContainer = styled.div`
   flex-direction: row;
   gap: 32px;
   border: none;
+  ${mobile({ fontSize:'24px',gap:'24px'})}
 `;
 const ImageBlock = styled.div`
   position: absolute;
-  top: 13%;
+  top: 11%;
   left: 30%;
   width: 65%;
   aspect-ratio: 5/3;
@@ -120,6 +126,7 @@ const ImageBlock = styled.div`
   flex-direction: column;
   object-fit: contain;
   background-color: white;
+  ${mobile({ width:'100%',left:'0px',height:'70%'})}
 `;
 
 const ModifyBlock = styled.div`
@@ -139,7 +146,8 @@ const ModifyBlock = styled.div`
   -ms-overflow-style: none; /* Internet Explorer 11 */
   &::-webkit-scrollbar {
     display: none; /* Safari and Chrome */
-  }
+  };
+  ${mobile({ width:'100%',left:'0px', top:'24px'})}
 `;
 const HideButton = styled.button`
 position: sticky;
@@ -297,7 +305,6 @@ function SoldProductsTable() {
                 className="HeaderColumn"
                 style={{
                   fontWeight: "600",
-                  fontSize: "24px",
                   color: "black",
                   textAlign: "center",
                 }}
@@ -330,8 +337,6 @@ function SoldProductsTable() {
                   <p
                     style={{
                       color: "#0C2E5A",
-                      fontWeight: "500",
-                      fontSize: "24px",
                     }}
                   >
                     {" "}
@@ -391,7 +396,6 @@ function SoldProductsTable() {
                             className="HeaderColumn"
                             style={{
                               fontWeight: "600",
-                              fontSize: "24px",
                               color: "#0C2E5A",
                               textAlign: "center",
                               padding: "24px",
@@ -403,10 +407,10 @@ function SoldProductsTable() {
                         ))}
                       </HRow>
                     </thead>
-                    <tbody>
+                    <tbody style={{ backgroundColor: 'rgb(162, 204, 246)'}} >
                       <Row
                         className="Row"
-                        style={{ padding: "0px", margin: "-2px -6px" }}
+                        style={{ padding: "0px", margin: "-2px -6px" , backgroundColor: 'rgb(162, 204, 246)'}}
                         key={Product.transactionId}
                       >
                         <DetailsColumn> {Product.firstName} </DetailsColumn>
@@ -460,9 +464,9 @@ function SoldProductsTable() {
                             }}
                           >
                             <img height="44px" src={IdCardIcon} alt="CardId" />
-                            <p style={{ fontSize: "24px", color: "#208FD0" }}>
+                          
                               Carte d'identité{" "}
-                            </p>
+                           
                           </CostumerCard>
                           <ControlersContainer>
                             <DeleteButton
@@ -510,7 +514,7 @@ function SoldProductsTable() {
               }}
             />
           </HideButton>
-          <Cardpicture publicId="sample" src={imageUrl} alt="Product Image" />
+          <Cardpicture publicId="sample" src={imageUrl} alt="image de la carte d'identité" />
         </ImageBlock>
       )}
 

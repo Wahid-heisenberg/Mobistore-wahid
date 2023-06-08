@@ -8,6 +8,7 @@ import CheckCircleOutlinedIcon from "@mui/icons-material/CheckCircleOutlined";
 import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
 import { Link , useNavigate} from "react-router-dom";
 import axios from "axios";
+import {mobile} from '../responsive'
 
 export const Container = styled.form`
   width: 60%;
@@ -19,11 +20,12 @@ export const Container = styled.form`
   min-height: 100vh;
   overflow: hidden;
   background-color: #0c2e5a;
+  padding: 10%;
+  ${mobile({ width :'100%',overflowY:'scroll',padding:'5%'})}
 `;
 export const Input = styled.input`
   width: 100%;
   border: none;
-
   height: 80px;
   background-color: transparent;
   color: white;
@@ -33,6 +35,7 @@ export const Input = styled.input`
   &:focus {
     outline: none;
   }
+  ${mobile({ height:'40px',fontSize:'24px'})}
   &::placeholder {
     font-family: "Changa";
     font-style: normal;
@@ -40,11 +43,11 @@ export const Input = styled.input`
     font-size: 36px;
     color: #ffffff;
     opacity: 0.6;
+    ${mobile({ fontSize:'24px'})}
   }
 `;
 
 export const Title = styled.h1`
-  font-style: normal;
   font-weight: 600;
   font-size: 48px;
   line-height: 103px;
@@ -53,6 +56,7 @@ export const Title = styled.h1`
   display: flex;
   align-items: center;
   gap: 4px;
+  ${mobile({ fontSize:'26px',marginBottom:'24px'})}
 `;
 export const TextFieldContainer = styled.div`
   display: flex;
@@ -71,23 +75,26 @@ export const InputContainer = styled.div`
   border-bottom: 5px solid #ffffff;
   padding: 1px;
   opacity: 0.75;
-  max-width: 600px;
-  min-width: 600px;
+   min-width: 100%;
+   
+  
   &:hover,
   &:focus {
     border-bottom: 5px solid white;
     opacity: 1;
+    ${mobile({borderBottom:'3px solid white'})}
   }
   &:hover ${Input}::placeholder, &:focus ${Input}::placeholder {
     color: white;
     opacity: 0.6;
   }
+  ${mobile({ marginBottom:'24px',borderBottom:'3px solid white'})}
 `;
 export const Btn = styled.input`
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 62px;
+padding: 8px 24px;
   font-style: normal;
   font-weight: 500;
   font-size: 36px;
@@ -96,7 +103,6 @@ export const Btn = styled.input`
   border: none;
   margin-top: 36px;
   margin-bottom: 17px;
-  padding: 0px 16px;
   border: 3px solid #0c2e5a;
   cursor: pointer;
   &:hover {
@@ -105,6 +111,7 @@ export const Btn = styled.input`
     transition: 0.3s ease-out;
     border: 3px solid #219dfd;
   }
+  ${mobile({fontSize:'24px',padding: '4px 24px'})}
 `;
 export const Qst = styled.span`
   text-decoration: none;
@@ -119,10 +126,11 @@ export const Qst = styled.span`
     transition: 0.3s ease-out;
     text-decoration: underline;
   }
+  ${mobile({fontSize:'18px'})}
 `;
 
 export const Hr = styled.hr`
-  width: 600px;
+  width: 90%;
   height: 1px;
   color: white;
   margin: 18px;
@@ -189,14 +197,14 @@ function RightUp() {
         console.error("Error registering:", error);
   
         // Update UI with error message
-        alert("reessayer après.");
+        alert("Erreur de connexion. Veuillez réessayer.");
       });
   };
   return (
     <>
       <Container onSubmit={handleSubmit}>
         <Title>Créer un compte</Title>
-        <InputContainer className="Input ">
+        <InputContainer className="Input">
           <TextFieldContainer>
             <AccountCircleOutlinedIcon
               className="Icon"
@@ -216,7 +224,7 @@ function RightUp() {
           <TextFieldContainer>
             <LockIcon
               className="Icon"
-              sx={{ color: "white", mr: 1, fontSize: "30px" }}
+              sx={{ color: "white", mr: 1, fontSize: "30px"}}
             />
 
             <Input

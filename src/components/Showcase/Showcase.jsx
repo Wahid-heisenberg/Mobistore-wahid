@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { Search } from '@mui/icons-material';
 import { Link } from "react-router-dom";
 import {useSearchContext } from '../../SearchContext';
+import {mobile} from '../../responsive'
 const Container =  styled.div `
 width: 100%;
 flex-direction: column;
@@ -22,6 +23,7 @@ border: 2px solid #323434;
 border-radius: 4px;
 gap: 10px;
 box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+${mobile({ width :'320px',padding:'4px 5px',height:'42px'})}
 `;
 
 export const SearchInput = styled.input  `
@@ -38,10 +40,12 @@ width: 100%;
   font-weight: 200;
 font-size:  28px;
 color: #323434;
+${mobile({ fontSize :'20px'})}
 opacity: 0.6;  
 }
 padding: 0px  12px  0px 0px;
 font-size:  28px;
+${mobile({ fontSize :'20px'})}
 `;
 
 
@@ -79,6 +83,7 @@ background-color:#007FC9;
 border: 3px solid #007FC9 ;
 transition: ease-in-out 0.3s;
 }
+${mobile({ height:'36px'})}
 `;
 
 const TopContainer = styled.div `
@@ -88,6 +93,7 @@ flex-direction: row;
 align-items: center;
 justify-content: space-between;
 padding: 0px;
+${mobile({ flexDirection: 'column' , gap : '8px'})}
 
 `;
 
@@ -98,6 +104,7 @@ font-size: 28px;
 line-height: 59px;
 display: flex;
 align-items: center;
+${mobile({ fontSize:'20px',lineHeight:'42px'})}
 `;
 
 export const AddButton = styled.button `
@@ -118,6 +125,7 @@ background-color:white;
 border: 3px solid #27A033 ;
 transition: ease-in-out 0.3s;
 }
+${mobile({ })}
 
 
 `;
@@ -128,6 +136,7 @@ font-size: 22px;
 line-height: 58px;
 display: flex;
 align-items: center;
+${mobile({ fontSize :'18px',lineHeight:'42px'})}
 `;
 export const Buttons = [
   {

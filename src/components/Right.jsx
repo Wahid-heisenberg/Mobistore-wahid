@@ -4,6 +4,7 @@ import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import LockIcon from "@mui/icons-material/Lock";
 import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
 import { useState } from "react";
+
 import {
   InputContainer,
   Container,
@@ -56,11 +57,12 @@ function Right() {
   
         // Redirect to the desired page or update the UI accordingly
         navigate("/Acceuil");
+        window.location.reload();
       })
       .catch((error) => {
         // Handle error response from backend
         console.log("Error logging in:", error);
-        alert("Error logging in. Please try again.");
+        alert("Erreur de connexion. Veuillez réessayer.");
       });
   };
   

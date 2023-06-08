@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import {mobile} from '../responsive'
 const Header = [
   "Nom",
   "N° de série 1",
@@ -9,12 +10,13 @@ const Header = [
 ];
 
 export const Table = styled.table`
+position: relative;
   border: 1px solid #a2ccf6;
   box-sizing: border-box;
   width: 100%;
   margin: 4px 0px 20px 0px;
   background-color: #f9f6f6;
-  position: relative;
+  ${mobile({ overflowX:'scroll'})}
 `;
 
 export const HRow = styled.tr`
@@ -24,6 +26,7 @@ export const HRow = styled.tr`
   justify-content: space-between;
   padding: 10px 0px;
   border-bottom: 1px solid #a2ccf6;
+ ${mobile({ padding: '4px 0px'})}
 `;
 
 export const Row = styled.tr`
@@ -37,6 +40,7 @@ export const Row = styled.tr`
   }
   padding: 10px 0px;
   border-bottom: 1px solid #a2ccf6;
+  ${mobile({ padding: '4px 0px'})}
 `;
 
 export const Column = styled.td`
@@ -45,7 +49,7 @@ export const Column = styled.td`
   text-align: center;
   justify-content: center;
   align-items: center;
-  padding: 0px 4px;
+  padding: 0px 8px;
 `;
 
 export const HColumn = styled.td`
@@ -55,6 +59,8 @@ export const HColumn = styled.td`
   font-size: 24px;
   font-weight: 600;
   text-align: center;
+  padding: 0px 8px;
+  ${mobile({ fontSize:'18px'})}
 `;
 
 export const Nom = styled.p`
@@ -62,6 +68,7 @@ export const Nom = styled.p`
   line-height: 33px;
   color: #007fc9;
   font-weight: 600;
+  ${mobile({ fontSize:'18px'})}
 `;
 
 export const Pachat = styled.p`
@@ -70,6 +77,7 @@ export const Pachat = styled.p`
   line-height: 33px;
   color: #219dfd;
   text-shadow: 1px 1px 1px grey;
+  ${mobile({ fontSize:'18px'})}
 `;
 
 const Pvente = styled.p`
@@ -78,12 +86,14 @@ const Pvente = styled.p`
   line-height: 33px;
   color: green;
   text-shadow: 1px 1px 1px skyblue;
+  ${mobile({ fontSize:'18px'})}
 `;
 export const Nserie = styled.p`
   font-weight: 500;
   font-size: 24px;
   line-height: 33px;
   color: #000000;
+  ${mobile({ fontSize:'18px'})}
 `;
 
 function ProductsTable(props) {

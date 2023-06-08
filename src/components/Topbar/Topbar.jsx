@@ -8,6 +8,7 @@ import { Badge } from '@mui/material';
 import { Link } from 'react-router-dom';
 import ClearOutlinedIcon from '@mui/icons-material/ClearOutlined';
 import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
+import {mobile} from '../../responsive'
 const Container = styled.div `
 width: 100%;
 display: flex;
@@ -17,6 +18,7 @@ flex-direction: row;
 margin: 12px 0px;
 background-color: white ;
 position: relative;
+${mobile({ flexDirection:'column'})}
 `;
 
 export const Title = styled.h1 `
@@ -24,7 +26,9 @@ font-style: normal;
 font-weight: 600;
 font-size: 40px;
 line-height: 74px;
+margin-left: 16px;
 color: #0C2E5A;
+${mobile({ fontSize:'32px',marginLeft:'0px',lineHeight:'48px'})}
 
 `;
 
@@ -34,6 +38,7 @@ display: flex;
 align-items: center;
 justify-content: center;
 flex-direction: row;
+
 
 `;
 
@@ -115,6 +120,7 @@ overflow-y: scroll;
 ::-webkit-scrollbar-track {
   background: #f1f1f1; 
 }
+
  
 /* Handle */
 ::-webkit-scrollbar-thumb {
@@ -135,6 +141,7 @@ z-index: 8;
 border: 1px solid rgba(0, 0, 0, 0.13);
 border-radius: 10px;
 box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.25);
+${mobile({width:'96%',right:'auto', left:'auto'})}
 
 `;
 const NotificationsTitle = styled.h2`

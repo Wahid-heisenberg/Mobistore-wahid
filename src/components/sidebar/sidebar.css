@@ -1,45 +1,58 @@
+.active {
+   color: white;
+   font-weight: 600;
+   transition: 0.4s ease-in;
+   background-color: #2c5080;
+}
 
-   .active
-   {
-      color: white;
-      font-weight: 600;
-      transition: 0.4s ease-in  ;
-      background-color: #2c5080;
-  }
-  .active .icon ,.active .title
-  {
-     color: white;
-
- }
-
-
-.Link{
-display: flex;
-flex: 1;
-flex-direction: row;
-align-items: center;
-justify-content: flex-start;
-cursor: pointer;
-gap: 16px;
-font-style: normal;
-font-weight: 600;
-font-size: 28px;
-color: #A2CCF6;
-padding:16px 32px;
-text-decoration: none;
-width: 100%;
+.active .icon,
+.active .title {
+   color: white;
 
 }
-.Link:hover{
-color: white;
-   }
-.LinkContainer:hover, .LinkContainer:hover .Link {
+
+
+.Link {
+   display: flex;
+   flex: 1;
+   flex-direction: row;
+   align-items: center;
+   justify-content: flex-start;
+   cursor: pointer;
+   gap: 16px;
+   font-style: normal;
+   font-weight: 600;
+   font-size: 28px;
+   color: #A2CCF6;
+   padding: 16px 32px;
+   text-decoration: none;
+   width: 100%;
+
+}
+
+.Link:hover {
+   color: white;
+}
+
+.LinkContainer:hover,
+.LinkContainer:hover .Link {
    font-weight: 600;
    background-color: #2c5080;
-color: white;
-transition: 0.4s ease-in;
+   color: white;
+   transition: 0.4s ease-in;
 }
+
 .LinkContainer {
-text-decoration: none;
-width: 100%;
+   text-decoration: none;
+   width: 100%;
 }
+@media only screen and (max-width: 550px) {
+   .title {
+      display: none;
+   }
+   .Link {
+padding: 12px ;
+justify-content: center;
+   }
+
+ }

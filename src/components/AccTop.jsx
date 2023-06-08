@@ -2,6 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import Logo from "../logo.png";
+import {mobile} from '../responsive'
 const BoxesContainer = styled.div`
   display: flex;
   align-items: center;
@@ -9,6 +10,7 @@ const BoxesContainer = styled.div`
   width: 100%;
   gap: 32px;
   padding: 8px 32px 32px 32px;
+  ${mobile({ flexDirection : 'column'})}
 `;
 const Box = styled.div`
   border-radius: 8px;
@@ -24,6 +26,7 @@ const Box = styled.div`
   &:hover {
     box-shadow: 4px 4px 4px 2px rgba(0, 0, 0, 0.25);
   }
+  ${mobile({ width:'100%',padding:'8px 12px'})}
 `;
 const Boxx = styled.div`
   border-radius: 8px;
@@ -39,6 +42,7 @@ const Boxx = styled.div`
   &:hover {
     box-shadow: 4px 4px 4px 2px rgba(0, 0, 0, 0.25);
   }
+  ${mobile({ width:'100%',padding:'8px 12px'})}
 `;
 const FormLink = styled.div`
   display: flex;
@@ -46,18 +50,21 @@ const FormLink = styled.div`
   justify-content: center;
   padding: 8px 16px;
   border-radius: 8px;
-  font-size: 24px;
+  font-size: 32px;
+  text-align: center;
   background-color: #27a033;
   color: #ffffff;
   &:hover {
     filter: drop-shadow(5px 5px 5px rgba(0, 0, 0, 0.25));
   }
+  ${mobile({ fontSize:'16px'})}
 `;
 
 const BoxTitle = styled.h3`
   font-weight: 800;
   font-size: 32px;
   color: #007fc9;
+  ${mobile({ fontSize:'22px'})}
 `;
 const ImgContainer = styled.div`
   display: flex;

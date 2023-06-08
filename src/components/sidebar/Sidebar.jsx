@@ -7,15 +7,18 @@ import BarChartOutlinedIcon from "@mui/icons-material/BarChartOutlined";
 import ArticleIcon from "@mui/icons-material/Article";
 import LogoutIcon from "@mui/icons-material/Logout";
 import "./sidebar.css";
+import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
 import LogoImg from "../../bglogo.png";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-
-const Container = styled.div`
-  position: static;
+import MenuOutlinedIcon from '@mui/icons-material/MenuOutlined';
+import {mobile} from '../../responsive'
+const OuterContainer= styled.div`
+  position: relative;
   top: 0;
   left: 0;
-  min-width: 22%;
+  min-width: ${({ isOpen }) => (isOpen ? "22%" : "0%")};
+  max-width: ${({ isOpen }) => (isOpen ? "22%" : "0%")};
   min-height: 100%;
   max-height: 100%;
   overflow-y: hidden;
@@ -26,7 +29,52 @@ const Container = styled.div`
   flex-direction: column;
   background-color: #0c2e5a;
   color: #a2ccf6;
-  z-index: 1;
+  transition: transform 0.6s ease-in-out;
+  transform: ${({ isOpen }) => (isOpen ? "translateX(0)" : "translateX(-100%)")};
+  ${mobile({ overflowY:'scroll'})}
+`;
+const Container = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+width: 100%;
+  min-height: 100%;
+  max-height: 100%;
+  overflow-y: hidden;
+  padding: 4px 0px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-direction: column;
+  background-color: #0c2e5a;
+  color: #a2ccf6;
+  z-index: 15;
+  ${mobile({ overflowY:'scroll',overflowX:'hidden'})}
+
+`;
+const SideBarOpen = styled.button`
+  position: absolute;
+  top: 10px;
+  left: 4px;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  z-index: 6;
+  color: #007fc9;
+`;
+
+const SideBarClose = styled.button`
+position: absolute;
+top: 10px;
+left: 16px;
+background-color: transparent;
+border: 2px solid #007fc9;
+border-radius: 50%;
+background-color: white;
+cursor: pointer;
+z-index: 18;
+padding: 4px;
+color: #007fc9;
 `;
 const Top = styled.div`
   width: 100%;
@@ -42,18 +90,17 @@ const Dialog = styled.div`
   display: flex;
   margin: 0px auto;
   align-items: center;
-  align-items: center;
   justify-content: center;
   background: transparent;
   flex-direction: row;
   z-index: 5;
   gap: 8%;
   padding: 0px 5%;
+  ${mobile({ flexDirection:'column',gap:'10px'})}
 `;
 const Yes = styled.button`
   width: 50%;
   display: flex;
-  align-items: center;
   font-size: 24px;
   padding: 8px;
   align-items: center;
@@ -64,6 +111,8 @@ const Yes = styled.button`
   border: 3px solid #70ee9c;
   border-radius: 8px;
   background: none;
+  ${mobile({ width:'100%',fontSize:'16px'})}
+
 `;
 const No = styled.button`
   width: 50%;
@@ -79,6 +128,7 @@ const No = styled.button`
   border: 3px solid #ffffff;
   border-radius: 8px;
   background: none;
+  ${mobile({ width:'100%',fontSize:'16px'})}
 `;
 const IconContainer = styled.div`
   display: flex;
@@ -97,23 +147,26 @@ const Circle = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 138.42px;
-  height: 146.95px;
+width: 40%;
+aspect-ratio: 1/1;
   border-radius: 100%;
   background-color: white;
   margin-top: 30px;
+  ${mobile({ width:'80%',marginTop:'52px'})}
 `;
 const Logo = styled.img`
   width: 85%;
-  height: 85%;
+aspect-ratio: 1/1;
 `;
 
 const Title = styled.h3`
   font-style: normal;
   font-weight: 600;
   font-size: 40px;
+text-align: center;
   margin: 20px 0px 8px 0px;
   color: #a2ccf6;
+  ${mobile({ fontSize:'28px'})}
 `;
 
 const Buttom = styled.div`
@@ -157,10 +210,25 @@ function Sidebar(props) {
   };
   console.log(activeItem);
 
+  const [isOpen, setIsOpen] = useState(true);
+
+  const toggleSidebar = () => {
+    setIsOpen(!isOpen);
+  };
+
   const navigate = useNavigate();
   return (
     <>
-      <Container>
+{   !isOpen &&     <SideBarOpen onClick={toggleSidebar}>
+       <MenuOutlinedIcon style={ { fontSize:"42px" }}/>
+      </SideBarOpen> }
+    <OuterContainer isOpen={isOpen}>
+    <SideBarClose onClick={toggleSidebar}>
+        <CloseOutlinedIcon  style={ { fontSize:"32px" }}/>
+      </SideBarClose>
+
+      <Container >
+
         <Top>
           <Circle>
             <Logo src={LogoImg} alt="logo" />
@@ -224,6 +292,7 @@ function Sidebar(props) {
                   localStorage.removeItem("token");
 
                   navigate("/SignIn");
+                  window.location.reload();
                 }}
               >
                 {" "}
@@ -233,6 +302,8 @@ function Sidebar(props) {
           )}
         </Buttom>
       </Container>
+      </OuterContainer>
+
     </>
   );
 }

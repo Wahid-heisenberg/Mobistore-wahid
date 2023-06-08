@@ -6,6 +6,7 @@ import styled from "styled-components";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import UploadFileOutlinedIcon from "@mui/icons-material/UploadFileOutlined";
+import {mobile} from '../../responsive.js'
 import {
   Question,
   Form,
@@ -15,9 +16,6 @@ import {
   PriceControler,
   SelectContainer,
   Select,
-  FormControlers,
-  Submit,
-  Exit,
   BreakLine,
 } from "./AddProductForm";
 import axios from "axios";
@@ -29,6 +27,53 @@ export const Title = styled.h3`
   color: #0c2e5a;
   align-self: baseline;
 `;
+ const FormControlers = styled.div`
+
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  padding: 24px 32px 0px 32px;
+  gap: 16px;
+  ${mobile({ padding:'20px 0px',gap:'12px',transform:'translateX(-60%)'})}
+`;
+ const Submit = styled.input`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  background-color: #007fc9;
+  font-size: 30px;
+  padding: 6px 32px;
+  height: 52px;
+  border: 1.6px solid #007fc9;
+  border-radius: 4px;
+  box-sizing: border-box;
+  cursor: pointer;
+  &:hover {
+    transform: scaleX(1.05);
+    transition: all ease-out 0.4s;
+  }
+  ${mobile({fontSize:'22px', padding: '4px 24px',width:'100%'})}
+`;
+ const Exit = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #007fc9;
+  background-color: white;
+  font-size: 30px;
+  padding: 6px 32px;
+  height: 52px;
+  border: 1.6px solid #007fc9;
+  border-radius: 4px;
+  cursor: pointer;
+  &:hover {
+    transform: scaleX(1.05);
+    transition: all ease-out 0.4s;
+  }
+  ${mobile({fontSize:'22px',  padding: '4px 24px',width:'100%'})}
+`;
+
 
 export const getCurrentDateTime = ()=> {
   const currentDateTime = new Date();

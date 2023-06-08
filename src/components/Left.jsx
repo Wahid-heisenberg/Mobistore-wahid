@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import logoImg from "../bglogo.png";
+import {mobile} from '../responsive'
 const Container = styled.div`
   width: 40%;
   display: flex;
@@ -9,6 +10,7 @@ const Container = styled.div`
   flex-direction: column;
   max-height: 100%;
   overflow: hidden;
+  ${mobile({ display:'none'})}
 `;
 const Logo = styled.img`
   width: 478.49px;

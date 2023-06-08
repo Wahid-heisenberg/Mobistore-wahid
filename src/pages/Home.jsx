@@ -3,6 +3,7 @@ import styled from "styled-components";
 import ArrowForwardOutlinedIcon from "@mui/icons-material/ArrowForwardOutlined";
 import logoImg from "../bglogo.png";
 import { Link } from "react-router-dom";
+import {mobile} from '../responsive'
 const Container = styled.div`
   width: 100%;
   height: 100vh;
@@ -14,18 +15,22 @@ const Container = styled.div`
   align-items: center;
   justify-content: center;
   flex-direction: column;
+  text-align: center;
+  padding: 12px;
+  ${mobile({overflowY:'hidden'})}
 `;
 const Title = styled.h1`
   font-weight: 600;
   font-size: 64px;
   color: #0c2e5a;
+  ${mobile({fontSize:'42px',marginTop:'24px' })}
 `;
 
 const Logo = styled.img`
-  transform: rotate(31.57deg);
   height: 456px;
   aspect-ratio: 3/4;
   margin: 24px;
+  ${mobile({margin:'8px' ,height :'55%'})}
 `;
 const Circle = styled.div`
   display: flex;

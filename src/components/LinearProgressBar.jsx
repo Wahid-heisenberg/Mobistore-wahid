@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import ProgressLine from "./ProgressLine";
+import {mobile} from '../responsive'
 const Container = styled.div`
   width: 92%;
   display: flex;
@@ -13,14 +14,17 @@ const Container = styled.div`
     transform: scale(1.01);
     transition: 0.4s ease-out;
   }
+  ${mobile({flexDirection:'column',display:'inline-block',margin:'8px 0px'})}
 `;
 const ProductTitle = styled.p`
   font-weight: 500;
   font-size: 36px;
+  ${mobile({fontSize:'24px'})}
 `;
 const ProductTitleContainer = styled.div`
   flex: 1;
   justify-self: flex-start;
+  ${mobile({marginBottom:'4px'})}
 `;
 function LinearProgressBar(props) {
   let color = "D9D9D9";

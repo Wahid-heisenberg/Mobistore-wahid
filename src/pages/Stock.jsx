@@ -16,7 +16,9 @@ import Redmi from "../assets/Redmi-logo.png";
 import Condor from "../assets/condor-logo.png";
 import Tous from "../assets/Tous.png";
 import oppo from "../assets/oppo.png";
+import realme from "../assets/realmi.png";
 import { SearchContext } from "../SearchContext";
+import {mobile} from '../responsive'
 import {
   TopButtonsContainer,
   Button,
@@ -40,7 +42,7 @@ export const Right = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-  margin: 0px 34px 8px 34px;
+  margin: 0px 32px 12px 32px;
   width: 100%;
   max-height: 100vh;
   scrollbar-width: none; /* Firefox */
@@ -51,6 +53,7 @@ export const Right = styled.div`
   overflow-y: scroll;
   overflow-x: hidden;
   z-index: 1;
+  ${mobile({ overflowX:'scroll',margin:"0px 12px 12px 12px"})}
 `;
 
 export const Header = styled.header`
@@ -63,6 +66,8 @@ export const Header = styled.header`
   justify-content: center;
   background-color: white;
   z-index: 5;
+  ${mobile({position:'relative'})}
+  
 `;
 
 const ShowCaseContainer = styled.div`
@@ -81,6 +86,7 @@ const CardsContainer = styled.div`
   margin-bottom: 32px;
   background-color: white;
   padding-top: 32px;
+  ${mobile({ gridTemplateColumns:'repeat(1, 1fr)'})}
 `;
 
 const ReturnButton = styled.button`
@@ -104,6 +110,7 @@ const ReturnButton = styled.button`
     color: white;
     transition: 0.3s all ease-in-out;
   }
+ ${mobile({width:'30%',fontSize:'24px'})}
 `;
 
 const CardsArray = [
@@ -128,36 +135,45 @@ const CardsArray = [
     marque: "huawwei",
   },
   {
-    id: "1",
-    image: hplogo,
-    marque: "hp",
-    category: ["Pc"],
+    id: "33",
+    image: sony,
+    marque: "sony",
   },
+
   {
     id: "3",
     image: samsung,
     marque: "samsung",
   },
   {
+    id: "159",
+    image: realme,
+    marque: "realme",
+  },
+  {
     id: "4",
     image: Condor,
     marque: "condor",
+  },
+
+
+  {
+    id: "378",
+    image: oppo,
+    marque: "oppo",
+  },
+  {
+    id: "1",
+    image: hplogo,
+    marque: "hp",
+    category: ["Pc"],
   },
   {
     id: "6",
     image: lenovo,
     marque: "lenovo",
   },
-  {
-    id: "33",
-    image: sony,
-    marque: "sony",
-  },
-  {
-    id: "378",
-    image: oppo,
-    marque: "oppo",
-  },
+
 ];
 const Buttons = [
   {
@@ -301,7 +317,12 @@ function Stock() {
 
           {activeCard !== "" && (
             <>
-              <ProductsTable products={filteredproductsAccordingtoCards} />
+       <ShowCaseContainer>
+       <ProductsTable products={filteredproductsAccordingtoCards} />
+       </ShowCaseContainer>
+
+       
+
               <ReturnButton onClick={() => setActiveCard("")}>
                 Retour
               </ReturnButton>

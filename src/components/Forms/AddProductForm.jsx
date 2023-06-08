@@ -7,12 +7,14 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import sortDownImage from "./sort-down.png";
 import axios from "axios";
+import {mobile} from '../../responsive.js'
 export const Question = styled.h2`
   font-weight: 600;
   font-size: 36px;
   color: #000000;
   opacity: 0.5;
   align-self: baseline;
+  ${mobile({ fontSize:'24px'})}
 `;
 export const BreakLine = styled.hr`
   min-height: 8px;
@@ -30,6 +32,7 @@ export const Form = styled.form`
   grid-column-gap: 5%;
   grid-row-gap: 20px;
   padding: 0px 16px 24px 16px;
+  ${mobile({ gridTemplateColumns:' repeat(1, 1fr)'})}
 `;
 export const Field = styled.input`
   margin-top: 8px;
@@ -51,6 +54,7 @@ export const Field = styled.input`
   &::placeholder {
     font-size: 32px;
     opacity: 0.7;
+    ${mobile({fontSize:'22px'})}
   }
   appearance: none;
   &::-webkit-outer-spin-button,
@@ -58,10 +62,13 @@ export const Field = styled.input`
     -webkit-appearance: none;
     margin: 0;
   }
+  ${mobile({fontSize:'22px',height:'42px',padding:'4px 10px'})}
+
 `;
 export const Label = styled.label`
   font-size: 29px;
   font-weight: lighter;
+  ${mobile({ width:'100%',fontSize:'22px'})}
 `;
 export const PriceControler = styled.div`
   display: flex;
@@ -69,6 +76,7 @@ export const PriceControler = styled.div`
   justify-content: center;
   font-weight: 200;
   font-size: 48px;
+
   background-color: #d9d9d9;
   opacity: 0.75;
   border: none;
@@ -83,6 +91,7 @@ export const PriceControler = styled.div`
   &.Substract {
     left: 0;
   }
+  ${mobile({fontSize:'36px',height:'42px'})}
 `;
 export const PriceContainer = styled.div`
   display: flex;
@@ -120,14 +129,19 @@ export const Select = styled.select`
     outline: none;
     box-shadow: inset 0px 0px 0px 1px #208fd0;
   }
+  
+  ${mobile({fontSize:'22px',padding:'4px 16px',height:'42px'})}
 `;
 
 export const FormControlers = styled.div`
+
   display: flex;
   align-items: flex-end;
   justify-content: space-between;
   padding: 24px 32px 0px 32px;
+
   gap: 16px;
+  ${mobile({ position: 'relative',flexDirection:'column',padding:'20px 0px',gap:'12px'})}
 `;
 
 export const Submit = styled.input`
@@ -147,6 +161,7 @@ export const Submit = styled.input`
     transform: scaleX(1.05);
     transition: all ease-out 0.4s;
   }
+  ${mobile({fontSize:'22px', padding: '4px 24px',position:'absolute',left:'10px',top:'25%',width:'96%'})}
 `;
 export const Exit = styled.div`
   display: flex;
@@ -164,6 +179,7 @@ export const Exit = styled.div`
     transform: scaleX(1.05);
     transition: all ease-out 0.4s;
   }
+  ${mobile({fontSize:'22px',  padding: '4px 24px',position:'absolute', top:'200%',left : '10px',width:'96%'})}
 `;
 
 function AddProductForm() {

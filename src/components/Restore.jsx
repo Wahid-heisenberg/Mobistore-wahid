@@ -8,13 +8,13 @@ function Restore() {
     <>
       <Container>
         <Title>
-          <KeyIcon style={{ fontSize: "60px", transform: "rotate(32deg)" }} />{" "}
+          <KeyIcon style={{ fontSize: "52px", transform: "rotate(32deg)" }} />{" "}
           Récupérer votre compte
         </Title>
         <h4>Contactez nous, Pour récupérer votre compte</h4>
         <h2>Signaler le problème</h2>
         <h1 className="Email">
-          <EmailIcon style={{ fontSize: "48px" }} />
+          <EmailIcon style={{ fontSize: "42px" }} />
           wahidslimani20002@gmail.com
         </h1>
         <Hr />

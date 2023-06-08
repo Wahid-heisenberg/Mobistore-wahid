@@ -10,7 +10,7 @@ import LinearProgressBar from "../components/LinearProgressBar";
 import { Link } from "react-router-dom";
 import { SearchContext } from "../SearchContext";
 import { useSearchContext } from "../SearchContext";
-
+import {mobile} from '../responsive'
 
 const ProgressBarsContainer = styled.div`
   width: 100%;
@@ -20,6 +20,7 @@ const ProgressBarsContainer = styled.div`
   justify-content: space-around;
   margin-top: 16px;
   cursor: pointer;
+  ${mobile({ flexDirection:'column',gap:'16px'})}
 `;
 
 const SoldProducts = styled.div`
@@ -30,6 +31,7 @@ const SoldProducts = styled.div`
   justify-content: space-between;
   padding: 0px 18px;
   margin-top: 24px;
+  ${mobile({ flexDirection:'column'})}
 `;
 const Showmore = styled.button`
   border: none;
@@ -45,6 +47,7 @@ const Showmore = styled.button`
     text-decoration: underline;
   }
   cursor: pointer;
+  ${mobile({ fontSize:'24px'})}
 `;
 const Historique = styled.div`
   font-weight: 600;
@@ -61,6 +64,7 @@ const Historique = styled.div`
     text-decoration: underline;
   }
   cursor: pointer;
+  ${mobile({fontSize:'24px',lineHeight:'32px'})}
 `;
 
 const LinearProgressBars = styled.div`

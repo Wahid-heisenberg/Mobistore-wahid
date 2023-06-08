@@ -9,12 +9,14 @@ import styled from "styled-components";
 import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
 import ArticleOutlinedIcon from "@mui/icons-material/ArticleOutlined";
 import HistoryOutlinedIcon from "@mui/icons-material/HistoryOutlined";
+import {mobile} from '../responsive'
 export const Title = styled.h1`
   font-weight: 500;
   font-size: 42px;
   color: #0c2e5a;
   align-self: baseline;
   margin-bottom: 16px;
+  ${mobile({ fontSize:'32px'})}
 `;
 export const Desc = styled.h2`
   font-weight: 500;
@@ -22,6 +24,7 @@ export const Desc = styled.h2`
   color: rgba(0, 0, 0, 0.7);
   align-self: baseline;
   margin-bottom: 24px;
+  ${mobile({ fontSize:'24px'})}
 `;
 const SettingsContainer = styled.div`
   display: flex;
@@ -29,6 +32,7 @@ const SettingsContainer = styled.div`
   align-self: baseline;
   padding: 0px 36px 16px 96px;
   gap: 22px;
+  ${mobile({ gap:'16px',padding:'0px 8px 16px 8px'})}
 `;
 const SettingsItem = styled.div`
   display: flex;
@@ -41,6 +45,7 @@ const SettingsItem = styled.div`
   &:hover {
     text-decoration: underline;
   }
+  ${mobile({ fontSize:'24px'})}
 `;
 
 function Settings() {

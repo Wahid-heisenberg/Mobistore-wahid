@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 import styled from "styled-components";
+import {mobile} from '../responsive'
 const ProgressBarContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -10,11 +11,13 @@ const ProgressBarContainer = styled.div`
     transform: scale(1.08);
     transition: 0.4s ease-out;
   }
+  ${mobile({gap:'12px'})}
 `;
 
 const ProgressBarText = styled.p`
   font-weight: 600;
   font-size: 42px;
+  ${mobile({fontSize:'28px'})}
 `;
 
 function CircularProgressBar(props) {

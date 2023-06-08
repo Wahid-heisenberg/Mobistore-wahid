@@ -9,11 +9,13 @@ import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import { Link } from "react-router-dom";
 import logoImg from "../bglogo.png";
 import axios from "axios";
+import {mobile} from '../responsive.js'
 const Title = styled.h1`
   align-self: baseline;
   color: #0c2e5a;
   font-weight: 500;
   font-size: 42px;
+  ${mobile({ fontSize:'28px'})}
 `;
 const Top = styled.div`
   display: flex;
@@ -23,6 +25,7 @@ const Top = styled.div`
   padding: 24px 34px 24px 42px;
   gap: 88px;
   width: 100%;
+  ${mobile({ flexDirection:'column',gap:'32px'})}
 `;
 const TopLeft = styled.div`
   display: flex;
@@ -37,10 +40,11 @@ const TopRight = styled.div`
   align-items: center;
   justify-content: space-around;
   gap: 16px;
+  ${mobile({ gap:'12px'})}
 `;
 const ProfileImageContainer = styled.div`
   height: 220px;
-  width: 220px;
+aspect-ratio: 1/1;
   border-radius: 50%;
   border: 3px solid #007fc9;
 `;
@@ -94,11 +98,13 @@ const DeleteButton = styled.button`
 const Identifient = styled.span`
   font-weight: 600;
   font-size: 30px;
+  ${mobile({ fontSize:'24px'})}
 `;
 const Information = styled.p`
   font-size: 30px;
   align-self: baseline;
   cursor: pointer;
+  ${mobile({ fontSize:'24px'})}
 `;
 const Buttom = styled.div`
   width: 100%;
@@ -113,6 +119,7 @@ const ButtomHeader = styled.div`
   align-items: center;
   justify-content: space-between;
   width: 100%;
+  ${mobile({ flexDirection:'column',gap:'16px'})}
 `;
 const AddWorkerButton = styled.div`
   display: flex;
@@ -166,6 +173,7 @@ const HColumn = styled.td`
   font-size: 24px;
   font-weight: 600;
   text-align: center;
+  padding: 4px 16px;
 `;
 const Column = styled.td`
   width: 100%;
@@ -176,6 +184,7 @@ const Column = styled.td`
   font-weight: 500;
   font-size: 20px;
   color: #0c2e5a;
+  padding: 8px 16px;
 `;
 
 function Profile() {
