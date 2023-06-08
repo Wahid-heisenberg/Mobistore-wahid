@@ -127,4 +127,6 @@ h2 {
 .ArticlesNumber {
 display: none;
 }
-
+.bg {
+   background-color:rgb(162, 204, 246);
+   }

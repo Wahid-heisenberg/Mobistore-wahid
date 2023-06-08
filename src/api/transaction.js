@@ -316,7 +316,7 @@ router.delete("/deleteTransactions/:transactionId", (req, res) => {
   const transactionId = req.params.transactionId;
   console.log(transactionId);
   if (transactionId === -1) {
-    res.status(400).json({ error: "Invalid transactionId" });
+    res.status(404).json({ error: "Invalid transactionId" });
     return;
   }
 

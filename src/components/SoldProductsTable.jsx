@@ -9,6 +9,7 @@ import {
   Nserie,
   Pachat,
 } from "./ProductsTable";
+import '../App.css'
 import ModifySellForm from "./Forms/ModifySellForm";
 import styled from "styled-components";
 import IdCardIcon from "../IdCard.png";
@@ -27,7 +28,7 @@ const Header = [
   "N° de série 2",
   "Prix ",
 ];
-const DetailsHeader = ["Nom", "Prénom", "Num de tel", "N° Carte", "Etat"];
+const DetailsHeader = [ "Prénom de client","Nom de client", "Num de tél", "Num de Carte", "Type de trans "];
 const DetailsColumn = styled.td`
   width: 100%;
   display: flex;
@@ -54,6 +55,7 @@ const CostumerCard = styled.button`
   color: #208FD0;
   cursor: pointer;
   font-weight: 700;
+  font-size: 24px;
   &:hover {
     transform: scaleX(1.05);
     transition: 0.2s ease-out;
@@ -324,50 +326,47 @@ function SoldProductsTable() {
                 onClick={() => toggleRow(index)}
               >
                 <Column>
-                  {" "}
+                  
                   <Nom>
-                    {" "}
+                    
                     {Product.soldProductName
                       ? Product.soldProductName
-                      : Product.exchangedProductName}{" "}
-                  </Nom>{" "}
+                      : Product.exchangedProductName}
+                  </Nom>
                 </Column>
                 <Column>
-                  {" "}
-                  <p
-                    style={{
-                      color: "#0C2E5A",
-                    }}
-                  >
-                    {" "}
-                    {Product.transactionDate}{" "}
-                  </p>{" "}
+                  <Nserie style={{ color: "#0C2E5A" }}>
+                  {Product.transactionDate}
+                  </Nserie>
+
+                    
+               
                 </Column>
                 <Column>
-                  {" "}
+                  
                   <Nserie style={{ color: "#0C2E5A" }}>
                     {Product.exchangedProductSerieNumber1
                       ? Product.exchangedProductSerieNumber1
                       : Product.soldProductSerieNumber1}
-                  </Nserie>{" "}
+                  </Nserie>
                 </Column>
                 <Column>
-                  {" "}
+                  
                   <Nserie style={{ color: "#0C2E5A" }}>
-                    {" "}
+                    
                     {Product.exchangedProductSerieNumber2
                       ? Product.exchangedProductSerieNumber2
                       : Product.soldProductSerieNumber2}
-                  </Nserie>{" "}
+                  </Nserie>
                 </Column>
                 <Column>
-                  {" "}
+                  
                   <Pachat style={{ color: "#0C2E5A" }}>
-                    {" "}
+                    
                     {Product.soldProductPrice
                       ? Product.soldProductPrice
-                      : Product.exchangedProductPrice}{" "}
-                  </Pachat>{" "}
+                      : Product.exchangedProductPrice}
+                  </Pachat>
                 </Column>
                 <Column style={{ maxWidth: "40px" }}>
                   {!expandedRows.includes(index) ? (
@@ -393,13 +392,13 @@ function SoldProductsTable() {
                         {DetailsHeader.map((item, Colindex) => (
                           <HColumn
                             key={Colindex}
-                            className="HeaderColumn"
+                            className="HeaderColumn bg"
                             style={{
                               fontWeight: "600",
                               color: "#0C2E5A",
                               textAlign: "center",
                               padding: "24px",
-                              backgroundColor: "rgba(162, 204, 246, 0.91)",
+
                             }}
                           >
                             {item}
@@ -407,10 +406,10 @@ function SoldProductsTable() {
                         ))}
                       </HRow>
                     </thead>
-                    <tbody style={{ backgroundColor: 'rgb(162, 204, 246)'}} >
+                    <tbody  >
                       <Row
                         className="Row"
-                        style={{ padding: "0px", margin: "-2px -6px" , backgroundColor: 'rgb(162, 204, 246)'}}
+                        style={{ padding: "0px", margin: "-2px -6px" }}
                         key={Product.transactionId}
                       >
                         <DetailsColumn> {Product.firstName} </DetailsColumn>
@@ -424,8 +423,8 @@ function SoldProductsTable() {
                               textShadow: "1px 1px 1px skyblue",
                             }}
                           >
-                            {" "}
-                            {Product.transactionType}{" "}
+                            
+                            {Product.transactionType}
                           </DetailsColumn>
                         ) : (
                           <DetailsColumn
@@ -434,14 +433,14 @@ function SoldProductsTable() {
                               textShadow: "1px 1px 1px skyblue",
                             }}
                           >
-                            {" "}
-                            {Product.transactionType}{" "}
+                            
+                            {Product.transactionType}
                           </DetailsColumn>
                         )}
                       </Row>
                       <Row
-                        className="Row"
-                        style={{ padding: "0px ", margin: "-2px -6px" }}
+                        className="Row bg"
+                        style={{ padding: "0px ", margin: "-2px -6px", }}
                         key={-1 - Product.transactionId}
                       >
                         <DetailsColumn
@@ -451,10 +450,11 @@ function SoldProductsTable() {
                             alignItems: "center",
                             justifyContent: "space-between",
                             padding: "32px 10% 20px 10%",
+                            backgroundColor:'rgb(162, 204, 246)'
                           }}
                           colSpan={6}
                         >
-                          {" "}
+                          
                           <CostumerCard
                             type="button"
                             onClick={() => {
@@ -465,7 +465,7 @@ function SoldProductsTable() {
                           >
                             <img height="44px" src={IdCardIcon} alt="CardId" />
                           
-                              Carte d'identité{" "}
+                              Carte d'identité
                            
                           </CostumerCard>
                           <ControlersContainer>
