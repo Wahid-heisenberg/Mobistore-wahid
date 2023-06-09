@@ -13,7 +13,7 @@ cloudinary.config({
 });
 
 // Create the "cardsPictures" directory if it doesn't exist
-const uploadDirectory = "../public/cardsPictures/";
+const uploadDirectory = "./public/cardsPictures/";
 if (!fs.existsSync(uploadDirectory)) {
   fs.mkdirSync(uploadDirectory);
 }

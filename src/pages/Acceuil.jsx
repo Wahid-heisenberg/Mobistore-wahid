@@ -6,7 +6,7 @@ import { Container } from "./Stock";
 import Graph from "../components/Graph";
 import styled from "styled-components";
 import AccTop from "../components/AccTop";
-import {mobile} from '../responsive'
+// import {mobile} from '../responsive'
 const GraphContainer = styled.div`
   width: 72%;
   display: flex;
