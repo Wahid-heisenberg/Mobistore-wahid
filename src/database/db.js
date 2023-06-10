@@ -2,6 +2,7 @@ const path = require('path');
 // const { google } = require('googleapis');
 // const fs = require('fs');
 const sqlite3 = require('sqlite3').verbose();
+
 // const credentials = {
 //   client_id: '668281683453-7r4r69tlaqfebkgmdpnslkq98abv824f.apps.googleusercontent.com',
 //   client_secret: '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',
@@ -43,15 +44,16 @@ const mysql = require('mysql2');
 
 // Create a connection to the MySQL database
 const connection = mysql.createConnection({
-  host: process.env.DB_HOST, 
-  user: process.env.DB_USERNAME, 
-  password: process.env.DB_PASSWORD,
-  database: process.env.DB_DBNAME,
+  host:'bgpvz6fjtyphkshwogd5-mysql.services.clever-cloud.com', 
+  user: 'ucfye1gyblfo9msz', 
+  password: 'KtvFN7qLR63abgpfX4mb',
+  database: 'bgpvz6fjtyphkshwogd5',
   waitForConnections: true,
   connectionLimit: 10,
   queueLimit: 0,
-  port: process.env.Port
+  port:3306
 });
+
 
 // Connect to the database
 connection.connect((err) => {
