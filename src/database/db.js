@@ -6,9 +6,10 @@ const sqlite3 = require('sqlite3').verbose();
 
 const mysql = require('mysql2');
 const dotenv = require('dotenv').config ({path:__dirname + '/.env'})
+
 // console.log(process.env.DB_HOST)
 // Create a connection to the MySQL database
-const connection = mysql.createConnection({
+const connection =mysql.createConnection({
   host: process.env.DB_HOST, 
   user: process.env.DB_USERNAME, 
   password: process.env.DB_PASSWORD ,

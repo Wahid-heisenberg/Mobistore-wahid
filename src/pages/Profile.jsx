@@ -201,7 +201,7 @@ function Profile() {
     };
 
     getAllWorkers();
-  }, [Workers]);
+  }, []);
   return (
     <>
       <Container>

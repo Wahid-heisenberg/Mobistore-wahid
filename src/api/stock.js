@@ -1,43 +1,34 @@
 const router = require("express").Router();
-const db = require('../database/db')
+const { connection } = require('../database/db.js');
 
-router.post("/addproduct", (req, res) => {
-    try {
-      const { productName, serieNumber1, serieNumber2, brand, category ,buyPrice,sellPrice ,productState } = req.body;
-  
-      const query = "INSERT INTO stock (productName, serieNumber1, serieNumber2, brand, category ,buyPrice,sellPrice,productState ) VALUES (?, ?, ?, ?, ? , ? , ? ,?)";
-  
-      db.query(query, [productName, serieNumber1, serieNumber2, brand, category ,buyPrice,sellPrice,productState], function (err) {
-        if (err) {
-          console.error("Database error:", err.message);
-          res.status(500).json({ error: "Database error" });
-        } else {
-          res.json({ id: this.lastID });
-          console.log('produit ajouter avec success');
-        }
-      });
-    } catch (err) {
-      console.log(err);
-    }
-  });
-  
+router.post("/addproduct", async (req, res) => {
+  try {
+    const { productName, serieNumber1, serieNumber2, brand, category, buyPrice, sellPrice, productState } = req.body;
 
-  router.get("/afficherStock", (req, res) => {
-    try {
-      const query = "SELECT * FROM stock";
-  
-      db.all(query, (err, rows) => {
-        if (err) {
-          console.error("Database error:", err.message);
-          res.status(500).json({ error: "Database error" });
-        } else {
-          res.json(rows);
-        }
-      });
-    } catch (err) {
-      console.log(err);
-    }
-  });
+    const query = "INSERT INTO stock (productName, serieNumber1, serieNumber2, brand, category, buyPrice, sellPrice, productState) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+
+    await connection.execute(query, [productName, serieNumber1, serieNumber2, brand, category, buyPrice, sellPrice, productState]);
+
+    res.status(200).json({ message: "Product added successfully" });
+    console.log('produit ajouté avec succès');
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ error: "Database error" });
+  }
+});
+
+
+router.get("/afficherStock", async (req, res) => {
+  try {
+    const query = "SELECT * FROM stock";
+    const [rows] = await connection.execute(query);
+    res.json(rows);
+  } catch (err) {
+    console.error("Database error:", err.message);
+    res.status(500).json({ error: "Database error" });
+  }
+});
+
   
 
 module.exports = router;

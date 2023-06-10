@@ -34,7 +34,6 @@ function AddWorkerForm() {
       phoneNumber: phoneNumber,
       workHoures: workHoures,
     };
-    console.log("thagui");
     // Make HTTP request to backend API to insert form data into database
     axios
       .post("http://localhost:5000/api/worker/addworker", WorkertData)
