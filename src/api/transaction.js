@@ -31,115 +31,213 @@ const storage = multer.diskStorage({
 
 // Create the multer middleware
 
+// const upload = multer({ storage });
+// router.post("/addsell", upload.single("image"), async (req, res) => {
+//   try {
+//     const cloudinaryUpload = await cloudinary.uploader.upload(req.file.path);
+//     const CloudinaryimagePath = cloudinaryUpload.secure_url;
+//     console.log(CloudinaryimagePath)
+//     const { firstName, familyName, phoneNumber, cardNumber } = req.body;
+//     const imagePath = `cardsPictures/${req.file.filename}`;
+//     const query =
+//       "INSERT INTO clients (firstName, familyName, phoneNumber, cardNumber, cardPicturepath ,cardPathCloud) VALUES (?, ?, ?, ?, ? , ?)";
+
+//     const currentClientID = await new Promise((resolve, reject) => {
+//       connection.query(
+//         query,
+//         [firstName, familyName, phoneNumber, cardNumber, imagePath ,CloudinaryimagePath],
+//         function (err) {
+//           if (err) {
+//             console.error("Database error:", err.message);
+//             reject(err);
+//           } else {
+//             resolve(this.lastID);
+//             console.log("Client ajouté avec succès");
+//           }
+//         }
+//       );
+//     });
+
+//     const Name = req.body.Name;
+//     const brand = req.body.brand;
+//     const serieNumber1 = req.body.serieNumber1;
+//     const serieNumber2 = req.body.serieNumber2;
+//     const category = req.body.category;
+//     const price = req.body.price;
+//     const productState = req.body.productState
+//     console.log(Name, brand, price);
+//     const productquiry =
+//       "INSERT INTO produitsachetes (Name, brand, serieNumber1, serieNumber2, category, price ,productState) VALUES (?, ?, ?, ?, ?, ? , ?)";
+
+//     const currentProductID = await new Promise((resolve, reject) => {
+//      connection.query(
+//         productquiry,
+//         [Name, brand, serieNumber1, serieNumber2, category, price ,productState ],
+//         function (err) {
+//           if (err) {
+//             console.error("Database error:", err.message);
+//             reject(err);
+//           } else {
+//             resolve(this.lastID);
+//             console.log("produit ajouté avec succès" + this.lastID);
+//           }
+//         }
+//       );
+//     });
+
+//     const query3__stock =
+//     "INSERT INTO stock (productName, serieNumber1, serieNumber2, brand, category ,buyPrice,sellPrice ,productState ) VALUES (?, ?, ?, ?, ? , ? , ?, ?)";
+//   const stockId = await new Promise((resolve, reject) => {
+//    connection.query(
+//       query3__stock,
+//       [
+//         req.body.Name,
+//         req.body.serieNumber1,
+//         req.body.serieNumber2,
+//         req.body.brand,
+//         req.body.category,
+//         req.body.price,
+//         req.body.price*1.3,
+//         req.body.productState
+//       ],
+//       function (err) {
+//         if (err) {
+//           console.error("Database error:", err.message);
+//           reject(err);
+//         } else {
+//           resolve(this.lastID);
+//           console.log(
+//             "produit ajouté avec succès dans le stock " + this.lastID
+//           );
+//         }
+//       }
+//     );
+//   });
+
+//     const transactionDate = req.body.transactionDate;
+//     const transactionType = req.body.transactionType;
+
+//     console.log(transactionType, transactionDate);
+//     const query2 =
+//       "INSERT INTO transactions (transactionDate, transactionType, clientId, productId,stockId  ) VALUES (?, ?, ?, ? ,?)";
+
+//     const transactionID = await new Promise((resolve, reject) => {
+//      connection.query(
+//         query2,
+//         [transactionDate, transactionType, currentClientID, currentProductID,stockId ],
+//         function (err) {
+//           if (err) {
+//             console.error("Database error:", err.message);
+//             reject(err);
+//           } else {
+//             resolve(this.lastID);
+//             console.log("transaction ajoutée avec succès");
+//             console.log(
+//               "client :" + currentClientID,
+//               "product :" + currentProductID
+//             );
+//           }
+//         }
+//       );
+//     });
+
+//     res.json({ id: transactionID });
+//   } catch (err) {
+//     console.log(err);
+//     res.status(500).json({ error: "Database error" });
+//   }
+// });
+
 const upload = multer({ storage });
+
 router.post("/addsell", upload.single("image"), async (req, res) => {
   try {
     const cloudinaryUpload = await cloudinary.uploader.upload(req.file.path);
     const CloudinaryimagePath = cloudinaryUpload.secure_url;
-    console.log(CloudinaryimagePath)
-    const { firstName, familyName, phoneNumber, cardNumber } = req.body;
+    console.log(CloudinaryimagePath);
+    const {
+      firstName,
+      familyName,
+      phoneNumber,
+      cardNumber,
+      Name,
+      brand,
+      serieNumber1,
+      serieNumber2,
+      category,
+      price,
+      productState
+    } = req.body;
+
     const imagePath = `cardsPictures/${req.file.filename}`;
     const query =
       "INSERT INTO clients (firstName, familyName, phoneNumber, cardNumber, cardPicturepath ,cardPathCloud) VALUES (?, ?, ?, ?, ? , ?)";
 
-    const currentClientID = await new Promise((resolve, reject) => {
-      connection.query(
-        query,
-        [firstName, familyName, phoneNumber, cardNumber, imagePath ,CloudinaryimagePath],
-        function (err) {
-          if (err) {
-            console.error("Database error:", err.message);
-            reject(err);
-          } else {
-            resolve(this.lastID);
-            console.log("Client ajouté avec succès");
-          }
-        }
-      );
-    });
+    const [rows] = await connection.query(query, [
+      firstName,
+      familyName,
+      phoneNumber,
+      cardNumber,
+      imagePath,
+      CloudinaryimagePath
+    ]);
+    const currentClientID = rows.insertId;
+    console.log("Client ajouté avec succès");
 
-    const Name = req.body.Name;
-    const brand = req.body.brand;
-    const serieNumber1 = req.body.serieNumber1;
-    const serieNumber2 = req.body.serieNumber2;
-    const category = req.body.category;
-    const price = req.body.price;
-    const productState = req.body.productState
-    console.log(Name, brand, price);
-    const productquiry =
+    const productQuery =
       "INSERT INTO produitsachetes (Name, brand, serieNumber1, serieNumber2, category, price ,productState) VALUES (?, ?, ?, ?, ?, ? , ?)";
 
-    const currentProductID = await new Promise((resolve, reject) => {
-     connection.query(
-        productquiry,
-        [Name, brand, serieNumber1, serieNumber2, category, price ,productState ],
-        function (err) {
-          if (err) {
-            console.error("Database error:", err.message);
-            reject(err);
-          } else {
-            resolve(this.lastID);
-            console.log("produit ajouté avec succès" + this.lastID);
-          }
-        }
-      );
-    });
+    const [productRows] = await connection.query(productQuery, [
+      Name,
+      brand,
+      serieNumber1,
+      serieNumber2,
+      category,
+      price,
+      productState
+    ]);
+    const currentProductID = productRows.insertId;
+    console.log("produit ajouté avec succès" + currentProductID);
 
-    const query3__stock =
-    "INSERT INTO stock (productName, serieNumber1, serieNumber2, brand, category ,buyPrice,sellPrice ,productState ) VALUES (?, ?, ?, ?, ? , ? , ?, ?)";
-  const stockId = await new Promise((resolve, reject) => {
-   connection.query(
-      query3__stock,
-      [
-        req.body.Name,
-        req.body.serieNumber1,
-        req.body.serieNumber2,
-        req.body.brand,
-        req.body.category,
-        req.body.price,
-        req.body.price*1.3,
-        req.body.productState
-      ],
-      function (err) {
-        if (err) {
-          console.error("Database error:", err.message);
-          reject(err);
-        } else {
-          resolve(this.lastID);
-          console.log(
-            "produit ajouté avec succès dans le stock " + this.lastID
-          );
-        }
-      }
+    const stockQuery =
+      "INSERT INTO stock (productName, serieNumber1, serieNumber2, brand, category ,buyPrice,sellPrice ,productState ) VALUES (?, ?, ?, ?, ? , ? , ?, ?)";
+
+    const [stockRows] = await connection.query(stockQuery, [
+      Name,
+      serieNumber1,
+      serieNumber2,
+      brand,
+      category,
+      price,
+      price * 1.3,
+      productState
+    ]);
+    const stockId = stockRows.insertId;
+    console.log(
+      "produit ajouté avec succès dans le stock " + stockId
     );
-  });
 
     const transactionDate = req.body.transactionDate;
     const transactionType = req.body.transactionType;
 
     console.log(transactionType, transactionDate);
-    const query2 =
+    const transactionQuery =
       "INSERT INTO transactions (transactionDate, transactionType, clientId, productId,stockId  ) VALUES (?, ?, ?, ? ,?)";
 
-    const transactionID = await new Promise((resolve, reject) => {
-     connection.query(
-        query2,
-        [transactionDate, transactionType, currentClientID, currentProductID,stockId ],
-        function (err) {
-          if (err) {
-            console.error("Database error:", err.message);
-            reject(err);
-          } else {
-            resolve(this.lastID);
-            console.log("transaction ajoutée avec succès");
-            console.log(
-              "client :" + currentClientID,
-              "product :" + currentProductID
-            );
-          }
-        }
-      );
-    });
+    const [transactionRows] = await connection
+      .query(transactionQuery, [
+        transactionDate,
+        transactionType,
+        currentClientID,
+        currentProductID,
+        stockId
+      ]);
+    const transactionID = transactionRows.insertId;
+    console.log("transaction ajoutée avec succès");
+    console.log(
+      "client :" + currentClientID,
+      "product :" + currentProductID
+    );
 
     res.json({ id: transactionID });
   } catch (err) {
@@ -147,6 +245,7 @@ router.post("/addsell", upload.single("image"), async (req, res) => {
     res.status(500).json({ error: "Database error" });
   }
 });
+
 
 const upload1 = multer({ storage });
 router.post("/addexchange", upload1.single("image"), async (req, res) => {
@@ -280,7 +379,7 @@ router.post("/addexchange", upload1.single("image"), async (req, res) => {
   }
 });
 
-router.get("/getAlltransactions", (req, res) => {
+router.get("/getAlltransactions", async (req, res) => {
   const query = `
   SELECT t.transactionId, t.transactionDate, t.transactionType,
   c.firstName, c.familyName, c.phoneNumber, c.cardNumber, c.cardPicturePath,c.cardPathCloud,
@@ -296,16 +395,12 @@ LEFT JOIN produitsEchanges AS pe ON t.productId = pe.ExchangeId
 LEFT JOIN produitsachetes AS pv ON t.productId = pv.sellId;
   `;
   try {
-   connection.all(query, [], (err, rows) => {
-      if (err) {
-        console.error("Database error:", err.message);
-        res.status(500).json({ error: "Database error" });
-      } else {
-        res.json(rows);
-      }
-    });
+    const [rows] = await connection.execute(query);
+
+    res.json(rows);
   } catch (err) {
-    console.log(err);
+    console.error("Database error:", err.message);
+    res.status(500).json({ error: "Database error" });
   }
 });
 
