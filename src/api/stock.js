@@ -7,7 +7,7 @@ router.post("/addproduct", (req, res) => {
   
       const query = "INSERT INTO stock (productName, serieNumber1, serieNumber2, brand, category ,buyPrice,sellPrice,productState ) VALUES (?, ?, ?, ?, ? , ? , ? ,?)";
   
-      db.run(query, [productName, serieNumber1, serieNumber2, brand, category ,buyPrice,sellPrice,productState], function (err) {
+      db.query(query, [productName, serieNumber1, serieNumber2, brand, category ,buyPrice,sellPrice,productState], function (err) {
         if (err) {
           console.error("Database error:", err.message);
           res.status(500).json({ error: "Database error" });

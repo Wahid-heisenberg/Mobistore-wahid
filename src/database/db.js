@@ -54,10 +54,14 @@ const connection = mysql.createConnection({
 });
 
 // Connect to the database
-connection.connect((err, conn) => {
-  if(err) console.log(err)
-  console.log("Connected successfully")
-})
+connection.connect((err) => {
+  if (err) {
+    console.error('Error connecting to MySQL:', err);
+    return;
+  }
+  console.log('Connected to MySQL successfully');
+});
+
 
 // Perform database operations...
 
@@ -75,5 +79,6 @@ const db = new sqlite3.Database(dbPath, sqlite3.OPEN_READWRITE, (err) => {
 });
 // downloadDatabaseFile();
 
-module.exports = db;
-module.exports = connection.promise();
+module.exports = {
+  connection: connection.promise()
+};

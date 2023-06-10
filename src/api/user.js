@@ -1,5 +1,5 @@
 const router = require("express").Router();
-const db = require('../database/db');
+const {connection} = require('../database/db');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
@@ -17,21 +17,22 @@ router.post('/signup', async (req, res) => {
 
   try {
     const hashedPassword = await bcrypt.hash(password, 15);
-
+  
     const query = 'INSERT INTO users (username, password) VALUES (?, ?)';
-
-    await db.run(query, [username, hashedPassword]);
-
+  
+    await connection.execute(query, [username, hashedPassword]);
+  
     // Generate a JWT token
     const token = jwt.sign({ username }, JWT_SECRET, { expiresIn: '1h' });
-
+  
     res.json({ message: 'Sign-up successful', token });
-
-    console.log('Welcome ' + username + ' '+ token);
+  
+    console.log('Welcome ' + username + ' ' + token);
   } catch (err) {
     console.error('Error signing up:', err);
     res.status(500).json({ error: 'Error signing up' });
   }
+  
 });
 
 router.post("/signin", async (req, res) => {

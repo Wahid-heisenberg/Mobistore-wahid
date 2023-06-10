@@ -43,7 +43,7 @@ router.post("/addsell", upload.single("image"), async (req, res) => {
       "INSERT INTO clients (firstName, familyName, phoneNumber, cardNumber, cardPicturepath ,cardPathCloud) VALUES (?, ?, ?, ?, ? , ?)";
 
     const currentClientID = await new Promise((resolve, reject) => {
-      db.run(
+      db.query(
         query,
         [firstName, familyName, phoneNumber, cardNumber, imagePath ,CloudinaryimagePath],
         function (err) {
@@ -70,7 +70,7 @@ router.post("/addsell", upload.single("image"), async (req, res) => {
       "INSERT INTO produitsachetes (Name, brand, serieNumber1, serieNumber2, category, price ,productState) VALUES (?, ?, ?, ?, ?, ? , ?)";
 
     const currentProductID = await new Promise((resolve, reject) => {
-      db.run(
+      db.query(
         productquiry,
         [Name, brand, serieNumber1, serieNumber2, category, price ,productState ],
         function (err) {
@@ -88,7 +88,7 @@ router.post("/addsell", upload.single("image"), async (req, res) => {
     const query3__stock =
     "INSERT INTO stock (productName, serieNumber1, serieNumber2, brand, category ,buyPrice,sellPrice ,productState ) VALUES (?, ?, ?, ?, ? , ? , ?, ?)";
   const stockId = await new Promise((resolve, reject) => {
-    db.run(
+    db.query(
       query3__stock,
       [
         req.body.Name,
@@ -122,7 +122,7 @@ router.post("/addsell", upload.single("image"), async (req, res) => {
       "INSERT INTO transactions (transactionDate, transactionType, clientId, productId,stockId  ) VALUES (?, ?, ?, ? ,?)";
 
     const transactionID = await new Promise((resolve, reject) => {
-      db.run(
+      db.query(
         query2,
         [transactionDate, transactionType, currentClientID, currentProductID,stockId ],
         function (err) {
@@ -160,7 +160,7 @@ router.post("/addexchange", upload1.single("image"), async (req, res) => {
       "INSERT INTO clients (firstName, familyName, phoneNumber, cardNumber, cardPicturepath ,cardPathCloud) VALUES (?, ?, ?, ?, ? , ?)";
 
     const currentClientID = await new Promise((resolve, reject) => {
-      db.run(
+      db.query(
         query,
         [firstName, familyName, phoneNumber, cardNumber, imagePath ,CloudinaryimagePath],
         function (err) {
@@ -188,7 +188,7 @@ router.post("/addexchange", upload1.single("image"), async (req, res) => {
       "INSERT INTO produitsEchanges (Name, brand, serieNumber1, serieNumber2, category, price ,productState ) VALUES (?, ?, ?, ?, ?, ? , ?)";
 
     const currentProductID = await new Promise((resolve, reject) => {
-      db.run(
+      db.query(
         productquiry,
         [Name, brand, serieNumber1, serieNumber2, category, price ,productState],
         function (err) {
@@ -214,7 +214,7 @@ router.post("/addexchange", upload1.single("image"), async (req, res) => {
     const query3 =
       "INSERT INTO stock (productName, serieNumber1, serieNumber2, brand, category ,buyPrice,sellPrice ,productState ) VALUES (?, ?, ?, ?, ? , ? , ? , ?)";
     const stockId = await new Promise((resolve, reject) => {
-      db.run(
+      db.query(
         query3,
         [
           productName,
@@ -248,7 +248,7 @@ router.post("/addexchange", upload1.single("image"), async (req, res) => {
       "INSERT INTO transactions (transactionDate, transactionType, clientId, productId ,stockId) VALUES (?, ?, ?, ? , ?)";
 
     const transactionID = await new Promise((resolve, reject) => {
-      db.run(
+      db.query(
         query2,
         [
           transactionDate,
@@ -350,7 +350,7 @@ router.delete("/deleteTransactions/:transactionId", (req, res) => {
       );
 
       function deleteProduitsEchanges() {
-        db.run(
+        db.query(
           "DELETE FROM produitsEchanges WHERE exchangeId = (SELECT productId FROM transactions WHERE transactionId = ?)",
           [transactionId],
           function (err) {
@@ -367,7 +367,7 @@ router.delete("/deleteTransactions/:transactionId", (req, res) => {
       }
       
       function deleteProduitsStock() {
-        db.run(
+        db.query(
           "DELETE FROM stock WHERE productId = (SELECT stockId FROM transactions WHERE transactionId = ?)",
           [transactionId],
           function (err) {
@@ -385,7 +385,7 @@ router.delete("/deleteTransactions/:transactionId", (req, res) => {
 
 
       function deleteproduitsachetes() {
-        db.run(
+        db.query(
           "DELETE FROM produitsachetes WHERE sellId = (SELECT productId FROM transactions WHERE transactionId = ?)",
           [transactionId],
           function (err) {
@@ -402,7 +402,7 @@ router.delete("/deleteTransactions/:transactionId", (req, res) => {
       }
 
       function deleteClient() {
-        db.run(
+        db.query(
           "DELETE FROM clients WHERE clientId = (SELECT clientId FROM transactions WHERE transactionId = ?)",
           [transactionId],
           function (err) {
@@ -419,7 +419,7 @@ router.delete("/deleteTransactions/:transactionId", (req, res) => {
       }
 
       function deleteTransaction() {
-        db.run(
+        db.query(
           "DELETE FROM transactions WHERE transactionId = ?",
           [transactionId],
           function (err) {
@@ -477,7 +477,7 @@ router.patch("/updateTransaction/:transactionId",upload2.single("image"),async (
   
     db.serialize(() => {
 
-      db.run(
+      db.query(
         "UPDATE transactions SET transactionDate = ? WHERE transactionId = ?",
         [transactionDate, transactionId],
         function (err) {
@@ -508,7 +508,7 @@ console.log(CloudinaryimagePath)
       
 
       function updateStock() {
-        db.run(
+        db.query(
           "UPDATE stock SET productName = ?, serieNumber1 = ?, serieNumber2 = ?, brand = ?, category = ?, buyPrice = ?, sellPrice = ? ,productState = ? WHERE productId = (SELECT stockId FROM transactions WHERE transactionId = ?)",
           [
             req.body.productName,
@@ -535,7 +535,7 @@ console.log(CloudinaryimagePath)
       }
 
       function updateStock2() {
-        db.run(
+        db.query(
           "UPDATE stock SET productName = ?, serieNumber1 = ?, serieNumber2 = ?, brand = ?, category = ?, buyPrice = ?, sellPrice = ? ,productState = ? WHERE productId = (SELECT stockId FROM transactions WHERE transactionId = ?)",
           [
             req.body.Name,
@@ -562,7 +562,7 @@ console.log(CloudinaryimagePath)
       }
 
       function updateproduitsachetes() {
-        db.run(
+        db.query(
           "UPDATE produitsachetes SET Name = ?, brand = ?, serieNumber1 = ?, serieNumber2 = ?, category = ?, price = ? ,productState = ?  WHERE sellId = (SELECT productId FROM transactions WHERE transactionId = ?)",
           [
             req.body.Name,
@@ -588,7 +588,7 @@ console.log(CloudinaryimagePath)
       }
       
       function updateProduitsEchanges() {
-        db.run(
+        db.query(
           "UPDATE produitsEchanges SET Name = ?, brand = ?, serieNumber1 = ?, serieNumber2 = ?, category = ?, price = ?, productState = ? WHERE exchangeId = (SELECT productId FROM transactions WHERE transactionId = ?)",
           [
             req.body.Name,
@@ -623,7 +623,7 @@ console.log(CloudinaryimagePath)
 
 
       function updateClient() {
-        db.run(
+        db.query(
             "UPDATE clients SET firstName = ?, familyName = ?, phoneNumber = ?, cardNumber = ?, cardPicturePath = ? , cardPathCloud =?  WHERE clientId = (SELECT clientId FROM transactions WHERE transactionId = ?)",
             [
               req.body.firstName,
