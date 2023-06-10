@@ -54,7 +54,7 @@ const connection = mysql.createConnection({
 });
 
 // Connect to the database
-connection.getConnection((err, conn) => {
+connection.connect((err, conn) => {
   if(err) console.log(err)
   console.log("Connected successfully")
 })
