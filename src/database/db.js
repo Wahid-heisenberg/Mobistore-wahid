@@ -41,17 +41,18 @@ const sqlite3 = require('sqlite3').verbose();
 //     });
 // }
 const mysql = require('mysql2');
-
+const dotenv = require('dotenv').config ({path:__dirname + '/.env'})
+// console.log(process.env.DB_HOST)
 // Create a connection to the MySQL database
 const connection = mysql.createConnection({
-  host:'bgpvz6fjtyphkshwogd5-mysql.services.clever-cloud.com', 
-  user: 'ucfye1gyblfo9msz', 
-  password: 'KtvFN7qLR63abgpfX4mb',
-  database: 'bgpvz6fjtyphkshwogd5',
+  host: process.env.DB_HOST, 
+  user: process.env.DB_USERNAME, 
+  password: process.env.DB_PASSWORD ,
+  database:  process.env.DB_DBNAME,
   waitForConnections: true,
   connectionLimit: 10,
   queueLimit: 0,
-  port:3306
+  port:process.env.PORT
 });
 
 
