@@ -54,18 +54,15 @@ const connection = mysql.createConnection({
 });
 
 // Connect to the database
-connection.connect((err) => {
-  if (err) {
-    console.error('Error connecting to the database:', err);
-    return;
-  }
-  console.log('Connected to the database!  successfully ');
-});
+connection.getConnection((err, conn) => {
+  if(err) console.log(err)
+  console.log("Connected successfully")
+})
 
 // Perform database operations...
 
 // Close the connection when finished
-connection.end();
+
 
 
 const dbPath = path.resolve(__dirname, '../../public/db.db'); // Provide the correct absolute path here
@@ -79,3 +76,4 @@ const db = new sqlite3.Database(dbPath, sqlite3.OPEN_READWRITE, (err) => {
 // downloadDatabaseFile();
 
 module.exports = db;
+module.exports = connection.promise();
