@@ -43,9 +43,8 @@
     "start": "npm run start-react",
     "start-react": "react-scripts start",
     "electron": "electron .",
-    "build": "npm run build-react && npm run build-electron",
+    "build": "npm run build-react ",
     "build-react": "react-scripts build",
-    "build-electron": "electron-builder",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
