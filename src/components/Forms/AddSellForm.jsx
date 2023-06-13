@@ -26,9 +26,9 @@ export const Title = styled.h3`
   font-size: 34px;
   color: #0c2e5a;
   align-self: baseline;
+  ${mobile({fontSize:'26px'})}
 `;
  const FormControlers = styled.div`
-
   display: flex;
   align-items: flex-end;
   justify-content: space-between;
@@ -388,6 +388,7 @@ function AddSellForm() {
               <input
                 type="file"
                 accept="image/*"
+                required
                 id="file"
                 onChange={handleFileInputChange}
                 name={selectedFile}
@@ -451,6 +452,7 @@ function AddSellForm() {
                   }
                   type="number"
                   placeholder="Nombre darcticles"
+                  required
                   style={{
                     marginTop: "0px",
                     borderRight: "none",
@@ -517,7 +519,7 @@ function AddSellForm() {
                       <Field
                         type="text"
                         placeholder="Iphone"
-                       
+                       required
                         onChange={(e) =>
                           handleProductBrand(index, e.target.value)
                         }
@@ -544,6 +546,7 @@ function AddSellForm() {
                       N°02 de série
                       <Field
                         type="number"
+                        required
                         placeholder="57854545454"
                         onChange={(e) =>
                           handleSerienumber2(index, +e.target.value)
@@ -583,6 +586,7 @@ function AddSellForm() {
                         <Field
                           
                           type="number"
+                          required
                           value={prices[index] > 0 ? prices[index] : ""}
                           onChange={(e) =>
                             handlePriceChange(index, +e.target.value)
@@ -615,6 +619,7 @@ function AddSellForm() {
                       <Field
                         type="text"
                         placeholder="iphone 14"
+                        required
                         onChange={(e) =>
                           handleProdaEchName(index, e.target.value)
                         }
@@ -627,6 +632,7 @@ function AddSellForm() {
                       <Field
                         type="text"
                         placeholder="apple"
+                        required
                         onChange={(e) =>
                           handleprodaEchBrand(index, e.target.value)
                         }
@@ -639,6 +645,7 @@ function AddSellForm() {
                       <Field
                         type="number"
                         placeholder="1147487845"
+                        required
                         onChange={(e) =>
                           handleprodaEchSerie1(index, +e.target.value)
                         
@@ -646,7 +653,7 @@ function AddSellForm() {
                         value={
                           prodaEchSerie1[index] > 0 ? prodaEchSerie1[index] : ""
                         }
-                        required
+                        
                       />
                     </Label>
                     <Label>
@@ -654,6 +661,7 @@ function AddSellForm() {
                       <Field
                         type="number"
                         placeholder="57854545454"
+                        required
                         onChange={(e) =>
                           handleprodaEchSerie2(index, +e.target.value)
                         }
@@ -692,6 +700,7 @@ function AddSellForm() {
                             handlePriceChange2(index, +e2.target.value)
                           }
                           placeholder="180000.00"
+                          required
                           style={{
                             marginTop: "0px",
                             borderRight: "none",
@@ -735,6 +744,7 @@ function AddSellForm() {
                       <Field
                         type="text"
                         placeholder="iphone 14"
+                        required
                         onChange={(e) =>
                           handleProductName(index, e.target.value)
                         }
@@ -747,6 +757,7 @@ function AddSellForm() {
                       <Field
                         type="text"
                         placeholder="apple"
+                        required
                         onChange={(e) =>
                           handleProductBrand(index, e.target.value)
                         }
@@ -759,6 +770,7 @@ function AddSellForm() {
                       <Field
                         type="number"
                         placeholder="1147487845"
+                        required
                         onChange={(e) =>
                           handleSerienumber1(index, +e.target.value)
                         }
@@ -774,6 +786,7 @@ function AddSellForm() {
                       N°02 de série
                       <Field
                         type="number"
+                        required
                         onChange={(e) =>
                           handleSerienumber2(index, +e.target.value)
                         }
@@ -814,6 +827,7 @@ function AddSellForm() {
                             handlePriceChange(index, +e.target.value)
                           }
                           placeholder="180000.00"
+                          required
                           style={{
                             marginTop: "0px",
                             borderRight: "none",

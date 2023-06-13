@@ -149,7 +149,7 @@ const ModifyBlock = styled.div`
   &::-webkit-scrollbar {
     display: none; /* Safari and Chrome */
   };
-  ${mobile({ width:'100%',left:'0px', top:'24px'})}
+  ${mobile({ width:'100%',left:'0px', top:'16px',maxHeight: '95%'})}
 `;
 const HideButton = styled.button`
 position: sticky;
@@ -172,6 +172,7 @@ align-self: last baseline;
     color: #ff7f11;
     transition: 0.2s all linear;
   }
+  ${mobile({ height:'40px',aspectRatio:'2/3'})}
 `;
 const Cardpicture = styled.img`
   width: 100%;
@@ -183,6 +184,7 @@ const Cardpicture = styled.img`
 function SoldProductsTable() {
   const [expandedRows, setExpandedRows] = useState([]);
   const [AllTransactions, setAllTransactions] = useState([]);
+  const [ selectedProductInformation , setselectedProductInformation]= useState([]);
   const [showImage, setShowImage] = useState(false);
   const [showBlock, setShowBlock] = useState(false);
   const [imageUrl, setImageUrl] = useState("");
@@ -223,7 +225,7 @@ function SoldProductsTable() {
     };
 
     getAllTransactions();
-  }, [expandedRows]);
+  }, [AllTransactions]);
 
 
   useEffect(() => {
@@ -234,13 +236,15 @@ function SoldProductsTable() {
           `http://localhost:5000/api/transaction/deleteTransactions/${currentTransaction}`
         );
         console.log(res);
+        alert(' Cette Transactions était bien supprimer ')
+       window.location.reload();
       } catch (err) {
         console.log(err);
       }
     };
 
    deleteTransaction() 
-  }, [currentTransaction]);
+  }, [currentTransaction,expandedRows]);
   function serieNumber(transaction) {
     if (transaction.exchangedProductSerieNumber1 !== null && transaction.exchangedProductSerieNumber1 !== undefined) {
       return String(transaction.exchangedProductSerieNumber1); // Convert to string
@@ -292,247 +296,248 @@ function SoldProductsTable() {
   //   updateSellsNumber(sellPercentage);
     
   // }, [AllTransactions ,updateSellsNumber ]);
+  console.log(currentTransaction)
 
 
   return (
     <>
-    <CloudinaryContext cloudName="dl6cgkspe">
-      <Table>
-        
-        <thead>
-          <HRow>
-            {Header.map((item, Hindex) => (
-              <HColumn 
-                key={Hindex + 1}
-                className="HeaderColumn"
-                style={{
-                  fontWeight: "600",
-                  color: "black",
-                  textAlign: "center",
-                }}
-              >
-                {item}
-              </HColumn>
-            ))}
-            <HColumn style={{ maxWidth: "40px" }}></HColumn>
-          </HRow>
-        </thead>
-        <tbody>
-          {filteredTransactions.map((Product, index) => (
-            <>
-              <Row
-                className="Row"
-                key={Product.transactionId}
-                onClick={() => toggleRow(index)}
-              >
-                <Column>
-                  
-                  <Nom>
-                    
-                    {Product.soldProductName
-                      ? Product.soldProductName
-                      : Product.exchangedProductName}
-                  </Nom>
-                </Column>
-                <Column>
-                  <Nserie style={{ color: "#0C2E5A" }}>
-                  {Product.transactionDate}
-                  </Nserie>
+      <CloudinaryContext cloudName="dl6cgkspe">
+        <Table>
+          <thead>
+            <HRow>
+              {Header.map((item, Hindex) => (
+                <HColumn
+                  key={Hindex + 1}
+                  className="HeaderColumn"
+                  style={{
+                    fontWeight: "600",
+                    color: "black",
+                    textAlign: "center",
+                  }}
+                >
+                  {item}
+                </HColumn>
+              ))}
+              <HColumn style={{ maxWidth: "40px" }}></HColumn>
+            </HRow>
+          </thead>
+          <tbody>
+            {filteredTransactions.map((Product, index) => (
+              <>
+                <Row
+                  className="Row"
+                  key={Product.transactionId}
+                  onClick={() => toggleRow(index)}
+                >
+                  <Column>
+                    <Nom>
+                      {Product.soldProductName
+                        ? Product.soldProductName
+                        : Product.exchangedProductName}
+                    </Nom>
+                  </Column>
+                  <Column>
+                    <Nserie style={{ color: "#0C2E5A" }}>
+                      {Product.transactionDate}
+                    </Nserie>
+                  </Column>
+                  <Column>
+                    <Nserie style={{ color: "#0C2E5A" }}>
+                      {Product.exchangedProductSerieNumber1
+                        ? Product.exchangedProductSerieNumber1
+                        : Product.soldProductSerieNumber1}
+                    </Nserie>
+                  </Column>
+                  <Column>
+                    <Nserie style={{ color: "#0C2E5A" }}>
+                      {Product.exchangedProductSerieNumber2
+                        ? Product.exchangedProductSerieNumber2
+                        : Product.soldProductSerieNumber2}
+                    </Nserie>
+                  </Column>
+                  <Column>
+                    <Pachat style={{ color: "#0C2E5A" }}>
+                      {Product.soldProductPrice
+                        ? Product.soldProductPrice
+                        : Product.exchangedProductPrice}
+                    </Pachat>
+                  </Column>
+                  <Column style={{ maxWidth: "40px" }}>
+                    {!expandedRows.includes(index) ? (
+                      <ArrowDropDownIcon
+                        style={{ fontSize: "48px", color: "#007FC9" }}
+                      />
+                    ) : (
+                      <ArrowDropUpIcon
+                        style={{ fontSize: "48px", color: "#007FC9" }}
+                      />
+                    )}
+                  </Column>
+                </Row>
 
-                    
-               
-                </Column>
-                <Column>
-                  
-                  <Nserie style={{ color: "#0C2E5A" }}>
-                    {Product.exchangedProductSerieNumber1
-                      ? Product.exchangedProductSerieNumber1
-                      : Product.soldProductSerieNumber1}
-                  </Nserie>
-                </Column>
-                <Column>
-                  
-                  <Nserie style={{ color: "#0C2E5A" }}>
-                    
-                    {Product.exchangedProductSerieNumber2
-                      ? Product.exchangedProductSerieNumber2
-                      : Product.soldProductSerieNumber2}
-                  </Nserie>
-                </Column>
-                <Column>
-                  
-                  <Pachat style={{ color: "#0C2E5A" }}>
-                    
-                    {Product.soldProductPrice
-                      ? Product.soldProductPrice
-                      : Product.exchangedProductPrice}
-                  </Pachat>
-                </Column>
-                <Column style={{ maxWidth: "40px" }}>
-                  {!expandedRows.includes(index) ? (
-                    <ArrowDropDownIcon
-                      style={{ fontSize: "48px", color: "#007FC9" }}
-                    />
-                  ) : (
-                    <ArrowDropUpIcon
-                      style={{ fontSize: "48px", color: "#007FC9" }}
-                    />
-                  )}
-                </Column>
-              </Row>
-
-              {expandedRows.includes(index) && (
-                <>
-                  <Table
-                    key={Product.transactionDate}
-                    style={{ border: "none", padding: "0px", margin: "0px" }}
-                  >
-                    <thead>
-                      <HRow style={{ padding: "0px", margin: "-2px -6px" }}>
-                        {DetailsHeader.map((item, Colindex) => (
-                          <HColumn
-                            key={Colindex}
-                            className="HeaderColumn bg"
-                            style={{
-                              fontWeight: "600",
-                              color: "#0C2E5A",
-                              textAlign: "center",
-                              padding: "24px",
-
-                            }}
-                          >
-                            {item}
-                          </HColumn>
-                        ))}
-                      </HRow>
-                    </thead>
-                    <tbody  >
-                      <Row
-                        className="Row"
-                        style={{ padding: "0px", margin: "-2px -6px" }}
-                        key={Product.transactionId}
-                      >
-                        <DetailsColumn> {Product.firstName} </DetailsColumn>
-                        <DetailsColumn> {Product.familyName} </DetailsColumn>
-                        <DetailsColumn> {Product.phoneNumber}</DetailsColumn>
-                        <DetailsColumn> {Product.cardNumber} </DetailsColumn>
-                        {Product.transactionType !== "Echange" ? (
-                          <DetailsColumn
-                            style={{
-                              color: "#27A033",
-                              textShadow: "1px 1px 1px skyblue",
-                            }}
-                          >
-                            
-                            {Product.transactionType}
-                          </DetailsColumn>
-                        ) : (
-                          <DetailsColumn
-                            style={{
-                              color: "#007FC9",
-                              textShadow: "1px 1px 1px skyblue",
-                            }}
-                          >
-                            
-                            {Product.transactionType}
-                          </DetailsColumn>
-                        )}
-                      </Row>
-                      <Row
-                        className="Row bg"
-                        style={{ padding: "0px ", margin: "-2px -6px", }}
-                        key={-1 - Product.transactionId}
-                      >
-                        <DetailsColumn
-                          style={{
-                            display: "flex",
-                            flexDirection: "row",
-                            alignItems: "center",
-                            justifyContent: "space-between",
-                            padding: "32px 10% 20px 10%",
-                            backgroundColor:'rgb(162, 204, 246)'
-                          }}
-                          colSpan={6}
-                        >
-                          
-                          <CostumerCard
-                            type="button"
-                            onClick={() => {
-                              setImageUrl(`${Product.cardPathCloud}`);
-                              setShowImage(true);
-                              console.log(imageUrl)
-                            }}
-                          >
-                            <img height="44px" src={IdCardIcon} alt="CardId" />
-                          
-                              Carte d'identité
-                           
-                          </CostumerCard>
-                          <ControlersContainer>
-                            <DeleteButton
-                              type="button"
-                              value="Supprimer"
-                              onClick={() => {
-                                if (
-                                  window.confirm(
-                                    "Êtes-vous sûr(e) de vouloir supprimer ce produit ?"
-                                  )
-                                ) {
-                                  setcurrentTransaction(Product.transactionId);
-                                }
-                              }}
-                            />
-
-                            <UpdateButton
-                              className="Modifybtn"
-                              onClick={() => {
-                                setShowBlock(true);
-                                setcurrentUpdatedtransactionType(Product.transactionType);
-                                setcurrentUpdatedTransaction(Product.transactionId);
+                {expandedRows.includes(index) && (
+                  <>
+                    <Table
+                      key={Product.transactionDate}
+                      style={{ border: "none", padding: "0px", margin: "0px" }}
+                    >
+                      <thead>
+                        <HRow style={{ padding: "0px", margin: "-2px -6px" }}>
+                          {DetailsHeader.map((item, Colindex) => (
+                            <HColumn
+                              key={Colindex}
+                              className="HeaderColumn bg"
+                              style={{
+                                fontWeight: "600",
+                                color: "#0C2E5A",
+                                textAlign: "center",
+                                padding: "24px",
                               }}
                             >
-                              Modifier
-                            </UpdateButton>
-                          </ControlersContainer>
-                        </DetailsColumn>
-                      </Row>
-                    </tbody>
-                  </Table>
-                </>
-              )}
-            </>
-          ))}
-        </tbody>
-      </Table>
-      
-      {showImage && (
-        <ImageBlock>
-          <HideButton onClick={() => setShowImage(false)}>
-            <CloseOutlinedIcon
-              style={{
-                fontSize: "36px",
-              }}
-            />
-          </HideButton>
-          <Cardpicture publicId="sample" src={imageUrl} alt="image de la carte d'identité" />
-        </ImageBlock>
-      )}
+                              {item}
+                            </HColumn>
+                          ))}
+                        </HRow>
+                      </thead>
+                      <tbody>
+                        <Row
+                          className="Row"
+                          style={{ padding: "0px", margin: "-2px -6px" }}
+                          key={Product.transactionId}
+                        >
+                          <DetailsColumn> {Product.firstName} </DetailsColumn>
+                          <DetailsColumn> {Product.familyName} </DetailsColumn>
+                          <DetailsColumn> {Product.phoneNumber}</DetailsColumn>
+                          <DetailsColumn> {Product.cardNumber} </DetailsColumn>
+                          {Product.transactionType !== "Echange" ? (
+                            <DetailsColumn
+                              style={{
+                                color: "#27A033",
+                                textShadow: "1px 1px 1px skyblue",
+                              }}
+                            >
+                              {Product.transactionType}
+                            </DetailsColumn>
+                          ) : (
+                            <DetailsColumn
+                              style={{
+                                color: "#007FC9",
+                                textShadow: "1px 1px 1px skyblue",
+                              }}
+                            >
+                              {Product.transactionType}
+                            </DetailsColumn>
+                          )}
+                        </Row>
+                        <Row
+                          className="Row bg"
+                          style={{ padding: "0px ", margin: "-2px -6px" }}
+                          key={-1 - Product.transactionId}
+                        >
+                          <DetailsColumn
+                            style={{
+                              display: "flex",
+                              flexDirection: "row",
+                              alignItems: "center",
+                              justifyContent: "space-between",
+                              padding: "32px 10% 20px 10%",
+                              backgroundColor: "rgb(162, 204, 246)",
+                            }}
+                            colSpan={6}
+                          >
+                            <CostumerCard
+                              type="button"
+                              onClick={() => {
+                                setImageUrl(`${Product.cardPathCloud}`);
+                                setShowImage(true);
+                                console.log(imageUrl);
+                                
+                              }}
+                            >
+                              <img
+                                height="44px"
+                                src={IdCardIcon}
+                                alt="CardId"
+                              />
+                              Carte d'identité
+                            </CostumerCard>
+                            <ControlersContainer>
+                              <DeleteButton
+                                type="button"
+                                value="Supprimer"
+                                onClick={() => {
+                                  if (
+                                    window.confirm(
+                                      "Êtes-vous sûr(e) de vouloir supprimer ce produit ?"
+                                    )
+                                  ) {
+                                    setcurrentTransaction(
+                                      Product.transactionId
+                                    );
+                                  }
+                                }}
+                              />
 
-      {showBlock && (
-        <ModifyBlock>
-          <HideButton onClick={() => setShowBlock(false)}>
-            <CloseOutlinedIcon
-              style={{
-                fontSize: "36px",
-              }}
+                              <UpdateButton
+                                className="Modifybtn"
+                                onClick={() => {
+                                  setShowBlock(true);
+                                  setcurrentUpdatedtransactionType(
+                                    Product.transactionType
+                                  );
+                                  setcurrentUpdatedTransaction(
+                                    Product.transactionId
+                                  );
+                                  setselectedProductInformation(Product);
+                                }}
+                              >
+                                Modifier
+                              </UpdateButton>
+                            </ControlersContainer>
+                          </DetailsColumn>
+                        </Row>
+                      </tbody>
+                    </Table>
+                  </>
+                )}
+              </>
+            ))}
+          </tbody>
+        </Table>
+
+        {showImage && (
+          <ImageBlock>
+            <HideButton onClick={() => setShowImage(false)}>
+              <CloseOutlinedIcon
+                style={{
+                  fontSize: "36px",
+                }}
+              />
+            </HideButton>
+            <Cardpicture
+              publicId="sample"
+              src={imageUrl}
+              alt="image de la carte d'identité"
             />
-          </HideButton>
-          <ModifySellForm
-            transactionType={currentUpdatedtransactionType}
-            transactionId={currentUpdatedTransaction}
-          />
-        </ModifyBlock>
-      )}
+          </ImageBlock>
+        )}
+
+        {showBlock && (
+          <ModifyBlock>
+            <HideButton onClick={() => setShowBlock(false)}>
+              <CloseOutlinedIcon
+                style={{
+                  fontSize: "36px",
+                }}
+              />
+            </HideButton>
+            <ModifySellForm
+              transactionType={currentUpdatedtransactionType}
+              transactionId={currentUpdatedTransaction}
+              ProductInfo={selectedProductInformation}
+            />
+          </ModifyBlock>
+        )}
       </CloudinaryContext>
     </>
   );

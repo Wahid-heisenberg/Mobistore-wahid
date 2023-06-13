@@ -38,23 +38,25 @@ const Exit = styled.input`
   }
 `;
 const ModifySellForm = (props) => {
+  const p = props.ProductInfo;
   const [selectedStateValue, setSelecteStatedValue] = useState("Nouveau");
   const [selectedFile, setSelectedFile] = useState("");
-  const [ClientFirstName, setClientFirstName] = useState("");
-  const [ClientFamilyName, setClientFamilyName] = useState("");
-  const [ClientPhoneNumber, setClientPhoneNumber] = useState("");
-  const [ClientCardIdNumber, setClientCardIdNumber] = useState("");
-  const [productName, setproductName] = useState("");
-  const [productBrand, setProductBrand] = useState("");
-  const [productSerieNumber1, setProductSerieNumber1] = useState(0);
-  const [productSerieNumber2, setProductSerieNumber2] = useState(0);
-  const [price, setPrice] = useState(0); // initial price values
-  const [price2, setPrice2] = useState(0);
+  const [ClientFirstName, setClientFirstName] = useState(p.firstName);
+  console.log(ClientFirstName)
+  const [ClientFamilyName, setClientFamilyName] = useState(p.familyName);
+  const [ClientPhoneNumber, setClientPhoneNumber] = useState(p.phoneNumber);
+  const [ClientCardIdNumber, setClientCardIdNumber] = useState(p.cardNumber);
+  const [productName, setproductName] = useState(p.soldProductName || p.exchangedProductName);
+  const [productBrand, setProductBrand] = useState(p.soldProductBrand || p.exchangedProductBrand);
+  const [productSerieNumber1, setProductSerieNumber1] = useState(p.soldProductSerieNumber1 || p.exchangedProductSerieNumber1);
+  const [productSerieNumber2, setProductSerieNumber2] = useState(p.soldProductSerieNumber2 ||p.exchangedProductSerieNumber2);
+  const [price, setPrice] = useState(p.soldProductPrice || p.exchangedProductPrice); // initial price values
+  const [price2, setPrice2] = useState(p.stockedProductPrice);
 
-  const [productName2, setproductName2] = useState("");
-  const [productBrand2, setProductBrand2] = useState("");
-  const [product__2__SerieNumber1, setProduct__2__SerieNumber1] = useState(0);
-  const [product__2__SerieNumber2, setProduct__2__SerieNumber2] = useState(0);
+  const [productName2, setproductName2] = useState(p.stockedProductName);
+  const [productBrand2, setProductBrand2] = useState(p.stockedProductBrand);
+  const [product__2__SerieNumber1, setProduct__2__SerieNumber1] = useState(p.stockedProductSerieNumber1);
+  const [product__2__SerieNumber2, setProduct__2__SerieNumber2] = useState(p.stockedProductSerieNumber2);
   const [category, setCategory] = useState("Telephone");
   const [category2, setCategory2] = useState("Telephone");
 
