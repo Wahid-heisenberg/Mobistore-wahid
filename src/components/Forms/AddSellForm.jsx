@@ -507,7 +507,7 @@ function AddSellForm() {
                       <Field
                         type="text"
                         placeholder="Iphone 14"
-                        
+                        required
                         onChange={(e) =>
                           handleProductName(index, e.target.value)
                         }
