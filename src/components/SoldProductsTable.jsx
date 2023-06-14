@@ -215,7 +215,7 @@ function SoldProductsTable() {
     const getAllTransactions = async () => {
       try {
         const res = await axios.get(
-          "http://localhost:5000/api/transaction/getAlltransactions"
+          "https://mobistoreap.onrender.com/api/transaction/getAlltransactions"
         );
         console.log(res);
         setAllTransactions(res.data);
@@ -233,7 +233,7 @@ function SoldProductsTable() {
       
       try {
         const res = await axios.delete(
-          `http://localhost:5000/api/transaction/deleteTransactions/${currentTransaction}`
+          `https://mobistoreap.onrender.com/api/transaction/deleteTransactions/${currentTransaction}`
         );
         console.log(res);
         alert(' Cette Transactions était bien supprimer ')

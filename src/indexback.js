@@ -1,7 +1,6 @@
 const app = require ('./api/server')
-const db = require ('./database/db')
-const host = 'localhost'
-const port = 5000
+const host = 'mobistoreap.onrender.com'
+const port = 10000
 const userRoute = require('./api/user')
 const workerRoute = require('./api/worker')
 const stockRoute = require('./api/stock')
