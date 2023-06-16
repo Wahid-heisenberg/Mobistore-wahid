@@ -29,7 +29,7 @@ function Left() {
   return (
     <>
       <Container>
-        <Title>Bienvenue chez MOBI STORE !</Title>
+        <Title>Bienvenue chez Mobistore!</Title>
         <Logo src={logoImg} />
       </Container>
     </>

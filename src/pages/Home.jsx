@@ -50,7 +50,7 @@ const Circle = styled.div`
 function Home() {
   return (
     <Container>
-      <Title>Bienvenue chez MOBI STORE !</Title>
+      <Title>Bienvenue chez Mobistore!</Title>
       <Logo src={logoImg} />
       <Link exact="true" to="/SignIn">
         <Circle className="Circle" href="www.google.com">

@@ -14,9 +14,7 @@ const connection =mysql.createConnection({
   user: process.env.DB_USERNAME, 
   password: process.env.DB_PASSWORD ,
   database:  process.env.DB_DBNAME,
-  waitForConnections: true,
   connectionLimit: 10,
-  queueLimit: 0,
   port:process.env.PORT
 });
 
@@ -27,6 +25,7 @@ connection.connect((err) => {
     console.error('Error connecting to MySQL:', err);
     return;
   }
+  else
   console.log('Connected to MySQL successfully');
 });
 

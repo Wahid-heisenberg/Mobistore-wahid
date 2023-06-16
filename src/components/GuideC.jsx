@@ -13,17 +13,20 @@ import statistique from "../assets/Desktop - 16 (2).png";
 import Historique from "../assets/Desktop - 18 (1).png";
 import parametre from "../assets/Parametre.png";
 import app from "../assets/Desktop - 4 (1).png";
+import {mobile} from "../responsive.js"
 const Titre = styled.h3`
   font-weight: 600;
   font-size: 42px;
   color: #007fc9;
   margin: 8px;
   align-self: baseline;
+  ${mobile({ fontSize:"28px"})}
 `;
 const Pg = styled.p`
   margin: 8px;
   font-weight: 500;
   font-size: 28px;
+  ${mobile({ fontSize:"24px"})}
 `;
 const Desc = styled.div`
   display: flex;
@@ -40,11 +43,13 @@ const ImgContainer = styled.div`
   width: 100%;
   aspect-ratio: 3/1;
   padding: 16px 4px;
+
 `;
 const Img = styled.img`
   display: block;
   width: 80%;
   aspect-ratio: 2/1;
+    ${mobile({ aspectRatio:"5/3",width:"100%"})}
 `;
 function GuideC() {
   return (

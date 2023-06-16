@@ -14,14 +14,13 @@ export const Container = styled.form`
   width: 60%;
   display: flex;
   align-items: center;
-  justify-content: center;
   flex-direction: column;
   max-height: 100vh;
   min-height: 100vh;
   overflow: hidden;
   background-color: #0c2e5a;
   padding: 10%;
-  ${mobile({ width :'100%',overflowY:'scroll',padding:'5%'})}
+  ${mobile({ width :'100%',overflowY:'scroll',padding:'16% 5%'})}
 `;
 export const Input = styled.input`
   width: 100%;
@@ -29,7 +28,6 @@ export const Input = styled.input`
   height: 80px;
   background-color: transparent;
   color: white;
-  font-family: "Changa";
   font-style: normal;
   font-size: 36px;
   &:focus {
@@ -37,7 +35,7 @@ export const Input = styled.input`
   }
   ${mobile({ height:'40px',fontSize:'24px'})}
   &::placeholder {
-    font-family: "Changa";
+
     font-style: normal;
     font-weight: 500;
     font-size: 36px;
@@ -50,13 +48,12 @@ export const Input = styled.input`
 export const Title = styled.h1`
   font-weight: 600;
   font-size: 48px;
-  line-height: 103px;
   color: #f5f5f5;
   margin-bottom: 36px;
   display: flex;
   align-items: center;
   gap: 4px;
-  ${mobile({ fontSize:'26px',marginBottom:'24px'})}
+  ${mobile({ fontSize:'26px',marginBottom:'72px'})}
 `;
 export const TextFieldContainer = styled.div`
   display: flex;
@@ -102,7 +99,6 @@ padding: 8px 24px;
   border-radius: 6px;
   border: none;
   margin-top: 36px;
-  margin-bottom: 17px;
   border: 3px solid #0c2e5a;
   cursor: pointer;
   &:hover {
@@ -117,7 +113,6 @@ export const Qst = styled.span`
   text-decoration: none;
   font-weight: 600;
   font-size: 29px;
-  line-height: 53px;
   color: #ffffff;
   opacity: 0.8;
   &:hover {
@@ -133,7 +128,7 @@ export const Hr = styled.hr`
   width: 90%;
   height: 1px;
   color: white;
-  margin: 18px;
+  margin: 32px 0px;
 `;
 
 function RightUp() {
@@ -175,7 +170,7 @@ function RightUp() {
   
     // Make HTTP request to backend API to insert form data into database
     axios
-      .post("https://mobistoreap.onrender.com/api/user/signup", formData)
+      .post("http://localhost:5000/api/user/signup", formData)
       .then((response) => {
         // Handle successful response from backend
         console.log("Successfully registered:", response.data);

@@ -215,7 +215,7 @@ function SoldProductsTable() {
     const getAllTransactions = async () => {
       try {
         const res = await axios.get(
-          "https://mobistoreap.onrender.com/api/transaction/getAlltransactions"
+          "http://localhost:5000/api/transaction/getAlltransactions"
         );
         console.log(res);
         setAllTransactions(res.data);
@@ -225,7 +225,7 @@ function SoldProductsTable() {
     };
 
     getAllTransactions();
-  }, [AllTransactions]);
+  }, [expandedRows]);
 
 
   useEffect(() => {
@@ -233,7 +233,7 @@ function SoldProductsTable() {
       
       try {
         const res = await axios.delete(
-          `https://mobistoreap.onrender.com/api/transaction/deleteTransactions/${currentTransaction}`
+          `http://localhost:5000/api/transaction/deleteTransactions/${currentTransaction}`
         );
         console.log(res);
         alert(' Cette Transactions était bien supprimer ')

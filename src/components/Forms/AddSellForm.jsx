@@ -299,7 +299,7 @@ function AddSellForm() {
 
     if (selectedValue === "Echange") {
       axios
-        .post("https://mobistoreap.onrender.com/api/transaction/addexchange", exchangedata)
+        .post("http://localhost:5000/api/transaction/addexchange", exchangedata)
         .then((response) => {
           console.log(response.data);
           alert("Echange crée !");
@@ -312,7 +312,7 @@ function AddSellForm() {
       console.log("here");
     } else {
       axios
-        .post("https://mobistoreap.onrender.com/api/transaction/addsell", selldata)
+        .post("http://localhost:5000/api/transaction/addsell", selldata)
         .then((response) => {
           console.log(response.data);
           alert("Achat crée !");

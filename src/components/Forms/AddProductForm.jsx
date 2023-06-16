@@ -224,7 +224,7 @@ function AddProductForm() {
 
     // Make HTTP request to backend API to insert form data into database
     axios
-      .post("https://mobistoreap.onrender.com/api/stock/addproduct", productData)
+      .post("http://localhost:5000/api/stock/addproduct", productData)
       .then((response) => {
         console.log(response.data);
         alert("product added successfully!");

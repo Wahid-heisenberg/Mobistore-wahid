@@ -287,7 +287,7 @@ if (currentProductID){
 //     const productState = req.body.productState 
 //     console.log(Name, brand, price);
 //     const productquiry =
-//       "INSERT INTO produitsEchanges (Name, brand, serieNumber1, serieNumber2, category, price ,productState ) VALUES (?, ?, ?, ?, ?, ? , ?)";
+//       "INSERT INTO produitsechanges (Name, brand, serieNumber1, serieNumber2, category, price ,productState ) VALUES (?, ?, ?, ?, ?, ? , ?)";
 
 //     const currentProductID = await new Promise((resolve, reject) => {
 //      connection.query(
@@ -421,7 +421,7 @@ router.post("/addexchange", upload1.single("image"), async (req, res) => {
   
 
     const productQuery =
-      "INSERT INTO produitsEchanges (Name, brand, serieNumber1, serieNumber2, category, price, productState) VALUES (?, ?, ?, ?, ?, ?, ?)";
+      "INSERT INTO produitsechanges (Name, brand, serieNumber1, serieNumber2, category, price, productState) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
       const [productRows] = await connection.query(productQuery, [
       Name,
@@ -514,7 +514,7 @@ router.get("/getAlltransactions", async (req, res) => {
   s.category AS stockedProductCategory, s.buyPrice AS stockedProductPrice,s.brand AS stockedProductBrand
 FROM transactions AS t
 JOIN clients AS c ON t.clientId = c.clientId
-LEFT JOIN produitsEchanges AS pe ON t.produitEchangeId = pe.ExchangeId
+LEFT JOIN produitsechanges AS pe ON t.produitEchangeId = pe.ExchangeId
 LEFT JOIN produitsachetes AS pv ON t.produitAcheteId = pv.sellId
 LEFT JOIN stock AS s ON t.stockId = s.productId;
   `;
@@ -557,7 +557,7 @@ LEFT JOIN stock AS s ON t.stockId = s.productId;
 //           }
 
 //           if (row.transactionType === "Echange") {
-//             deleteProduitsEchanges();
+//             deleteProduitsechanges();
 //             deleteProduitsStock();
 //           } else if (row.transactionType === "Achat") {
 //             deleteproduitsachetes();
@@ -568,9 +568,9 @@ LEFT JOIN stock AS s ON t.stockId = s.productId;
 //         }
 //       );
 
-//       function deleteProduitsEchanges() {
+//       function deleteProduitsechanges() {
 //        connection.query(
-//           "DELETE FROM produitsEchanges WHERE exchangeId = (SELECT productId FROM transactions WHERE transactionId = ?)",
+//           "DELETE FROM produitsechanges WHERE exchangeId = (SELECT productId FROM transactions WHERE transactionId = ?)",
 //           [transactionId],
 //           function (err) {
 //             if (err) {
@@ -578,7 +578,7 @@ LEFT JOIN stock AS s ON t.stockId = s.productId;
 //               res.status(500).json({ error: "Database error" });
 //               return;
 //             } else {
-//               console.log("ProduitsEchanges deleted");
+//               console.log("Produitsechanges deleted");
 //               deleteClient();
 //             }
 //           }
@@ -892,7 +892,7 @@ try {
 //             console.log("Transaction");
 //             updateClient();
 //             if (transactionType === "Echange") {
-//               updateProduitsEchanges();
+//               updateProduitsechanges();
 //               updateStock();
 //             } else {
 //               updateproduitsachetes();
@@ -990,9 +990,9 @@ try {
 //         );
 //       }
       
-//       function updateProduitsEchanges() {
+//       function updateProduitsechanges() {
 //        connection.query(
-//           "UPDATE produitsEchanges SET Name = ?, brand = ?, serieNumber1 = ?, serieNumber2 = ?, category = ?, price = ?, productState = ? WHERE exchangeId = (SELECT productId FROM transactions WHERE transactionId = ?)",
+//           "UPDATE produitsechanges SET Name = ?, brand = ?, serieNumber1 = ?, serieNumber2 = ?, category = ?, price = ?, productState = ? WHERE exchangeId = (SELECT productId FROM transactions WHERE transactionId = ?)",
 //           [
 //             req.body.Name,
 //             req.body.brand,

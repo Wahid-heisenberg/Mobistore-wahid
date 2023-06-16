@@ -134,7 +134,7 @@ function Statistiques() {
     };
 
     getAllTransactions();
-  }, [AllTransactions]);
+  }, []);
 
   const ProgressCircles = [
     {

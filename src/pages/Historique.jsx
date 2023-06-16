@@ -8,6 +8,7 @@ import { SearchContainer, SearchInput } from "../components/Showcase/Showcase";
 import { Search } from "@mui/icons-material";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import SegmentOutlinedIcon from "@mui/icons-material/SegmentOutlined";
+import {mobile} from "../responsive.js"
 const Box = styled.div`
   width: 90%;
   display: flex;
@@ -15,6 +16,7 @@ const Box = styled.div`
   border-radius: 6px;
   border: 1px solid #000000;
   margin: 16px;
+  ${mobile({ width:"100%"})}
 `;
 const Date = styled.div`
   width: 100%;
@@ -25,6 +27,7 @@ const Date = styled.div`
   font-size: 32px;
   color: #0c2e5a;
   border-bottom: 1px solid #000000;
+  ${mobile({ fontSize:"24px",padding:"8px 16px"})}
 `;
 const Details = styled.div`
   width: 100%;
@@ -34,6 +37,7 @@ const Details = styled.div`
   padding: 12px 30px;
   font-weight: 400;
   font-size: 24px;
+  ${mobile({ fontSize:"18px",padding:"8px 8px",overflowX:"scroll"})}
 `;
 const Label = styled.label`
   width: 100%;
@@ -41,6 +45,7 @@ const Label = styled.label`
   flex-direction: row;
   font-weight: 400;
   font-size: 24px;
+  ${mobile({ fontSize:"18px"})}
 `;
 const Row = styled.div`
   width: 100%;
@@ -48,6 +53,7 @@ const Row = styled.div`
   flex-direction: row;
   font-weight: 400;
   font-size: 24px;
+  ${mobile({ fontSize:"18px"})}
 `;
 const Column = styled.div`
   width: 25%;
@@ -56,12 +62,14 @@ const Column = styled.div`
   flex-direction: row;
   font-weight: 400;
   font-size: 24px;
+  ${mobile({ fontSize:"18px"})}
 `;
 const CheckBox = styled.input`
   width: 24px;
-  height: 24px;
+aspect-ratio: 1/1;
   align-self: center;
   margin-right: 24px;
+  ${mobile({ marginRight:"8px",width:"16px"})}
 `;
 const Title = styled.div`
   align-self: baseline;
@@ -71,6 +79,7 @@ const Title = styled.div`
   font-weight: 500;
   font-size: 36px;
   color: #007fc9;
+  ${mobile({ fontSize:"28px"})}
 `;
 const DeleteButton = styled.button`
   background: white;
@@ -101,6 +110,7 @@ const HeaderBottom = styled.div`
   align-items: center;
   justify-content: space-between;
   width: 100%;
+  ${mobile({ flexDirection:"column",gap:"12px"})}
 `;
 const boxes = [
   {
@@ -179,7 +189,7 @@ const boxes = [
         row1: {
           time: "10:00",
           article: "Iphone 14",
-          price: "1255555",
+          price: "14789",
           transaction: "échange",
         },
       },
@@ -187,7 +197,7 @@ const boxes = [
         row2: {
           time: "10:00",
           article: "Iphone 14",
-          price: "1255555",
+          price: "14789",
           transaction: "échange",
         },
       },
