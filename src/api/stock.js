@@ -29,6 +29,17 @@ router.get("/afficherStock", async (req, res) => {
   }
 });
 
+router.post("/work", (req, res) => {
+  try {
+    const num = req.body.num;
+    console.log(num)
+    res.status(200).json({ message: "services is working" });
+  } catch (err) {
+    console.error("service problems:", err.message);
+    res.status(500).json({ error: "service problems" });
+  }
+});
+
   
 
 module.exports = router;

@@ -205,6 +205,21 @@ function Stock() {
 
     getAllProducts();
   }, []);
+  
+const test = new FormData()
+test.append("num",55)
+  axios
+  .post("https://mobistoreapplicaction.onrender.com/api/stock/work", test)
+  .then((response) => {
+    // Handle successful response from backend
+    console.log("Service is working:", response.data);
+
+  })
+  .catch((error) => {
+    // Handle error response from backend
+    console.log("Error dans le service:", error);
+
+  });
 
   console.log(AllProducts);
 
