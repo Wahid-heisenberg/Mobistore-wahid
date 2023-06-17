@@ -175,7 +175,7 @@ const boxes = [
         row3: {
           time: "10:00",
           article: "Iphone 14",
-          price: "120000",
+          price: "12000",
           transaction: "échange",
         },
       },
