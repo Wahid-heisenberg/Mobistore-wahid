@@ -140,7 +140,7 @@ const ModifySellForm = (props) => {
     if (props.transactionType === "Echange") {
       axios
         .patch(
-          `http://localhost:5000/api/transaction/updateTransaction/${props.transactionId}`,
+          `https://mobistoreapplicaction.onrender.com/api/api/transaction/updateTransaction/${props.transactionId}`,
           exchangedata
         )
         .then((response) => {
