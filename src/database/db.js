@@ -15,7 +15,7 @@ const connection =mysql.createConnection({
   password: process.env.DB_PASSWORD ,
   database:  process.env.DB_DBNAME,
   waitForConnections: true,
-  connectTimeout: 999999999999999, 
+  connectTimeout: 999999999, 
 });
 
 
