@@ -156,7 +156,7 @@ const ModifySellForm = (props) => {
     } else {
       axios
         .patch(
-          `http://localhost:5000/api/transaction/updateTransaction/${props.transactionId}`,
+          `https://mobistoreapplicaction.onrender.com/api/transaction/updateTransaction/${props.transactionId}`,
           selldata
         )
         .then((response) => {

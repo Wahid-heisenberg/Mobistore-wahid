@@ -124,7 +124,7 @@ function Statistiques() {
     const getAllTransactions = async () => {
       try {
         const res = await axios.get(
-          "http://localhost:5000/api/transaction/getAlltransactions"
+          "https://mobistoreapplicaction.onrender.com/api/transaction/getAlltransactions"
         );
         console.log(res);
         setAllTransactions(res.data);

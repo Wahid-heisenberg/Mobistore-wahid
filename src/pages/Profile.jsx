@@ -192,7 +192,7 @@ function Profile() {
   useEffect(() => {
     const getAllWorkers = async () => {
       try {
-        const res = await axios.get("http://localhost:5000/api/worker/showWorkers");
+        const res = await axios.get("https://mobistoreapplicaction.onrender.com/api/worker/showWorkers");
         console.log(res);
         setWorkers(res.data);
       } catch (err) {

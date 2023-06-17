@@ -36,7 +36,7 @@ function AddWorkerForm() {
     };
     // Make HTTP request to backend API to insert form data into database
     axios
-      .post("http://localhost:5000/api/worker/addworker", WorkertData)
+      .post("https://mobistoreapplicaction.onrender.com/api/worker/addworker", WorkertData)
       .then((response) => {
         console.log(response.data);
         alert("travalleur ajouter avec success");

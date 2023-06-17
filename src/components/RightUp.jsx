@@ -170,7 +170,7 @@ function RightUp() {
   
     // Make HTTP request to backend API to insert form data into database
     axios
-      .post("http://localhost:5000/api/user/signup", formData)
+      .post("https://mobistoreapplicaction.onrender.com/api/user/signup", formData)
       .then((response) => {
         // Handle successful response from backend
         console.log("Successfully registered:", response.data);

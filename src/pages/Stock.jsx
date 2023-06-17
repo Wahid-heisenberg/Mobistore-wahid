@@ -194,7 +194,7 @@ function Stock() {
     const getAllProducts = async () => {
       try {
         const res = await axios.get(
-          "http://localhost:5000/api/stock/afficherStock"
+          "https://mobistoreapplicaction.onrender.com/api/stock/afficherStock"
         );
         console.log(res);
         setAllProducts(res.data);
