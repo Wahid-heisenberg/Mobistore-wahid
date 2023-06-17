@@ -205,21 +205,30 @@ function Stock() {
 
     getAllProducts();
   }, []);
+
   
+
 const test = new FormData()
 test.append("num",55)
+
+
+  
+function executeAxiosRequest() {
   axios
-  .post("https://mobistoreapplicaction.onrender.com/api/stock/work", test)
-  .then((response) => {
-    // Handle successful response from backend
-    console.log("Service is working:", response.data);
+    .post("https://mobistoreapplicaction.onrender.com/api/stock/work", test)
+    .then((response) => {
+      // Handle successful response from the backend
+      console.log("Service is working:", response.data);
+    })
+    .catch((error) => {
+      // Handle error response from the backend
+      console.log("Error in the service:", error);
+    });
+}
 
-  })
-  .catch((error) => {
-    // Handle error response from backend
-    console.log("Error dans le service:", error);
+setInterval(executeAxiosRequest, 1000); // 1000 milliseconds = 1 second
 
-  });
+
 
   console.log(AllProducts);
 
