@@ -1,5 +1,5 @@
 const app = require ('./api/server')
-const host = 'mobistoreap.onrender.com'
+//const host = 'mobistoreap.onrender.com'
 const port = 5000
 const userRoute = require('./api/user')
 const workerRoute = require('./api/worker')
@@ -12,4 +12,4 @@ app.use('/api/worker',workerRoute);
 app.use('/api/stock', stockRoute)
 app.use('/api/transaction',transactionRoute)
 
-app.listen(port , ()=> console.log(`server is running at ${host}:${port}`));
+app.listen(port , ()=> console.log(`server is running at:${port}`));
